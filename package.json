@@ -1,0 +1,10 @@
+{
+  "name": "whw-portfolio",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check",
+    "deploy:build": "node build.mjs --deploy"
+  },
+  "engines": {"node": ">=20"}
+}

@@ -1,49 +1,143 @@
 <!doctype html>
+<!-- 由 build.mjs 生成；共享结构在 templates/layout.html，正文在 templates/pages/。 -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="W.H.W. 的 AI 产品经理作品集">
+  <meta name="description" content="W.H.W. 的 AI 产品经理作品集，展示电商运营、AI 内容自动化、商品视觉生成和数据分析实践。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="W.H.W. · 作品集">
+  <meta property="og:title" content="W.H.W. · AI 产品经理作品集">
+  <meta property="og:description" content="W.H.W. 的 AI 产品经理作品集，展示电商运营、AI 内容自动化、商品视觉生成和数据分析实践。">
+  <meta property="og:url" content="https://w-h-w-why.github.io/personalwebsite/">
+  <meta property="og:image" content="https://w-h-w-why.github.io/personalwebsite/assets/social-preview.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1534">
+  <meta property="og:image:height" content="355">
+  <meta property="og:image:alt" content="AI 内容自动化 Workflow 案例截图">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="W.H.W. · AI 产品经理作品集">
+  <meta name="twitter:description" content="W.H.W. 的 AI 产品经理作品集，展示电商运营、AI 内容自动化、商品视觉生成和数据分析实践。">
+  <meta name="twitter:image" content="https://w-h-w-why.github.io/personalwebsite/assets/social-preview.jpg">
+  <link rel="canonical" href="https://w-h-w-why.github.io/personalwebsite/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <title>W.H.W. · AI 产品经理作品集</title>
   <link rel="stylesheet" href="pages.css">
+  <script src="site.js" defer></script>
 </head>
 <body>
   <div class="page home-page">
-    <header class="page-header home-header">
+    <header class="page-header">
       <a class="brand" href="index.html">W.H.W.<em>·</em>作品集</a>
-      <div class="home-actions"><a class="copy-mail" href="mailto:2878201147@qq.com">复制邮箱</a><a class="dark" href="contact.html">预约沟通　↗</a></div>
+      <div class="home-actions">
+        <button class="copy-mail" type="button" data-copy-email="2878201147@qq.com" aria-describedby="copy-status" hidden>复制邮箱</button>
+        <noscript><a class="copy-mail" href="mailto:2878201147@qq.com">邮件联系</a></noscript>
+        <a class="dark" href="contact.html">联系我　↗</a>
+      </div>
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite" hidden></p>
     </header>
     <nav class="workspace-nav" aria-label="作品集目录">
-      <a class="current" href="index.html"><span class="workspace-icon">⌂</span><span>首页</span></a>
-      <a href="portfolio.html"><span class="workspace-icon">▦</span><span>案例</span></a>
-      <a href="case-content.html"><span class="workspace-icon">◫</span><span>Workflow</span></a>
-      <a href="case-data.html"><span class="workspace-icon">◒</span><span>数据</span></a>
-      <a href="resume.html"><span class="workspace-icon">▤</span><span>经历</span></a>
-      <a href="about.html"><span class="workspace-icon">◎</span><span>关于</span></a>
-      <a href="contact.html"><span class="workspace-icon">✉</span><span>联系</span></a>
+      <a class="current" aria-current="page" href="index.html"><span class="workspace-icon" aria-hidden="true">⌂</span><span>首页</span></a>
+      <a href="portfolio.html"><span class="workspace-icon" aria-hidden="true">▦</span><span>案例</span></a>
+      <a href="case-content.html"><span class="workspace-icon" aria-hidden="true">◫</span><span>Workflow</span></a>
+      <a href="case-visual.html"><span class="workspace-icon" aria-hidden="true">◉</span><span>视觉</span></a>
+      <a href="case-data.html"><span class="workspace-icon" aria-hidden="true">◒</span><span>数据</span></a>
+      <a href="resume.html"><span class="workspace-icon" aria-hidden="true">▤</span><span>经历</span></a>
+      <a href="about.html"><span class="workspace-icon" aria-hidden="true">◎</span><span>关于</span></a>
+      <a href="contact.html"><span class="workspace-icon" aria-hidden="true">✉</span><span>联系</span></a>
     </nav>
-    <main>
+    <main class="page-wrap">
       <section class="home-hero page-wrap">
-        <div class="availability"><i></i> 2025 · 正在开放新机会</div>
+
+        <div class="availability">
+          <i>
+          </i>
+
+          <span data-current-year>2026</span>
+          · 正在开放新机会
+        </div>
+
         <div class="eyebrow">AI 产品经理 · 电商业务 · Workflow</div>
-        <h1>把前沿模型，<br>变成真正可用的日常。</h1>
+
+        <h1>
+          把前沿模型，
+          <br/>
+          变成真正可用的日常。
+        </h1>
+
         <p>你好，我是 W.H.W.。我从电商运营现场出发，擅长把不确定的 AI 能力，拆成清晰的产品流程、可复用的 Workflow 和能落地的业务价值。</p>
-        <div class="trusted"><span>我正在实践</span><strong>AI 内容自动化</strong><strong>商品视觉生成</strong><strong>RPA 流程</strong><strong>数据分析</strong></div>
-        <div class="hero-cta"><span><i></i> AI 产品 / 应用方向 · 杭州或远程</span><a href="contact.html">与我聊聊　↗</a></div>
+
+        <div class="trusted">
+          <span>我正在实践</span>
+          <strong>AI 内容自动化</strong>
+          <strong>商品视觉生成</strong>
+          <strong>RPA 流程</strong>
+          <strong>数据分析</strong>
+        </div>
+
+        <div class="hero-cta">
+          <span>
+            <i>
+            </i>
+            AI 产品 / 应用方向 · 杭州或远程
+          </span>
+          <a href="contact.html">与我聊聊　↗</a>
+        </div>
+
       </section>
-      <section class="home-stats page-wrap" aria-label="能力概览">
-        <div><b>01</b><span>电商运营与业务现场</span></div>
-        <div><b>03</b><span>AI 产品案例与 Workflow</span></div>
-        <div><b>80%</b><span>重复工作流程重构</span></div>
-        <div><b>∞</b><span>持续探索的产品问题</span></div>
+      <section aria-label="能力概览" class="home-stats page-wrap">
+
+        <div>
+          <b>01</b>
+          <span>电商运营与业务现场</span>
+        </div>
+
+        <div>
+          <b>03</b>
+          <span>AI 产品案例与 Workflow</span>
+        </div>
+
+        <div>
+          <b>80%</b>
+          <span>重复工作流程重构</span>
+        </div>
+
+        <div>
+          <b>∞</b>
+          <span>持续探索的产品问题</span>
+        </div>
+
       </section>
       <section class="home-entry page-wrap">
-        <a class="entry-card entry-yellow" href="portfolio.html"><span class="eyebrow">01 / 精选案例</span><h2>从真实问题开始</h2><p>查看内容自动化、商品视觉和数据分析案例。</p><span class="entry-arrow">进入案例　→</span></a>
-        <a class="entry-card entry-lilac" href="resume.html"><span class="eyebrow">02 / 工作与教育</span><h2>认识我的经历</h2><p>了解电商运营、AI 工具实践和产品能力。</p><span class="entry-arrow">查看履历　→</span></a>
-        <a class="entry-card entry-mint" href="about.html"><span class="eyebrow">03 / 产品方法</span><h2>我如何拆解问题</h2><p>把一次性的经验沉淀成可复用的产品和流程。</p><span class="entry-arrow">了解更多　→</span></a>
+
+        <a class="entry-card entry-yellow" href="portfolio.html">
+          <span class="eyebrow">01 / 精选案例</span>
+          <h2>从真实问题开始</h2>
+          <p>查看内容自动化、商品视觉和数据分析案例。</p>
+          <span class="entry-arrow">进入案例　→</span>
+        </a>
+
+        <a class="entry-card entry-lilac" href="resume.html">
+          <span class="eyebrow">02 / 工作与教育</span>
+          <h2>认识我的经历</h2>
+          <p>了解电商运营、AI 工具实践和产品能力。</p>
+          <span class="entry-arrow">查看履历　→</span>
+        </a>
+
+        <a class="entry-card entry-mint" href="about.html">
+          <span class="eyebrow">03 / 产品方法</span>
+          <h2>我如何拆解问题</h2>
+          <p>把一次性的经验沉淀成可复用的产品和流程。</p>
+          <span class="entry-arrow">了解更多　→</span>
+        </a>
+
       </section>
     </main>
-    <footer class="footer"><span>© 2025 W.H.W. · AI 产品经理</span><span>18768464924 · 2878201147@qq.com</span></footer>
+    <footer class="footer">
+      <span>© <span data-current-year>2026</span> W.H.W. · AI 产品经理</span>
+      <span><a href="tel:18768464924">18768464924</a> · <a href="mailto:2878201147@qq.com">2878201147@qq.com</a></span>
+    </footer>
   </div>
 </body>
 </html>

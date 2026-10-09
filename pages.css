@@ -1,18 +1,16 @@
 /*
- * 工作台式作品集主题：左侧栏目负责定位，顶部栏负责搜索感与主要行动，中央画布承载案例。
- * 采用纯 CSS 网格和真实链接，保证视觉接近参考图的同时，GitHub Pages 无需额外运行时。
+ * 全站视觉契约：左侧 workspace-nav 负责定位，page-header 提供统一行动入口，
+ * main 与 footer 共享同一内容边界。这样新增页面只需复用结构，不会再次出现
+ * 导航图标、CTA 状态和页脚宽度各自漂移的问题。
  */
 :root {
   --bg: #eef0f1;
-  --canvas: #fff;
   --ink: #0d1220;
   --muted: #6f7480;
   --line: #e7e7e7;
   --blue: #3c6ff0;
-  --yellow: #f4eb94;
   --purple: #ece2ff;
   --mint: #dff4ee;
-  --pink: #ffe0e9;
   --radius: 26px;
   --sans: Inter, "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
 }
@@ -20,30 +18,20 @@
 html { scroll-behavior: smooth; background: var(--bg); }
 body { margin: 0; color: var(--ink); background: linear-gradient(112deg, #e5e7e8 0%, #eef0f1 36%, #f8f9f9 68%, #fff 100%) fixed; font: 14px/1.6 var(--sans); }
 a { color: inherit; text-decoration: none; }
+button { font: inherit; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 .page { min-height: 100vh; padding-left: 90px; padding-top: 16px; }
-.page-header { position: fixed; top: 16px; left: 90px; right: 22px; z-index: 20; height: 74px; padding: 0 28px 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: #fff; border: 1px solid var(--line); border-bottom: 0; border-radius: 26px 26px 0 0; box-shadow: none; }
+.page-header { position: fixed; top: 16px; left: 90px; right: 18px; z-index: 20; height: 74px; padding: 0 28px 0 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: #fff; border: 1px solid var(--line); border-bottom: 0; border-radius: 26px 26px 0 0; box-shadow: none; }
 .brand { display: flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 800; font-size: 13px; letter-spacing: -.04em; line-height: 1.05; }
 .brand::before { content: "W"; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 7px; background: var(--ink); color: #fff; font-size: 12px; }
 .brand em { display: none; }
-.page-nav { position: fixed; left: 0; top: 16px; bottom: 16px; z-index: 25; width: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 11px; padding: 0 0 8px; background: transparent; border: 0; border-radius: 0; color: #9aa0ac; font-size: 10px; }
-.page-nav a { width: 70px; padding: 10px 7px; display: flex; flex-direction: column; align-items: center; gap: 6px; border-radius: 18px; text-align: center; transition: background .25s ease, color .25s ease, transform .25s ease; }
-.page-nav a::before { content: ""; display: grid; place-items: center; width: 30px; height: 30px; border: 1.5px solid currentColor; border-radius: 9px; font-size: 15px; line-height: 1; }
-.page-nav a:nth-child(1)::before { content: "⌂"; }
-.page-nav a:nth-child(2)::before { content: "▣"; }
-.page-nav a:nth-child(3)::before { content: "◫"; }
-.page-nav a:nth-child(4)::before { content: "◈"; }
-.page-nav a:nth-child(5)::before { content: "◎"; }
-.page-nav a:nth-child(6)::before { content: "✉"; }
-.page-nav a:hover, .page-nav a.current { color: var(--ink); background: #fff; box-shadow: 0 1px 5px #0000000a; }
-.page-nav a:hover { transform: translateY(-1px); }
-.page-nav .dark { position: fixed; top: 27px; right: 22px; width: auto; padding: 10px 17px; border: 0; border-radius: 999px; color: #fff; background: var(--ink); font-size: 12px; font-weight: 600; }
-/* 联系 CTA 的当前页和悬停状态仍需保持对比度；仅覆盖颜色，保留移动端的尺寸规则。 */
-.page-nav a.dark:hover, .page-nav a.dark.current { color: #fff; background: var(--ink); }
-.page-nav .dark::before { display: none; }
-.page-nav::after { content: "AI 产品经理\A W.H.W. 作品集\A\A 2025 — 至今\A 工商管理本科\A\A 18768464924\A 2878201147@qq.com"; white-space: pre; margin-top: auto; padding: 18px 8px 0; width: 86px; border-top: 1px solid var(--line); color: #8b9099; font-size: 9px; line-height: 1.8; text-align: center; }
-.menu-toggle { display: none; }
-.page-main { width: min(1700px, calc(100% - 18px)); min-height: 100vh; margin: 0 18px 0 0; padding: 82px 0 40px; }
+/*
+ * 复制结果浮在 header 下方，避免插入状态文字时推动品牌和 CTA；max-width 与
+ * overflow-wrap 让较长邮箱在窄屏仍留在视口内，并允许用户选中复制反馈内容。
+ */
+.copy-status { position: absolute; top: calc(100% + 8px); right: 18px; z-index: 1; width: max-content; max-width: min(420px, calc(100vw - 24px)); margin: 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; box-shadow: 0 8px 24px #10142518; color: var(--muted); font-size: 11px; line-height: 1.4; overflow-wrap: anywhere; user-select: text; }
+.copy-status[hidden] { display: none; }
+/* 内页和首页沿用同一右边界；首页覆盖 max-width，保证主卡片与页脚在宽屏完全对齐。 */
 .page > main { width: min(1700px, calc(100% - 18px)); min-height: 100vh; margin: 0 18px 0 0; padding: 82px 0 40px; }
 .page-wrap { width: 100%; margin: auto; }
 .page-hero { min-height: 760px; padding: clamp(90px, 11vw, 150px) 8%; display: flex; flex-direction: column; justify-content: center; text-align: center; background-color: rgba(255,255,255,.98); background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 20% 100%, 20% 100%; border: 1px solid var(--line); border-radius: 30px; overflow: hidden; box-shadow: 0 20px 60px rgba(30,34,44,.08); }
@@ -61,7 +49,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
 .panel ul { margin: 14px 0 0; padding-left: 18px; }
 .panel li + li { margin-top: 8px; }
 .wide { grid-column: 1 / -1; }
-.evidence { display: block; width: 100%; margin-top: 18px; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+/* HTML 的 width/height 预留原始比例；响应式宽度缩放时仍由 auto 高度保持同一比例。 */
+.evidence { display: block; width: 100%; height: auto; margin-top: 18px; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); grid-column: 1 / -1; padding: 0; overflow: hidden; background: var(--ink); border-radius: var(--radius); }
 .metric { padding: 23px 27px; border-right: 1px solid #ffffff2b; }
 .metric:last-child { border-right: 0; }
@@ -75,33 +64,30 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--blue); outline-
 .timeline-item::before { content: ""; position: absolute; left: -29px; top: 8px; width: 9px; height: 9px; border: 2px solid var(--blue); border-radius: 50%; background: #fff; }
 .timeline-item h3 { font-size: 18px; }
 .timeline-item .date { color: var(--blue); font-size: 11px; font-weight: 700; }
-.footer { width: min(1460px, calc(100% - 24px)); margin: auto; padding: 30px 0 45px; display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
-footer:not(.footer) { width: 100%; margin: auto; padding: 30px 0 45px; color: var(--muted); font-size: 11px; }
-.catalog .page-hero { min-height: 480px; }
-.catalog-card { display: flex; min-height: 300px; flex-direction: column; justify-content: space-between; }
-.catalog-card:nth-child(1) { background: var(--yellow); }
-.catalog-card:nth-child(2) { background: #25262a; color: #fff; }
-.catalog-card:nth-child(2) h2, .catalog-card:nth-child(2) p { color: #fff; }
-.catalog-card:nth-child(2) p { color: #c6c8cf; }
-.catalog-card:nth-child(3) { background: var(--mint); }
-.catalog-card .card-arrow { margin-top: 20px; color: var(--blue); font-size: 22px; font-weight: 700; }
-.home-page .page-hero { width: 100%; min-height: 700px; }
-.home-page .content-grid { width: min(1180px, calc(100% - 30px)); margin: 40px auto 0; }
-.home-header { left: 90px; right: 22px; }
-.home-search { position: absolute; left: 50%; transform: translateX(-50%); width: min(440px, 42vw); height: 42px; padding: 0 14px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 999px; background: #f7f7f6; color: #9da2ad; font-size: 13px; }
-.home-search span:first-child { color: #8e95a0; font-size: 22px; line-height: 1; }
-.home-search kbd { margin-left: auto; padding: 2px 6px; border: 1px solid var(--line); border-radius: 5px; color: #9da2ad; font-size: 10px; }
+.footer { width: min(1700px, calc(100% - 18px)); margin: 0 18px 0 0; padding: 30px 0 45px; display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 11px; }
+.footer a { color: inherit; }
+.footer a:hover { color: var(--ink); }
+/* CTA 不属于导航状态；独立放在 header actions 中，避免 current 覆盖黑底白字。 */
 .home-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
-.home-actions a { font-size: 12px; }
-.home-actions .copy-mail { padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-weight: 600; }
-.home-actions .dark { position: static; width: auto; padding: 10px 18px; border: 0; background: var(--ink); color: #fff; }
-.workspace-nav { position: fixed; left: 0; top: 16px; bottom: 16px; z-index: 25; width: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; padding: 0; background: transparent; border: 0; border-radius: 0; color: #9aa0ac; font-size: 10px; }
-.workspace-nav a { width: 70px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 5px; border-radius: 18px; transition: background .25s ease, color .25s ease, transform .25s ease; }
+.home-actions .copy-mail { min-height: 38px; padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.home-actions .copy-mail:hover { border-color: #c9ccd2; background: #f7f7f6; }
+.home-actions .dark { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 10px 18px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.home-actions .dark:hover, .home-actions .dark:focus-visible, .home-actions .dark.current { background: var(--ink); color: #fff; }
+/*
+ * 8 项导航在桌面端保持固定纵向定位，在窄屏变成等宽 grid。
+ * minmax(0, 1fr) 允许 320px 宽度下每格收缩，避免 Workflow 文案把底栏撑出视口。
+ */
+.workspace-nav { position: fixed; left: 0; top: 16px; bottom: 16px; z-index: 25; width: 90px; display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 8px 0; overflow-y: auto; background: transparent; border: 0; border-radius: 0; color: #9aa0ac; font-size: 10px; }
+.workspace-nav a { width: 70px; min-width: 0; flex: 0 0 auto; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 5px; border-radius: 18px; text-align: center; transition: background .25s ease, color .25s ease, transform .25s ease; }
+/* 自动边距在空间足够时居中，短视口时归零，让首尾链接都能通过侧栏滚动触达。 */
+.workspace-nav a:first-child { margin-top: auto; }
+.workspace-nav a:last-child { margin-bottom: auto; }
 .workspace-nav a:hover, .workspace-nav a.current { color: var(--ink); background: #fff; box-shadow: 0 4px 12px #1014250c; }
-.workspace-icon { display: grid; place-items: center; width: 29px; height: 29px; border: 1.5px solid currentColor; border-radius: 9px; font-size: 15px; line-height: 1; }
+.workspace-nav a:hover { transform: translateY(-1px); }
+.workspace-nav .workspace-icon { display: grid; place-items: center; width: 29px; height: 29px; border: 1.5px solid currentColor; border-radius: 9px; font-size: 15px; line-height: 1; }
 /* 首页主卡与页脚共享左右边界，避免宽屏限宽或移动端居中规则造成错位。 */
-.home-page main, .home-page .footer { width: calc(100% - 18px); margin: 0 18px 0 0; }
-.home-page main { padding-top: 0; background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 28px; overflow: hidden; box-shadow: 0 20px 60px rgba(30,34,44,.08); }
+.home-page > main, .home-page > .footer { width: calc(100% - 18px); margin: 0 18px 0 0; }
+.home-page > main { padding-top: 0; background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 28px; overflow: hidden; box-shadow: 0 20px 60px rgba(30,34,44,.08); }
 .home-hero { width: 100%; min-height: 770px; padding: 150px 10% 76px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #fff; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 20% 100%, 20% 100%; border: 0; border-radius: 0; box-shadow: none; }
 .availability { margin-bottom: 28px; padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; }
 .availability i, .hero-cta i { display: inline-block; width: 7px; height: 7px; margin-right: 7px; border-radius: 50%; background: #38b878; }
@@ -127,24 +113,21 @@ footer:not(.footer) { width: 100%; margin: auto; padding: 30px 0 45px; color: va
 .entry-arrow { color: var(--blue); font-size: 13px; font-weight: 700; }
 @media (max-width: 760px) {
   .page { padding-left: 0; }
-  .page-header { top: 7px; left: 7px; right: 7px; height: 58px; padding: 0 16px; border-radius: 18px; }
-  .home-header { left: 7px; right: 7px; border-radius: 18px; }
-  .home-search { display: none; }
+  .page-header { top: 7px; left: 7px; right: 7px; height: 58px; padding: 0 12px 0 16px; gap: 8px; border-radius: 18px; }
+  /* header 两侧各留 7px 时，气泡靠右 8px 可确保其最大宽度不越过视口。 */
+  .copy-status { right: 8px; max-width: calc(100vw - 24px); }
   .home-actions { gap: 6px; }
-  .home-actions .copy-mail { display: none; }
-  .page-nav { top: auto; left: 0; right: 0; bottom: 0; width: 100%; height: 68px; flex-direction: row; justify-content: space-around; gap: 0; padding: 5px 8px; border-top: 1px solid var(--line); border-right: 0; }
-  .page-nav a { width: 16.66%; padding: 4px 2px; font-size: 9px; }
-  .page-nav a::before { width: 21px; height: 21px; }
-  .page-nav a:nth-child(2), .page-nav a:nth-child(3) { display: flex; }
-  .page-nav .dark { padding: 7px 11px; }
-  .page-nav .dark { top: 9px; right: 16px; width: auto; padding: 7px 11px; font-size: 10px; }
-  .page-nav::after { display: none; }
-  .page-main { width: calc(100% - 18px); margin-right: 18px; padding: 70px 0 98px; }
-  .page > main { width: calc(100% - 18px); margin-right: 18px; padding: 70px 0 98px; }
-  .workspace-nav { top: auto; left: 7px; right: 7px; bottom: 7px; width: auto; height: 67px; flex-direction: row; justify-content: space-around; gap: 0; padding: 4px; border-radius: 18px; }
-  .workspace-nav a { width: 14.28%; padding: 4px 1px; font-size: 9px; }
-  .workspace-icon { width: 22px; height: 22px; font-size: 12px; border-radius: 7px; }
-  .home-hero { width: calc(100% - 18px); min-height: 670px; padding: 94px 22px 58px; border-radius: 22px; background-size: 50% 100%, 50% 100%; }
+  .home-actions .copy-mail { min-height: 32px; padding: 7px 9px; font-size: 10px; }
+  .home-actions .dark { min-height: 32px; padding: 7px 10px; font-size: 10px; }
+  /* 8 等分而非固定百分比，确保底栏在 320px 宽度仍完整可见。 */
+  .workspace-nav { top: auto; left: 7px; right: 7px; bottom: 7px; width: auto; height: 67px; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: stretch; gap: 0; padding: 4px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.98); box-shadow: 0 8px 24px #10142518; }
+  .workspace-nav a { width: auto; min-width: 0; padding: 4px 1px; gap: 3px; justify-content: center; font-size: 8px; line-height: 1.1; overflow: hidden; }
+  .workspace-nav a:first-child, .workspace-nav a:last-child { margin: 0; }
+  .workspace-nav a span:last-child { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: clip; letter-spacing: -.04em; }
+  .workspace-nav .workspace-icon { width: 22px; height: 22px; flex: 0 0 22px; font-size: 12px; border-radius: 7px; }
+  .page > main { width: calc(100% - 14px); margin: 0 7px; padding: 70px 0 98px; }
+  .home-page > main { width: calc(100% - 14px); margin: 0 7px; }
+  .home-hero { width: 100%; min-height: 670px; padding: 94px 22px 58px; border-radius: 22px; background-size: 50% 100%, 50% 100%; }
   .home-hero h1 { font-size: clamp(46px, 14vw, 76px); }
   .home-hero p { font-size: 15px; }
   .trusted { gap: 12px 17px; }
@@ -162,10 +145,10 @@ footer:not(.footer) { width: 100%; margin: auto; padding: 30px 0 45px; color: va
   .metrics { grid-template-columns: 1fr; }
   .metric { border-right: 0; border-bottom: 1px solid #ffffff2b; }
   .metric:last-child { border-bottom: 0; }
-  .footer { width: calc(100% - 24px); display: block; padding-bottom: 90px; }
-  .footer span { display: block; margin-top: 6px; }
-  .home-page .page-hero { min-height: 650px; }
-  .home-page .content-grid { width: calc(100% - 24px); }
+  .home-page > .footer, .footer { width: calc(100% - 14px); margin: 0 7px; display: block; padding-bottom: 90px; }
+  /* 只换行页脚两列；年份 span 是第一列的内联数据，不应被拆成独立一行。 */
+  .footer > span { display: block; }
+  .footer > span + span { margin-top: 6px; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .page-hero > *, .panel { animation: lift .6s ease both; }

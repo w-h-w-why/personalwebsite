@@ -1,0 +1,8 @@
+# 兼容 Pages 当前的根目录 Jekyll 发布；模板与构建源码只在仓库中维护。
+exclude:
+  - templates
+  - build.mjs
+  - site.config.json
+  - package.json
+  - README.md
+  - dist

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">W.H.W.</title>
+  <desc id="desc">延续页头品牌标记的深色圆角方块与白色 W，矢量路径避免依赖本地字体。</desc>
+  <rect width="64" height="64" rx="16" fill="#0d1220"/>
+  <path d="M13 18 21 46 32 26 43 46 51 18" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
