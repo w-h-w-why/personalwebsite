@@ -64,7 +64,8 @@ if (deploy) {
 for (const page of config.pages) {
   const values = Object.fromEntries(Object.entries({ NAME: config.name, ROLE: config.role, PHONE: config.phone, EMAIL: config.email, WORK_START: config.workStart, YEAR: year, EXPERIENCE: experience }).map(([key, value]) => [key, escapeHtml(value)]));
   const content = await readFile(resolve(root, 'templates/pages', page.file), 'utf8');
-  const nav = config.pages.map(item => `      <a${item.file === page.file ? ' class="current" aria-current="page"' : ''} href="${escapeHtml(item.file)}"><span class="workspace-icon" aria-hidden="true">${escapeHtml(item.icon)}</span><span>${escapeHtml(item.label)}</span></a>`).join('\n');
+  // 顶部导航只输出文字链接，保持排版简洁；site.config.json 里的图标字段保留，便于未来换用图标样式。
+  const nav = config.pages.map(item => `      <a${item.file === page.file ? ' class="current" aria-current="page"' : ''} href="${escapeHtml(item.file)}">${escapeHtml(item.label)}</a>`).join('\n');
   const html = render(layout, {
     ...values,
     TITLE: escapeHtml(`${config.name} · ${page.title}`),

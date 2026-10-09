@@ -28,24 +28,28 @@
 </head>
 <body>
   <div class="page{{PAGE_CLASS}}">
-    <header class="page-header">
-      <a class="brand" href="index.html">{{NAME}}<em>·</em>作品集</a>
-      <div class="home-actions">
-        <button class="copy-mail" type="button" data-copy-email="{{EMAIL}}" aria-describedby="copy-status" hidden>复制邮箱</button>
-        <noscript><a class="copy-mail" href="mailto:{{EMAIL}}">邮件联系</a></noscript>
-        <a class="dark" href="contact.html">联系我　↗</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">W</span><span class="brand-name">{{NAME}}<em>·</em>作品集</span></a>
+        <nav class="main-nav" aria-label="作品集目录">
+{{NAV}}
+        </nav>
+        <div class="header-actions">
+          <button class="copy-mail" type="button" data-copy-email="{{EMAIL}}" aria-describedby="copy-status" hidden>复制邮箱</button>
+          <noscript><a class="copy-mail" href="mailto:{{EMAIL}}">邮件联系</a></noscript>
+          <a class="dark" href="contact.html">联系我　↗</a>
+        </div>
       </div>
       <p id="copy-status" class="copy-status" role="status" aria-live="polite" hidden></p>
     </header>
-    <nav class="workspace-nav" aria-label="作品集目录">
-{{NAV}}
-    </nav>
     <main class="page-wrap">
 {{CONTENT}}
     </main>
-    <footer class="footer">
-      <span>© <span data-current-year>{{YEAR}}</span> {{NAME}} · {{ROLE}}</span>
-      <span><a href="tel:{{PHONE}}">{{PHONE}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>© <span data-current-year>{{YEAR}}</span> {{NAME}} · {{ROLE}}</span>
+        <span><a href="tel:{{PHONE}}">{{PHONE}}</a> · <a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
+      </div>
     </footer>
   </div>
 </body>
