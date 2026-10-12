@@ -1,0 +1,29 @@
+# personalwebsite Wiki
+
+> repowiki 为仓库 personalwebsite 生成的结构化 Wiki：以下链接按章节索引全部 markdown 页面，llms-full.txt 为全文合并版。
+
+## 总览
+
+- [总览](meta/wiki-overview.md)
+
+## 开发与构建
+
+- [开发与构建](content/开发与构建/开发与构建.md)
+- [模板渲染与构建流程](content/开发与构建/模板渲染与构建流程.md)
+
+## 配置与页面
+
+- [配置与页面](content/配置与页面/配置与页面.md)
+- [站点配置模型](content/配置与页面/站点配置模型.md)
+- [页面内容与媒体素材](content/配置与页面/页面内容与媒体素材.md)
+
+## 交互与样式
+
+- [交互与样式](content/交互与样式/交互与样式.md)
+- [渐进增强与无障碍反馈](content/交互与样式/渐进增强与无障碍反馈.md)
+- [响应式视觉系统](content/交互与样式/响应式视觉系统.md)
+
+## 部署与维护
+
+- [部署与维护](content/部署与维护/部署与维护.md)
+- [Pages 发布与一致性校验](content/部署与维护/Pages 发布与一致性校验.md)

@@ -1,0 +1,6997 @@
+{
+  "wiki_repo": {
+    "id": "94d870849330d4f47657112cacb55b47",
+    "name": "personalwebsite",
+    "progress_status": "completed",
+    "wiki_present_status": "COMPLETED",
+    "locale": "zh",
+    "last_commit_id": "0a795f197fb949a74cdf429242d7638e14fcedd1",
+    "generated_at": "2026-10-09T08:40:12Z"
+  },
+  "wiki_catalogs": [
+    {
+      "id": "c01",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "开发与构建",
+      "description": "development-build",
+      "prompt": "- 解释无框架、无构建依赖的结构及 Node.js 20 环境要求；- 区分源模板、根目录生成 HTML、dist 发布产物；- 给出 npm run build/check/deploy:build 的适用场景与维护顺序。",
+      "parent_id": null,
+      "dependent_files": "README.md, package.json, build.mjs, templates/layout.html",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c0101",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "模板渲染与构建流程",
+      "description": "template-rendering-flow",
+      "prompt": "- 流程起点是 node build.mjs 读取 site.config.json、共享 layout 和页面正文，终点是写入根目录 HTML、校验已有 HTML 或创建 dist；- 追踪参数互斥、配置检查、上海时区年月与工作时长、escapeHtml、render 的未知键失败、导航与分享 URL；- 说明输出路径边界、换行归一化与部署素材复制，强调编辑模板后重建。",
+      "parent_id": "c01",
+      "dependent_files": "build.mjs, site.config.json, templates/layout.html, templates/pages/index.html, package.json",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c02",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "配置与页面",
+      "description": "configuration-pages",
+      "prompt": "- 展示配置中的八个页面及根目录生成页面的对应关系；- 解释导航激活态、共享 header/footer/main 与元信息由 layout 注入；- 划清静态展示内容与实际运行代码的边界，案例里的 Workflow/AI 能力是作品说明。",
+      "parent_id": null,
+      "dependent_files": "site.config.json, templates/layout.html, index.html, portfolio.html, case-content.html, case-visual.html, case-data.html, resume.html, about.html, contact.html",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c0201",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "站点配置模型",
+      "description": "site-configuration-model",
+      "prompt": "- 核心实体是 SiteConfig 与 pages 数组内的 PageConfig，源码为显式 JSON 数据结构；- 解释 name/role/url/email/phone/workStart 及 file/label/icon/title/description 字段、顺序和生成映射；- 说明 URL 末尾斜线、YYYY-MM、文件名唯一性与 index.html 必需规则；- 描述公开联系方式、可信配置与 HTML 转义边界，不重复展示实际电话邮箱。",
+      "parent_id": "c02",
+      "dependent_files": "site.config.json, build.mjs, templates/layout.html, site.js, templates/pages/contact.html, templates/pages/resume.html",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c0202",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "页面内容与媒体素材",
+      "description": "page-content-media",
+      "prompt": "- 按源码梳理八个页面的职责、用户导航与案例入口；- 记录三张 WebP 截图的实际路径、声明尺寸、lazy 加载和替代文本；- 解释分享 JPEG、favicon、Open Graph/Twitter/canonical 来源和固定预览图范围；- 说明联系方式与经历动态标记，明确仓库展示案例成果而不承载模型/Workflow 后端。",
+      "parent_id": "c02",
+      "dependent_files": "templates/pages/index.html, templates/pages/portfolio.html, templates/pages/case-content.html, templates/pages/case-visual.html, templates/pages/case-data.html, templates/pages/resume.html, templates/pages/about.html, templates/pages/contact.html, templates/layout.html, site.config.json, README.md, assets/favicon.svg",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c03",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "交互与样式",
+      "description": "interaction-styles",
+      "prompt": "- 解释 defer 加载的 site.js 与单一共享 pages.css 如何覆盖全部页面；- 总结静态正文/导航在无 JavaScript 时的可用性与动态日期/剪贴板的增强范围；- 描述样式职责、布局断点、交互语义与可访问反馈的边界。",
+      "parent_id": null,
+      "dependent_files": "pages.css, site.js, templates/layout.html, templates/pages/index.html, templates/pages/contact.html",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c0301",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "渐进增强与无障碍反馈",
+      "description": "progressive-enhancement-accessibility",
+      "prompt": "- 解释 IIFE、上海时区年月、data-current-year 与 data-experience-start 的更新；- 逐步追踪 copyEmail 的 click、禁用按钮、clipboard.writeText、成功与失败反馈、finally；- 定位 hidden、noscript、aria-describedby、role=status/aria-live 的静态契约；- 说明没有 copy button/status 时的提前返回和脚本失败边界，不声称存在源码未实现的完整校验。",
+      "parent_id": "c03",
+      "dependent_files": "site.js, templates/layout.html, templates/pages/contact.html, templates/pages/resume.html, templates/pages/index.html, build.mjs",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c0302",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "响应式视觉系统",
+      "description": "responsive-visual-system",
+      "prompt": "- 依据 pages.css 的实际选择器说明颜色/字体/间距变量、页面容器、header/nav/footer、通用按钮与卡片；- 展示首页、案例、联系页 CSS 与 HTML 类名的对应；- 记录真实媒体查询断点及布局变化，说明 overflow/hover/focus 等实际规则；- 区分现有样式行为与建议，不推断源码中不存在的主题切换或组件框架。",
+      "parent_id": "c03",
+      "dependent_files": "pages.css, templates/layout.html, templates/pages/index.html, templates/pages/portfolio.html, templates/pages/contact.html, templates/pages/case-visual.html",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c04",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "部署与维护",
+      "description": "deployment-maintenance",
+      "prompt": "- 介绍 GitHub Actions dist 发布与根目录 Jekyll 兼容配置；- 说明 dist/artifacts-screens 忽略规则和版本库换行策略；- 给出新增页面、改配置/模板/素材后构建校验的顺序及日期后备文本的维护，注明 npm run check 只验证 HTML 与源的一致性。",
+      "parent_id": null,
+      "dependent_files": "README.md, package.json, build.mjs, .github/workflows/static.yml, _config.yml, .gitignore, .gitattributes",
+      "progress_status": "completed"
+    },
+    {
+      "id": "c0401",
+      "repo_id": "94d870849330d4f47657112cacb55b47",
+      "name": "Pages 发布与一致性校验",
+      "description": "pages-publishing-validation",
+      "prompt": "- 流程起点是 main 分支 push 或 workflow_dispatch，终点是 Actions 发布 dist 到 GitHub Pages；- 按工作流真实步骤描述 checkout/setup-node/configure-pages、构建、upload-pages-artifact/deploy-pages、权限与 concurrency；- 说明 dist 仅含页面、CSS、JS 和 assets，Jekyll exclude 的根目录兼容角色；- 解释 --check 如何比较当前月份的生成 HTML、失败退出、可验证范围和月切换后的重建要求。",
+      "parent_id": "c04",
+      "dependent_files": ".github/workflows/static.yml, build.mjs, package.json, _config.yml, README.md, .gitignore, .gitattributes",
+      "progress_status": "completed"
+    }
+  ],
+  "wiki_items": [
+    {
+      "catalog_id": "c01",
+      "title": "开发与构建"
+    },
+    {
+      "catalog_id": "c0101",
+      "title": "模板渲染与构建流程"
+    },
+    {
+      "catalog_id": "c02",
+      "title": "配置与页面"
+    },
+    {
+      "catalog_id": "c0201",
+      "title": "站点配置模型"
+    },
+    {
+      "catalog_id": "c0202",
+      "title": "页面内容与媒体素材"
+    },
+    {
+      "catalog_id": "c03",
+      "title": "交互与样式"
+    },
+    {
+      "catalog_id": "c0301",
+      "title": "渐进增强与无障碍反馈"
+    },
+    {
+      "catalog_id": "c0302",
+      "title": "响应式视觉系统"
+    },
+    {
+      "catalog_id": "c04",
+      "title": "部署与维护"
+    },
+    {
+      "catalog_id": "c0401",
+      "title": "Pages 发布与一致性校验"
+    }
+  ],
+  "source_files": [
+    {
+      "id": "fc723d30b02a4cca7a534518111c1a66",
+      "path": ".gitattributes",
+      "filename": ".gitattributes"
+    },
+    {
+      "id": "1a55b1ceeb5182b4f1c55b22af375a3c",
+      "path": ".github/workflows/static.yml",
+      "filename": "static.yml"
+    },
+    {
+      "id": "a084b794bc0759e7a6b77810e01874f2",
+      "path": ".gitignore",
+      "filename": ".gitignore"
+    },
+    {
+      "id": "04c6e90faac2675aa89e2176d2eec7d8",
+      "path": "README.md",
+      "filename": "README.md"
+    },
+    {
+      "id": "aeb42283af8ef8e9da40ededd3ae2ab2",
+      "path": "_config.yml",
+      "filename": "_config.yml"
+    },
+    {
+      "id": "fb8a140d6f076647256a4ea161f4c280",
+      "path": "about.html",
+      "filename": "about.html"
+    },
+    {
+      "id": "8ab396462886c84baa845596caf9c731",
+      "path": "assets/favicon.svg",
+      "filename": "favicon.svg"
+    },
+    {
+      "id": "02a6bb46fb2ccdfe985a715f6a2fea13",
+      "path": "build.mjs",
+      "filename": "build.mjs"
+    },
+    {
+      "id": "866655d32bdb52b5b1bb0e55ba230f00",
+      "path": "case-content.html",
+      "filename": "case-content.html"
+    },
+    {
+      "id": "628a79e2362721b918a7c942114ee8f5",
+      "path": "case-data.html",
+      "filename": "case-data.html"
+    },
+    {
+      "id": "4a514bd8ebdd076ea8399562e49aacba",
+      "path": "case-visual.html",
+      "filename": "case-visual.html"
+    },
+    {
+      "id": "6d2cd37929c7c76ab3de0a8538b13998",
+      "path": "contact.html",
+      "filename": "contact.html"
+    },
+    {
+      "id": "eacf331f0ffc35d4b482f1d15a887d3b",
+      "path": "index.html",
+      "filename": "index.html"
+    },
+    {
+      "id": "b9cfc7f2cdf78a7f4b91a753d10865a2",
+      "path": "package.json",
+      "filename": "package.json"
+    },
+    {
+      "id": "6105e4bbb321772222f4916b2a1ab9fc",
+      "path": "pages.css",
+      "filename": "pages.css"
+    },
+    {
+      "id": "70263ea23992f744c98421c583cd0861",
+      "path": "portfolio.html",
+      "filename": "portfolio.html"
+    },
+    {
+      "id": "4cbc3d55ae20097a676e3dd9daa7c0d3",
+      "path": "resume.html",
+      "filename": "resume.html"
+    },
+    {
+      "id": "4ad724a2753e7635fd9a3b675fed9838",
+      "path": "site.config.json",
+      "filename": "site.config.json"
+    },
+    {
+      "id": "4be1713d825f5a80ebf1f2ea3efd7a45",
+      "path": "site.js",
+      "filename": "site.js"
+    },
+    {
+      "id": "c4911b66f2e73556a178676ebd28f972",
+      "path": "templates/layout.html",
+      "filename": "layout.html"
+    },
+    {
+      "id": "39374a575a08d239d76ff0a54eb5a0a4",
+      "path": "templates/pages/about.html",
+      "filename": "about.html"
+    },
+    {
+      "id": "a7ad015d43a513afaad78e29679a737b",
+      "path": "templates/pages/case-content.html",
+      "filename": "case-content.html"
+    },
+    {
+      "id": "e4f75200350bb3204ffbef86915b8080",
+      "path": "templates/pages/case-data.html",
+      "filename": "case-data.html"
+    },
+    {
+      "id": "ab859057a0eeee4ff8492b90d4956cec",
+      "path": "templates/pages/case-visual.html",
+      "filename": "case-visual.html"
+    },
+    {
+      "id": "d75260a1ca043033a1d944c502fa8e3c",
+      "path": "templates/pages/contact.html",
+      "filename": "contact.html"
+    },
+    {
+      "id": "1e03d4ca7ea08a217216ddd8da21d6f4",
+      "path": "templates/pages/index.html",
+      "filename": "index.html"
+    },
+    {
+      "id": "29a74aaed6af320a63caf02d927a76ba",
+      "path": "templates/pages/portfolio.html",
+      "filename": "portfolio.html"
+    },
+    {
+      "id": "3c9d7aa94b336e19b210ab6b46c5a295",
+      "path": "templates/pages/resume.html",
+      "filename": "resume.html"
+    }
+  ],
+  "code_snippets": [
+    {
+      "id": "16d90b51f2b6cd9c9ffcc7d94d975767",
+      "path": ".gitattributes",
+      "line_range": "1-3"
+    },
+    {
+      "id": "ca15c583eb5e4068a8b51b2b979a74e0",
+      "path": ".github/workflows/static.yml",
+      "line_range": "1-48"
+    },
+    {
+      "id": "e546b639c7caa1bf01a216e374e6bbb7",
+      "path": ".github/workflows/static.yml",
+      "line_range": "12-16"
+    },
+    {
+      "id": "ac571adadf52ab882115afc4036b73f3",
+      "path": ".github/workflows/static.yml",
+      "line_range": "12-22"
+    },
+    {
+      "id": "21074a96150fbc6e9831d2aea79d2f29",
+      "path": ".github/workflows/static.yml",
+      "line_range": "12-39"
+    },
+    {
+      "id": "88cb5450886b961676d95178e43d9f08",
+      "path": ".github/workflows/static.yml",
+      "line_range": "12-48"
+    },
+    {
+      "id": "c75439c8212498e2e005b05dbab20195",
+      "path": ".github/workflows/static.yml",
+      "line_range": "18-22"
+    },
+    {
+      "id": "1f87eae6f446a35759174eef992ada67",
+      "path": ".github/workflows/static.yml",
+      "line_range": "24-48"
+    },
+    {
+      "id": "2c32e64fb5d908e274609d1b1eb3aae8",
+      "path": ".github/workflows/static.yml",
+      "line_range": "27-29"
+    },
+    {
+      "id": "b6d70778375c68f2d9eceffc4115430a",
+      "path": ".github/workflows/static.yml",
+      "line_range": "27-48"
+    },
+    {
+      "id": "2442c971cdec003347bde34b939e3164",
+      "path": ".github/workflows/static.yml",
+      "line_range": "31-48"
+    },
+    {
+      "id": "58925f738d2a9cce222c628436e209a5",
+      "path": ".github/workflows/static.yml",
+      "line_range": "32-48"
+    },
+    {
+      "id": "41249978a896c52fa8be4d1c53528f16",
+      "path": ".github/workflows/static.yml",
+      "line_range": "4-10"
+    },
+    {
+      "id": "e9f8829205976c3544565354cface3a3",
+      "path": ".github/workflows/static.yml",
+      "line_range": "4-16"
+    },
+    {
+      "id": "76a51a218ca219ffc71ec4538516e399",
+      "path": ".github/workflows/static.yml",
+      "line_range": "4-48"
+    },
+    {
+      "id": "cc50b627f07bf3989b784f5119c72c3f",
+      "path": ".github/workflows/static.yml",
+      "line_range": "40-41"
+    },
+    {
+      "id": "63c1205976c9606018f067d266f53d1e",
+      "path": ".github/workflows/static.yml",
+      "line_range": "40-45"
+    },
+    {
+      "id": "5acb4dc113737f92bc93bf7ecef6bf82",
+      "path": ".github/workflows/static.yml",
+      "line_range": "40-48"
+    },
+    {
+      "id": "86697dd041be329c1973700f80ab700e",
+      "path": ".github/workflows/static.yml",
+      "line_range": "42-48"
+    },
+    {
+      "id": "42b680481bb1581e0c751c4d6f235f1c",
+      "path": ".gitignore",
+      "line_range": "1-2"
+    },
+    {
+      "id": "519a59d6c2fe086ed1f4f1d5d2c2e901",
+      "path": "README.md",
+      "line_range": "1-11"
+    },
+    {
+      "id": "b75785db448d8ef25a81157eba4e9bd7",
+      "path": "README.md",
+      "line_range": "1-7"
+    },
+    {
+      "id": "47553cdc5288c9e1c54c285738fec806",
+      "path": "README.md",
+      "line_range": "11-13"
+    },
+    {
+      "id": "21a35236ba23dbf7995c65b3cb83711a",
+      "path": "README.md",
+      "line_range": "13-13"
+    },
+    {
+      "id": "42064eaf302ec87f6aed065d08ce0f0d",
+      "path": "README.md",
+      "line_range": "3-13"
+    },
+    {
+      "id": "94e935cf431d01e9d31942e18a785409",
+      "path": "README.md",
+      "line_range": "3-5"
+    },
+    {
+      "id": "7a8bf87af87ac2b9eb416d5c2b691451",
+      "path": "README.md",
+      "line_range": "3-7"
+    },
+    {
+      "id": "d9f13f309c4c89f4e3feccfcb4ed39c9",
+      "path": "README.md",
+      "line_range": "5-7"
+    },
+    {
+      "id": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "path": "README.md",
+      "line_range": "5-9"
+    },
+    {
+      "id": "75536219988d9e2313292325923b868e",
+      "path": "README.md",
+      "line_range": "7-7"
+    },
+    {
+      "id": "7a5c621a8397763732169efd886b8637",
+      "path": "_config.yml",
+      "line_range": "1-8"
+    },
+    {
+      "id": "4e8c34261afc0d23ffcd7ef99d74a09a",
+      "path": "about.html",
+      "line_range": "53-75"
+    },
+    {
+      "id": "aebefee7f61304750e1786c6a0e828d1",
+      "path": "assets/favicon.svg",
+      "line_range": "1-6"
+    },
+    {
+      "id": "4c180523f9024ee653f0d5f8da8dd40b",
+      "path": "build.mjs",
+      "line_range": "1-18"
+    },
+    {
+      "id": "5bc0c5721d9f377609f33cd4bdfabcdc",
+      "path": "build.mjs",
+      "line_range": "1-4"
+    },
+    {
+      "id": "af8754ac417a01362cf9c9321f15e057",
+      "path": "build.mjs",
+      "line_range": "10-34"
+    },
+    {
+      "id": "d0320d7322f6f40ae2ec56e58e665230",
+      "path": "build.mjs",
+      "line_range": "11-14"
+    },
+    {
+      "id": "0338a8924b5c8cc18264c5f2e152647e",
+      "path": "build.mjs",
+      "line_range": "11-16"
+    },
+    {
+      "id": "81fa18fdb43ccaf2d2d20bbcf81c6390",
+      "path": "build.mjs",
+      "line_range": "11-18"
+    },
+    {
+      "id": "341b4695ab52feef79e688ffbc427241",
+      "path": "build.mjs",
+      "line_range": "11-29"
+    },
+    {
+      "id": "6a127866ca340f86de3015444481f0ca",
+      "path": "build.mjs",
+      "line_range": "15-16"
+    },
+    {
+      "id": "897a364fe7890fec670dd261682fb7c6",
+      "path": "build.mjs",
+      "line_range": "15-18"
+    },
+    {
+      "id": "ba739ef1ca0f014784c03012bd2e674a",
+      "path": "build.mjs",
+      "line_range": "15-21"
+    },
+    {
+      "id": "4758a5ba428bccffb30a9caf7e349c5f",
+      "path": "build.mjs",
+      "line_range": "15-29"
+    },
+    {
+      "id": "c3cce435d972c804a1aaefaed597d914",
+      "path": "build.mjs",
+      "line_range": "17-18"
+    },
+    {
+      "id": "f56605add94531e4360f3bab005eac59",
+      "path": "build.mjs",
+      "line_range": "17-29"
+    },
+    {
+      "id": "2aa2ef004979a8a17bb66e30aae14fb7",
+      "path": "build.mjs",
+      "line_range": "19-29"
+    },
+    {
+      "id": "52b38b733feace257c5b7d12a4598af5",
+      "path": "build.mjs",
+      "line_range": "19-34"
+    },
+    {
+      "id": "107af44f96c7f1cd1a56a6e7c393e34e",
+      "path": "build.mjs",
+      "line_range": "21-29"
+    },
+    {
+      "id": "747a1330da8ac2144a0cca1e793364f3",
+      "path": "build.mjs",
+      "line_range": "23-29"
+    },
+    {
+      "id": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "path": "build.mjs",
+      "line_range": "30-34"
+    },
+    {
+      "id": "cb0ecd6a99ace94365f0ae8b6db71e37",
+      "path": "build.mjs",
+      "line_range": "30-41"
+    },
+    {
+      "id": "aafc43d17b118752dc918ca1808ecae2",
+      "path": "build.mjs",
+      "line_range": "30-55"
+    },
+    {
+      "id": "f8638d8c47f30dde6f5b9acfd33494cc",
+      "path": "build.mjs",
+      "line_range": "36-42"
+    },
+    {
+      "id": "e8844a7c31da8cabe3f712b970320362",
+      "path": "build.mjs",
+      "line_range": "36-55"
+    },
+    {
+      "id": "e08cfeb2b1b4987ce95926e3d288cc7e",
+      "path": "build.mjs",
+      "line_range": "40-42"
+    },
+    {
+      "id": "7637e99495f49af6ec20cc2b498b8745",
+      "path": "build.mjs",
+      "line_range": "40-55"
+    },
+    {
+      "id": "6481ab0cb352317138bcedd6d8bb3331",
+      "path": "build.mjs",
+      "line_range": "50-54"
+    },
+    {
+      "id": "3f39b7844bf0d9e3bf9625071fff9243",
+      "path": "build.mjs",
+      "line_range": "50-55"
+    },
+    {
+      "id": "ae31c7c68267de7331d31be3517b019c",
+      "path": "build.mjs",
+      "line_range": "50-61"
+    },
+    {
+      "id": "b7b3b37d455f1cba02fdf148e4c70711",
+      "path": "build.mjs",
+      "line_range": "57-62"
+    },
+    {
+      "id": "abc01e30abc4c4c8b1381e97350feee4",
+      "path": "build.mjs",
+      "line_range": "57-93"
+    },
+    {
+      "id": "f66d7beda4180594ae961f7ef0da68e5",
+      "path": "build.mjs",
+      "line_range": "57-94"
+    },
+    {
+      "id": "cef9db94151200b4679c1cc91bab6461",
+      "path": "build.mjs",
+      "line_range": "57-95"
+    },
+    {
+      "id": "70e58addd8c266a3c6d3e49c6aec8801",
+      "path": "build.mjs",
+      "line_range": "6-18"
+    },
+    {
+      "id": "0ff03d2330ac0fe4167c4b4be013c67b",
+      "path": "build.mjs",
+      "line_range": "6-8"
+    },
+    {
+      "id": "6766f56e759dde80e5793dd9638e9c1c",
+      "path": "build.mjs",
+      "line_range": "64-74"
+    },
+    {
+      "id": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "path": "build.mjs",
+      "line_range": "64-78"
+    },
+    {
+      "id": "99ca6387b29b70771de9d4f3c977efcc",
+      "path": "build.mjs",
+      "line_range": "64-79"
+    },
+    {
+      "id": "5a4b9fcc507d40bb00d2b0742f977825",
+      "path": "build.mjs",
+      "line_range": "64-85"
+    },
+    {
+      "id": "da0a929807c5d690e3531fd6352be9c2",
+      "path": "build.mjs",
+      "line_range": "64-88"
+    },
+    {
+      "id": "554b285e19b9126cd76848fcc66ac639",
+      "path": "build.mjs",
+      "line_range": "64-92"
+    },
+    {
+      "id": "385cf0e27129911b183aab0ad242a2ba",
+      "path": "build.mjs",
+      "line_range": "64-95"
+    },
+    {
+      "id": "9c9e21486da959823c9460444ffec993",
+      "path": "build.mjs",
+      "line_range": "65-65"
+    },
+    {
+      "id": "7aa563232c0508170b62b57e744c7889",
+      "path": "build.mjs",
+      "line_range": "65-78"
+    },
+    {
+      "id": "e05beef61a1aa7bf33e153729c4b7e10",
+      "path": "build.mjs",
+      "line_range": "67-68"
+    },
+    {
+      "id": "866e7a7c0198822369a5f2f385a37a4b",
+      "path": "build.mjs",
+      "line_range": "77-85"
+    },
+    {
+      "id": "67f8855f93e5f3ac31bac14c76bba42a",
+      "path": "build.mjs",
+      "line_range": "79-88"
+    },
+    {
+      "id": "da59517fdefd2c753cec2c8c1618fc86",
+      "path": "build.mjs",
+      "line_range": "79-93"
+    },
+    {
+      "id": "652baa4377b4f5ccb574fa829253e056",
+      "path": "build.mjs",
+      "line_range": "79-95"
+    },
+    {
+      "id": "996b82efaa13daa5e30f90c3d8f5cccd",
+      "path": "build.mjs",
+      "line_range": "82-85"
+    },
+    {
+      "id": "95b01392ee2a5d0d72f6e355b4524d8a",
+      "path": "build.mjs",
+      "line_range": "82-92"
+    },
+    {
+      "id": "6922afb16c54545d208fbfee6bdae13b",
+      "path": "build.mjs",
+      "line_range": "90-93"
+    },
+    {
+      "id": "ea9f8c3e752d8b14f6c0f8254f591e58",
+      "path": "build.mjs",
+      "line_range": "90-95"
+    },
+    {
+      "id": "793894685df253297bf7ccdf7f9ec40e",
+      "path": "case-content.html",
+      "line_range": "53-86"
+    },
+    {
+      "id": "fb589e49a4912715fadccf1425839440",
+      "path": "case-content.html",
+      "line_range": "68-70"
+    },
+    {
+      "id": "53a1585844f9a8da05af2905757c6196",
+      "path": "case-data.html",
+      "line_range": "53-81"
+    },
+    {
+      "id": "f8663462b409b3bdcca65d7a0790dc43",
+      "path": "case-data.html",
+      "line_range": "64-79"
+    },
+    {
+      "id": "a6fb1aa7cb15fb5b02495498ac980d90",
+      "path": "case-data.html",
+      "line_range": "77-79"
+    },
+    {
+      "id": "1c15e9cbbb860d231f1fdddd76ae9507",
+      "path": "case-visual.html",
+      "line_range": "53-85"
+    },
+    {
+      "id": "8f123e00651b358cbc0aeb24355a6c82",
+      "path": "case-visual.html",
+      "line_range": "81-83"
+    },
+    {
+      "id": "c672f57d1fb7a7f012d9ff12baa62bbc",
+      "path": "contact.html",
+      "line_range": "53-71"
+    },
+    {
+      "id": "82e12f028a2d38a2a1d27d3afd7eca41",
+      "path": "contact.html",
+      "line_range": "62-71"
+    },
+    {
+      "id": "14a705dbed7a1d5742e0b620f6af4428",
+      "path": "contact.html",
+      "line_range": "63-69"
+    },
+    {
+      "id": "789b565db2163cc6684a1316fbed6271",
+      "path": "index.html",
+      "line_range": "1-2"
+    },
+    {
+      "id": "cfd96987587162f6c430b41f5294b229",
+      "path": "index.html",
+      "line_range": "114-137"
+    },
+    {
+      "id": "f00201375d72ad803814bbbbd1eb68d0",
+      "path": "index.html",
+      "line_range": "24-42"
+    },
+    {
+      "id": "540cc85f638d4eb76cebc7dbddf2645c",
+      "path": "index.html",
+      "line_range": "53-137"
+    },
+    {
+      "id": "81c8d227c5714b8e924ac25735730c63",
+      "path": "index.html",
+      "line_range": "7-50"
+    },
+    {
+      "id": "13fd7fdee9ee3662b0686cd2b440adf1",
+      "path": "package.json",
+      "line_range": "1-10"
+    },
+    {
+      "id": "4fa8e6a94150f4b480f7e9e1db47e90d",
+      "path": "package.json",
+      "line_range": "4-7"
+    },
+    {
+      "id": "90e0f4135991ad1d38e7477b0bb64af8",
+      "path": "package.json",
+      "line_range": "4-9"
+    },
+    {
+      "id": "4dfb52b7e5726606e96f4e0abfec258e",
+      "path": "package.json",
+      "line_range": "9-9"
+    },
+    {
+      "id": "4970ff0fefe077615f31035d0e34e4c3",
+      "path": "pages.css",
+      "line_range": "1-26"
+    },
+    {
+      "id": "07c5f3c6b2f5a494fb28e0885f383604",
+      "path": "pages.css",
+      "line_range": "1-6"
+    },
+    {
+      "id": "e39c42eefe22ffae395a471a299be466",
+      "path": "pages.css",
+      "line_range": "116-196"
+    },
+    {
+      "id": "3c0633c2749fa3ef06b737764437ad4c",
+      "path": "pages.css",
+      "line_range": "117-121"
+    },
+    {
+      "id": "c0c74304d014148fae069d6ec41e796f",
+      "path": "pages.css",
+      "line_range": "117-170"
+    },
+    {
+      "id": "4692bd79f80f412717f9d1078b7db6c5",
+      "path": "pages.css",
+      "line_range": "131-158"
+    },
+    {
+      "id": "c9a103a5f53081a6aada8a8f7b76e0d3",
+      "path": "pages.css",
+      "line_range": "131-160"
+    },
+    {
+      "id": "2b9b1687df72d507ab31c08a10014485",
+      "path": "pages.css",
+      "line_range": "131-170"
+    },
+    {
+      "id": "0c35309ca14e8c9eb97587b15f67ab9b",
+      "path": "pages.css",
+      "line_range": "137-170"
+    },
+    {
+      "id": "34b55ec0bfb23737687e118aa98b15ce",
+      "path": "pages.css",
+      "line_range": "138-160"
+    },
+    {
+      "id": "234d71f6687db3a3d336df57e4c27d0b",
+      "path": "pages.css",
+      "line_range": "139-160"
+    },
+    {
+      "id": "63ceaee21d5887ce3d60f11bc77b31f8",
+      "path": "pages.css",
+      "line_range": "177-181"
+    },
+    {
+      "id": "6639d60db6bda901f10aecdec9f5708d",
+      "path": "pages.css",
+      "line_range": "192-196"
+    },
+    {
+      "id": "7e34dbc690e4e6991e97d0d3c68e5aba",
+      "path": "pages.css",
+      "line_range": "198-205"
+    },
+    {
+      "id": "b750e0e9b6b20281b6f94648cebf52b5",
+      "path": "pages.css",
+      "line_range": "198-243"
+    },
+    {
+      "id": "d741fe0da789e5f1e3cfe73e934e24f7",
+      "path": "pages.css",
+      "line_range": "207-243"
+    },
+    {
+      "id": "e98d3f08d9f8b2e3da4b00e40c55b1ac",
+      "path": "pages.css",
+      "line_range": "208-243"
+    },
+    {
+      "id": "d247cd2a636eee361864bae97084d3d4",
+      "path": "pages.css",
+      "line_range": "25-25"
+    },
+    {
+      "id": "7a418f96ebb61a8d035610778b8bd139",
+      "path": "pages.css",
+      "line_range": "25-47"
+    },
+    {
+      "id": "f4c83022282bf20d98a15c762aed0803",
+      "path": "pages.css",
+      "line_range": "25-60"
+    },
+    {
+      "id": "1b51a58bb6e8d1eabfe8a50ab8a2cc61",
+      "path": "pages.css",
+      "line_range": "28-29"
+    },
+    {
+      "id": "6dac4a9cb2b7814c9d85b2398928a172",
+      "path": "pages.css",
+      "line_range": "40-40"
+    },
+    {
+      "id": "2be6ec2385d3fc7fd254129a9fa3dd8a",
+      "path": "pages.css",
+      "line_range": "47-47"
+    },
+    {
+      "id": "8e9b0c78ab26fd21d32e1363d48e5742",
+      "path": "pages.css",
+      "line_range": "47-60"
+    },
+    {
+      "id": "3b3944d2d9f78a35e1ddefd11f57ace0",
+      "path": "pages.css",
+      "line_range": "49-111"
+    },
+    {
+      "id": "6e24373b7adb5a0963aa06f26d4048af",
+      "path": "pages.css",
+      "line_range": "49-60"
+    },
+    {
+      "id": "b4adc575c53dd8f124fb763e9165b425",
+      "path": "pages.css",
+      "line_range": "62-243"
+    },
+    {
+      "id": "53f06f5bad1becad57707f87fa50d266",
+      "path": "pages.css",
+      "line_range": "63-111"
+    },
+    {
+      "id": "a9d5f143c9c2d630edab4203fb451ad8",
+      "path": "pages.css",
+      "line_range": "63-69"
+    },
+    {
+      "id": "1780db3a90190fa7aba6181cc2c31b6b",
+      "path": "pages.css",
+      "line_range": "7-26"
+    },
+    {
+      "id": "d89dcd78cffab45a4647358fada09e68",
+      "path": "pages.css",
+      "line_range": "7-60"
+    },
+    {
+      "id": "0409a57481ba0f23c2dd35f34d290051",
+      "path": "pages.css",
+      "line_range": "76-76"
+    },
+    {
+      "id": "6919baa6d8dd78afb4bea52465a7bb0e",
+      "path": "pages.css",
+      "line_range": "77-110"
+    },
+    {
+      "id": "9604243924b95ec427f0f26b3d98d0e4",
+      "path": "portfolio.html",
+      "line_range": "35-42"
+    },
+    {
+      "id": "8b0a62e16039b1100eab7b3cbf9554cb",
+      "path": "portfolio.html",
+      "line_range": "62-94"
+    },
+    {
+      "id": "306448887a923020c08dc3b0f30d6bdc",
+      "path": "resume.html",
+      "line_range": "53-106"
+    },
+    {
+      "id": "45e56e9ad7733e669d1503655e0ece2d",
+      "path": "site.config.json",
+      "line_range": "1-17"
+    },
+    {
+      "id": "0e6f3d6e6757be835c49800bfb9b9404",
+      "path": "site.config.json",
+      "line_range": "1-18"
+    },
+    {
+      "id": "099d681a10fbde2940174f9eb49c55a9",
+      "path": "site.config.json",
+      "line_range": "2-7"
+    },
+    {
+      "id": "65b7b5fa3154fc49e61671dd895009ed",
+      "path": "site.config.json",
+      "line_range": "2-8"
+    },
+    {
+      "id": "bb17e2eb4e33b3eefa52e57577637dab",
+      "path": "site.config.json",
+      "line_range": "4-16"
+    },
+    {
+      "id": "831d6ff5dd90d5d9743e76934801dc1f",
+      "path": "site.config.json",
+      "line_range": "7-17"
+    },
+    {
+      "id": "8c7e47f83c18514414b783e15d66dea8",
+      "path": "site.config.json",
+      "line_range": "8-16"
+    },
+    {
+      "id": "e73e6359db76a2cf358dff060b88182f",
+      "path": "site.config.json",
+      "line_range": "8-17"
+    },
+    {
+      "id": "bb40802104f3baf2664066c49a0a161c",
+      "path": "site.js",
+      "line_range": "1-20"
+    },
+    {
+      "id": "6773e8bf6aade27ad9fe0754fa8a4803",
+      "path": "site.js",
+      "line_range": "1-26"
+    },
+    {
+      "id": "3cced8f74ea8608345e850c45790d53f",
+      "path": "site.js",
+      "line_range": "1-4"
+    },
+    {
+      "id": "ccde78a65072a6c7a4de3459f8689d6e",
+      "path": "site.js",
+      "line_range": "1-43"
+    },
+    {
+      "id": "70a60c083f98dee8e30a6a642e027d9a",
+      "path": "site.js",
+      "line_range": "17-20"
+    },
+    {
+      "id": "461ac7b22a1aadda984970059338a0b2",
+      "path": "site.js",
+      "line_range": "17-39"
+    },
+    {
+      "id": "cf2f5d354c8679fbcaab707f8f74879f",
+      "path": "site.js",
+      "line_range": "17-42"
+    },
+    {
+      "id": "4e4582709be98cc898a3f9ab9726d05c",
+      "path": "site.js",
+      "line_range": "22-43"
+    },
+    {
+      "id": "cb5e408ee254c4ab5b5b6708faad0e09",
+      "path": "site.js",
+      "line_range": "27-40"
+    },
+    {
+      "id": "9a226890d0fe451b67b53809cb7ac5a7",
+      "path": "site.js",
+      "line_range": "27-42"
+    },
+    {
+      "id": "54334d554e38e4eeebb06e0cd4812fe7",
+      "path": "site.js",
+      "line_range": "27-43"
+    },
+    {
+      "id": "1de05e3c3dc415fe78eb2ce9a11b58c9",
+      "path": "site.js",
+      "line_range": "37-42"
+    },
+    {
+      "id": "5be5f25d07c30eb4e1705fbde12297a0",
+      "path": "site.js",
+      "line_range": "5-20"
+    },
+    {
+      "id": "bca3fdfca0402a3958b50c907fcebe6a",
+      "path": "site.js",
+      "line_range": "5-42"
+    },
+    {
+      "id": "a36552aa50058783b7f28931995a0522",
+      "path": "site.js",
+      "line_range": "5-43"
+    },
+    {
+      "id": "acbd673db1a9460722ea7e9995406ac2",
+      "path": "site.js",
+      "line_range": "6-14"
+    },
+    {
+      "id": "302a09e8d927d633dfa48b6052e97b49",
+      "path": "site.js",
+      "line_range": "6-15"
+    },
+    {
+      "id": "a118214e4904a42a131e9d24a74364e4",
+      "path": "site.js",
+      "line_range": "6-18"
+    },
+    {
+      "id": "789df596454e002402c3bedd80e5d990",
+      "path": "site.js",
+      "line_range": "6-20"
+    },
+    {
+      "id": "8192e25b212ea3bb436078184034bc98",
+      "path": "site.js",
+      "line_range": "6-42"
+    },
+    {
+      "id": "ed0f0875ea13843db3f074902dd295fa",
+      "path": "templates/layout.html",
+      "line_range": "1-27"
+    },
+    {
+      "id": "78050e62909d46e15ca4ca467d2792ce",
+      "path": "templates/layout.html",
+      "line_range": "1-56"
+    },
+    {
+      "id": "398aa6d64f7bcb82d55aaa2b04c5ff31",
+      "path": "templates/layout.html",
+      "line_range": "14-22"
+    },
+    {
+      "id": "33a87221423bbb11e82a7ccf58967bd6",
+      "path": "templates/layout.html",
+      "line_range": "23-27"
+    },
+    {
+      "id": "b613273c301d598feea6fdf1dbbb510d",
+      "path": "templates/layout.html",
+      "line_range": "23-52"
+    },
+    {
+      "id": "4b0d386a5c9d79c16cfe7c92ad732376",
+      "path": "templates/layout.html",
+      "line_range": "24-27"
+    },
+    {
+      "id": "105872f4c2bb2d2df9932d6fd5296b43",
+      "path": "templates/layout.html",
+      "line_range": "24-43"
+    },
+    {
+      "id": "128788f51e73819660a3b3f64d3351a8",
+      "path": "templates/layout.html",
+      "line_range": "24-46"
+    },
+    {
+      "id": "eb8f62027baa03df6041278f4959a6ae",
+      "path": "templates/layout.html",
+      "line_range": "24-51"
+    },
+    {
+      "id": "85880181ad9fc7a4eb0fd39c2ed6cf51",
+      "path": "templates/layout.html",
+      "line_range": "26-26"
+    },
+    {
+      "id": "d11cc86d0aacc29fde090f18f263eef4",
+      "path": "templates/layout.html",
+      "line_range": "26-27"
+    },
+    {
+      "id": "1bbfa8e373c9750b1ba0a163f8d5fe09",
+      "path": "templates/layout.html",
+      "line_range": "26-51"
+    },
+    {
+      "id": "84e89cd6b114f4b3e13439d2542aa09d",
+      "path": "templates/layout.html",
+      "line_range": "26-53"
+    },
+    {
+      "id": "2a7f23fc2ebe68fee3e7cece313023c1",
+      "path": "templates/layout.html",
+      "line_range": "27-43"
+    },
+    {
+      "id": "13d156141f4062f754a6511ae2fcbb34",
+      "path": "templates/layout.html",
+      "line_range": "27-51"
+    },
+    {
+      "id": "031a47ef95a35df7012b4aa863e47419",
+      "path": "templates/layout.html",
+      "line_range": "29-52"
+    },
+    {
+      "id": "edbf486cb490c2fdc8918aae7bf8243a",
+      "path": "templates/layout.html",
+      "line_range": "29-53"
+    },
+    {
+      "id": "500b5a37aa95f12432f5ec27c9354d08",
+      "path": "templates/layout.html",
+      "line_range": "30-53"
+    },
+    {
+      "id": "e5680a8f834af840e342c878728b4c59",
+      "path": "templates/layout.html",
+      "line_range": "33-51"
+    },
+    {
+      "id": "b00150af531a34a0bb75b4fd7b7ac43a",
+      "path": "templates/layout.html",
+      "line_range": "37-43"
+    },
+    {
+      "id": "1c6837c8e1ea5a9ce7d6fd0f0db0d7eb",
+      "path": "templates/layout.html",
+      "line_range": "37-51"
+    },
+    {
+      "id": "550b2b34209ad5cb6a0750156ee1212f",
+      "path": "templates/layout.html",
+      "line_range": "38-43"
+    },
+    {
+      "id": "caead741652aa65bc992a7e1f7c33285",
+      "path": "templates/layout.html",
+      "line_range": "38-51"
+    },
+    {
+      "id": "f7c3297dd2c338df2a3f773a371cdc0d",
+      "path": "templates/layout.html",
+      "line_range": "45-52"
+    },
+    {
+      "id": "4db2c5dc03651b4619cdc4ebdd953aed",
+      "path": "templates/layout.html",
+      "line_range": "48-51"
+    },
+    {
+      "id": "fedac8395cef40aee13b4393f3033df0",
+      "path": "templates/layout.html",
+      "line_range": "7-24"
+    },
+    {
+      "id": "9649ab8fc04eea351b71191d9e5efd0d",
+      "path": "templates/layout.html",
+      "line_range": "7-25"
+    },
+    {
+      "id": "2824fa592448a80e14fc3f278d5c8ce4",
+      "path": "templates/layout.html",
+      "line_range": "7-27"
+    },
+    {
+      "id": "ce5825492e0f5bb887f90b30a895276d",
+      "path": "templates/layout.html",
+      "line_range": "7-51"
+    },
+    {
+      "id": "dac27dcb6c146a610392ef7399417901",
+      "path": "templates/layout.html",
+      "line_range": "7-52"
+    },
+    {
+      "id": "00e14aba951bbfab144b674e16ed616f",
+      "path": "templates/layout.html",
+      "line_range": "7-53"
+    },
+    {
+      "id": "7e34661286896e21e46a0f224e3e9068",
+      "path": "templates/pages/about.html",
+      "line_range": "1-22"
+    },
+    {
+      "id": "7fc1972364abc3a685c16d302c7be134",
+      "path": "templates/pages/case-content.html",
+      "line_range": "16-18"
+    },
+    {
+      "id": "c25b7999c4f70f51dccf226492339618",
+      "path": "templates/pages/case-content.html",
+      "line_range": "7-33"
+    },
+    {
+      "id": "a48fe2dd99e222cc63e5183e3aea0b5b",
+      "path": "templates/pages/case-data.html",
+      "line_range": "11-28"
+    },
+    {
+      "id": "cdbdc7416a63ff0b952f0ee0f6633ccf",
+      "path": "templates/pages/case-data.html",
+      "line_range": "25-28"
+    },
+    {
+      "id": "8384abe9916d86579c81bf52e38be05e",
+      "path": "templates/pages/case-visual.html",
+      "line_range": "1-33"
+    },
+    {
+      "id": "3fb396f80f22825cb4e12fe1a8ca89e6",
+      "path": "templates/pages/case-visual.html",
+      "line_range": "11-29"
+    },
+    {
+      "id": "c54e634f76b8fefa862fb558a770b21c",
+      "path": "templates/pages/case-visual.html",
+      "line_range": "11-32"
+    },
+    {
+      "id": "ed86ed7676fb736f20f6c3f0255ffdd6",
+      "path": "templates/pages/case-visual.html",
+      "line_range": "11-33"
+    },
+    {
+      "id": "77ece06475d06940f328b2a3ae71458b",
+      "path": "templates/pages/case-visual.html",
+      "line_range": "29-31"
+    },
+    {
+      "id": "168ae014cd67a8bda67ebf01b2aa764a",
+      "path": "templates/pages/case-visual.html",
+      "line_range": "29-32"
+    },
+    {
+      "id": "72a1a8192d51b40b7cd758a6fd5e6aaf",
+      "path": "templates/pages/contact.html",
+      "line_range": "1-18"
+    },
+    {
+      "id": "87583b77e7643aebaa860e42f60392ab",
+      "path": "templates/pages/contact.html",
+      "line_range": "1-19"
+    },
+    {
+      "id": "b6d77b508e4102229cda2e9fbada0a5e",
+      "path": "templates/pages/contact.html",
+      "line_range": "10-19"
+    },
+    {
+      "id": "f21f9c37142f1faaf2febce962d27c58",
+      "path": "templates/pages/index.html",
+      "line_range": "1-19"
+    },
+    {
+      "id": "e6062a7a2929065366d1da285e67e03e",
+      "path": "templates/pages/index.html",
+      "line_range": "1-36"
+    },
+    {
+      "id": "b7316e88fbdbdba2f8126782eabcced2",
+      "path": "templates/pages/index.html",
+      "line_range": "1-85"
+    },
+    {
+      "id": "736fb4c513a708a9bf1da3e03648ff27",
+      "path": "templates/pages/index.html",
+      "line_range": "3-9"
+    },
+    {
+      "id": "c5aed0420c58e0fe9150f85a71ac5add",
+      "path": "templates/pages/index.html",
+      "line_range": "39-83"
+    },
+    {
+      "id": "861be80bc05dc24c04f12331ff7e10f6",
+      "path": "templates/pages/index.html",
+      "line_range": "62-83"
+    },
+    {
+      "id": "76d16c6482c53731b853cd9cd09eec5d",
+      "path": "templates/pages/portfolio.html",
+      "line_range": "1-42"
+    },
+    {
+      "id": "3e78489da5a4032c2104a5ed58b64eaf",
+      "path": "templates/pages/portfolio.html",
+      "line_range": "10-41"
+    },
+    {
+      "id": "77ffa178225018f0b019377f01b41a29",
+      "path": "templates/pages/portfolio.html",
+      "line_range": "10-42"
+    },
+    {
+      "id": "2a46df0483b3161979241dcfaced753a",
+      "path": "templates/pages/resume.html",
+      "line_range": "1-52"
+    },
+    {
+      "id": "15dfc3faaf38e29bf0584ba550e73a20",
+      "path": "templates/pages/resume.html",
+      "line_range": "8-12"
+    }
+  ],
+  "knowledge_relations": [
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b75785db448d8ef25a81157eba4e9bd7",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "13fd7fdee9ee3662b0686cd2b440adf1",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a8bf87af87ac2b9eb416d5c2b691451",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "897a364fe7890fec670dd261682fb7c6",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6922afb16c54545d208fbfee6bdae13b",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a8bf87af87ac2b9eb416d5c2b691451",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "897a364fe7890fec670dd261682fb7c6",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6922afb16c54545d208fbfee6bdae13b",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f56605add94531e4360f3bab005eac59",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ed0f0875ea13843db3f074902dd295fa",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "af8754ac417a01362cf9c9321f15e057",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "af8754ac417a01362cf9c9321f15e057",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "031a47ef95a35df7012b4aa863e47419",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f56605add94531e4360f3bab005eac59",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7637e99495f49af6ec20cc2b498b8745",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a8bf87af87ac2b9eb416d5c2b691451",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7b3b37d455f1cba02fdf148e4c70711",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da59517fdefd2c753cec2c8c1618fc86",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ed0f0875ea13843db3f074902dd295fa",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "031a47ef95a35df7012b4aa863e47419",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0ff03d2330ac0fe4167c4b4be013c67b",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6773e8bf6aade27ad9fe0754fa8a4803",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "13fd7fdee9ee3662b0686cd2b440adf1",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0ff03d2330ac0fe4167c4b4be013c67b",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "33a87221423bbb11e82a7ccf58967bd6",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e8844a7c31da8cabe3f712b970320362",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7b3b37d455f1cba02fdf148e4c70711",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "996b82efaa13daa5e30f90c3d8f5cccd",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d0320d7322f6f40ae2ec56e58e665230",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2aa2ef004979a8a17bb66e30aae14fb7",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da59517fdefd2c753cec2c8c1618fc86",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a8bf87af87ac2b9eb416d5c2b691451",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ea9f8c3e752d8b14f6c0f8254f591e58",
+      "to": "c01"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c01",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4c180523f9024ee653f0d5f8da8dd40b",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ba739ef1ca0f014784c03012bd2e674a",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ba739ef1ca0f014784c03012bd2e674a",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "70e58addd8c266a3c6d3e49c6aec8801",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f56605add94531e4360f3bab005eac59",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "45e56e9ad7733e669d1503655e0ece2d",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "aafc43d17b118752dc918ca1808ecae2",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2824fa592448a80e14fc3f278d5c8ce4",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7b3b37d455f1cba02fdf148e4c70711",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "652baa4377b4f5ccb574fa829253e056",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "45e56e9ad7733e669d1503655e0ece2d",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "edbf486cb490c2fdc8918aae7bf8243a",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7316e88fbdbdba2f8126782eabcced2",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "554b285e19b9126cd76848fcc66ac639",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f7c3297dd2c338df2a3f773a371cdc0d",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "554b285e19b9126cd76848fcc66ac639",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "831d6ff5dd90d5d9743e76934801dc1f",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0338a8924b5c8cc18264c5f2e152647e",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2aa2ef004979a8a17bb66e30aae14fb7",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6481ab0cb352317138bcedd6d8bb3331",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "95b01392ee2a5d0d72f6e355b4524d8a",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "519a59d6c2fe086ed1f4f1d5d2c2e901",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5bc0c5721d9f377609f33cd4bdfabcdc",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0101"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0101",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "78050e62909d46e15ca4ca467d2792ce",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "793894685df253297bf7ccdf7f9ec40e",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c3cce435d972c804a1aaefaed597d914",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e73e6359db76a2cf358dff060b88182f",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "500b5a37aa95f12432f5ec27c9354d08",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "eacf331f0ffc35d4b482f1d15a887d3b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789b565db2163cc6684a1316fbed6271",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ce5825492e0f5bb887f90b30a895276d",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "747a1330da8ac2144a0cca1e793364f3",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "70263ea23992f744c98421c583cd0861"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8b0a62e16039b1100eab7b3cbf9554cb",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c3cce435d972c804a1aaefaed597d914",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "eacf331f0ffc35d4b482f1d15a887d3b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f00201375d72ad803814bbbbd1eb68d0",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "128788f51e73819660a3b3f64d3351a8",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "793894685df253297bf7ccdf7f9ec40e",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "eacf331f0ffc35d4b482f1d15a887d3b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cfd96987587162f6c430b41f5294b229",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "70263ea23992f744c98421c583cd0861"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8b0a62e16039b1100eab7b3cbf9554cb",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "6d2cd37929c7c76ab3de0a8538b13998"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "82e12f028a2d38a2a1d27d3afd7eca41",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e73e6359db76a2cf358dff060b88182f",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "747a1330da8ac2144a0cca1e793364f3",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e05beef61a1aa7bf33e153729c4b7e10",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "eacf331f0ffc35d4b482f1d15a887d3b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "540cc85f638d4eb76cebc7dbddf2645c",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4cbc3d55ae20097a676e3dd9daa7c0d3"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "306448887a923020c08dc3b0f30d6bdc",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "fb8a140d6f076647256a4ea161f4c280"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4e8c34261afc0d23ffcd7ef99d74a09a",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "6d2cd37929c7c76ab3de0a8538b13998"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c672f57d1fb7a7f012d9ff12baa62bbc",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "00e14aba951bbfab144b674e16ed616f",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7aa563232c0508170b62b57e744c7889",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "eacf331f0ffc35d4b482f1d15a887d3b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "81c8d227c5714b8e924ac25735730c63",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "70263ea23992f744c98421c583cd0861"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8b0a62e16039b1100eab7b3cbf9554cb",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "793894685df253297bf7ccdf7f9ec40e",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4a514bd8ebdd076ea8399562e49aacba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1c15e9cbbb860d231f1fdddd76ae9507",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "628a79e2362721b918a7c942114ee8f5"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "53a1585844f9a8da05af2905757c6196",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6481ab0cb352317138bcedd6d8bb3331",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4b0d386a5c9d79c16cfe7c92ad732376",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4a514bd8ebdd076ea8399562e49aacba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8f123e00651b358cbc0aeb24355a6c82",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2aa2ef004979a8a17bb66e30aae14fb7",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6481ab0cb352317138bcedd6d8bb3331",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4b0d386a5c9d79c16cfe7c92ad732376",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "6d2cd37929c7c76ab3de0a8538b13998"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "14a705dbed7a1d5742e0b620f6af4428",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d11cc86d0aacc29fde090f18f263eef4",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "fb589e49a4912715fadccf1425839440",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4a514bd8ebdd076ea8399562e49aacba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8f123e00651b358cbc0aeb24355a6c82",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "628a79e2362721b918a7c942114ee8f5"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a6fb1aa7cb15fb5b02495498ac980d90",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cb0ecd6a99ace94365f0ae8b6db71e37",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "866e7a7c0198822369a5f2f385a37a4b",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e73e6359db76a2cf358dff060b88182f",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "747a1330da8ac2144a0cca1e793364f3",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5a4b9fcc507d40bb00d2b0742f977825",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "9649ab8fc04eea351b71191d9e5efd0d",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "70263ea23992f744c98421c583cd0861"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "9604243924b95ec427f0f26b3d98d0e4",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "793894685df253297bf7ccdf7f9ec40e",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "628a79e2362721b918a7c942114ee8f5"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f8663462b409b3bdcca65d7a0790dc43",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "793894685df253297bf7ccdf7f9ec40e",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "6d2cd37929c7c76ab3de0a8538b13998"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "82e12f028a2d38a2a1d27d3afd7eca41",
+      "to": "c02"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "eacf331f0ffc35d4b482f1d15a887d3b"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "70263ea23992f744c98421c583cd0861"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "866655d32bdb52b5b1bb0e55ba230f00"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4a514bd8ebdd076ea8399562e49aacba"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "628a79e2362721b918a7c942114ee8f5"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "4cbc3d55ae20097a676e3dd9daa7c0d3"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "fb8a140d6f076647256a4ea161f4c280"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c02",
+      "to": "6d2cd37929c7c76ab3de0a8538b13998"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f56605add94531e4360f3bab005eac59",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "99ca6387b29b70771de9d4f3c977efcc",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "107af44f96c7f1cd1a56a6e7c393e34e",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "99ca6387b29b70771de9d4f3c977efcc",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f56605add94531e4360f3bab005eac59",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f8638d8c47f30dde6f5b9acfd33494cc",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "65b7b5fa3154fc49e61671dd895009ed",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "52b38b733feace257c5b7d12a4598af5",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e08cfeb2b1b4987ce95926e3d288cc7e",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6766f56e759dde80e5793dd9638e9c1c",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e5680a8f834af840e342c878728b4c59",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e73e6359db76a2cf358dff060b88182f",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "107af44f96c7f1cd1a56a6e7c393e34e",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4ab78f7552c92ddd72a2c810f3d1c9f9",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "9649ab8fc04eea351b71191d9e5efd0d",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f56605add94531e4360f3bab005eac59",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3f39b7844bf0d9e3bf9625071fff9243",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "341b4695ab52feef79e688ffbc427241",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3f39b7844bf0d9e3bf9625071fff9243",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "67f8855f93e5f3ac31bac14c76bba42a",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c3cce435d972c804a1aaefaed597d914",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e8844a7c31da8cabe3f712b970320362",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "caead741652aa65bc992a7e1f7c33285",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a118214e4904a42a131e9d24a74364e4",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cb5e408ee254c4ab5b5b6708faad0e09",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4758a5ba428bccffb30a9caf7e349c5f",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f66d7beda4180594ae961f7ef0da68e5",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a36552aa50058783b7f28931995a0522",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4758a5ba428bccffb30a9caf7e349c5f",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f66d7beda4180594ae961f7ef0da68e5",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a36552aa50058783b7f28931995a0522",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "52b38b733feace257c5b7d12a4598af5",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3f39b7844bf0d9e3bf9625071fff9243",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5a4b9fcc507d40bb00d2b0742f977825",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "302a09e8d927d633dfa48b6052e97b49",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0e6f3d6e6757be835c49800bfb9b9404",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2aa2ef004979a8a17bb66e30aae14fb7",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0201"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0201",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42064eaf302ec87f6aed065d08ce0f0d",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "45e56e9ad7733e669d1503655e0ece2d",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ed0f0875ea13843db3f074902dd295fa",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8c7e47f83c18514414b783e15d66dea8",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "861be80bc05dc24c04f12331ff7e10f6",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3e78489da5a4032c2104a5ed58b64eaf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "33a87221423bbb11e82a7ccf58967bd6",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8c7e47f83c18514414b783e15d66dea8",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "861be80bc05dc24c04f12331ff7e10f6",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3e78489da5a4032c2104a5ed58b64eaf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "031a47ef95a35df7012b4aa863e47419",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8c7e47f83c18514414b783e15d66dea8",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "a7ad015d43a513afaad78e29679a737b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c25b7999c4f70f51dccf226492339618",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c54e634f76b8fefa862fb558a770b21c",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "e4f75200350bb3204ffbef86915b8080"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a48fe2dd99e222cc63e5183e3aea0b5b",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2824fa592448a80e14fc3f278d5c8ce4",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b613273c301d598feea6fdf1dbbb510d",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3e78489da5a4032c2104a5ed58b64eaf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "a7ad015d43a513afaad78e29679a737b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7fc1972364abc3a685c16d302c7be134",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "bca3fdfca0402a3958b50c907fcebe6a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "031a47ef95a35df7012b4aa863e47419",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3e78489da5a4032c2104a5ed58b64eaf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "bca3fdfca0402a3958b50c907fcebe6a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e6062a7a2929065366d1da285e67e03e",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c5aed0420c58e0fe9150f85a71ac5add",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3e78489da5a4032c2104a5ed58b64eaf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "a7ad015d43a513afaad78e29679a737b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c25b7999c4f70f51dccf226492339618",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c54e634f76b8fefa862fb558a770b21c",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "e4f75200350bb3204ffbef86915b8080"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a48fe2dd99e222cc63e5183e3aea0b5b",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "21a35236ba23dbf7995c65b3cb83711a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2a46df0483b3161979241dcfaced753a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "39374a575a08d239d76ff0a54eb5a0a4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7e34661286896e21e46a0f224e3e9068",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "72a1a8192d51b40b7cd758a6fd5e6aaf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "099d681a10fbde2940174f9eb49c55a9",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b00150af531a34a0bb75b4fd7b7ac43a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "fedac8395cef40aee13b4393f3033df0",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "47553cdc5288c9e1c54c285738fec806",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "8ab396462886c84baa845596caf9c731"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "aebefee7f61304750e1786c6a0e828d1",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8c7e47f83c18514414b783e15d66dea8",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2824fa592448a80e14fc3f278d5c8ce4",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1c6837c8e1ea5a9ce7d6fd0f0db0d7eb",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cf2f5d354c8679fbcaab707f8f74879f",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2824fa592448a80e14fc3f278d5c8ce4",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1c6837c8e1ea5a9ce7d6fd0f0db0d7eb",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cf2f5d354c8679fbcaab707f8f74879f",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "47553cdc5288c9e1c54c285738fec806",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "47553cdc5288c9e1c54c285738fec806",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "398aa6d64f7bcb82d55aaa2b04c5ff31",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "a7ad015d43a513afaad78e29679a737b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7fc1972364abc3a685c16d302c7be134",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "168ae014cd67a8bda67ebf01b2aa764a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "e4f75200350bb3204ffbef86915b8080"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cdbdc7416a63ff0b952f0ee0f6633ccf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "461ac7b22a1aadda984970059338a0b2",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "bb17e2eb4e33b3eefa52e57577637dab",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2824fa592448a80e14fc3f278d5c8ce4",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "a7ad015d43a513afaad78e29679a737b"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7fc1972364abc3a685c16d302c7be134",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "168ae014cd67a8bda67ebf01b2aa764a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "e4f75200350bb3204ffbef86915b8080"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cdbdc7416a63ff0b952f0ee0f6633ccf",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "bca3fdfca0402a3958b50c907fcebe6a",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42064eaf302ec87f6aed065d08ce0f0d",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8c7e47f83c18514414b783e15d66dea8",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "dac27dcb6c146a610392ef7399417901",
+      "to": "c0202"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "a7ad015d43a513afaad78e29679a737b"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "e4f75200350bb3204ffbef86915b8080"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "39374a575a08d239d76ff0a54eb5a0a4"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4ad724a2753e7635fd9a3b675fed9838"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "8ab396462886c84baa845596caf9c731"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0202",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4970ff0fefe077615f31035d0e34e4c3",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "bb40802104f3baf2664066c49a0a161c",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "eb8f62027baa03df6041278f4959a6ae",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "105872f4c2bb2d2df9932d6fd5296b43",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f21f9c37142f1faaf2febce962d27c58",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "eb8f62027baa03df6041278f4959a6ae",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6e24373b7adb5a0963aa06f26d4048af",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3b3944d2d9f78a35e1ddefd11f57ace0",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e39c42eefe22ffae395a471a299be466",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "bca3fdfca0402a3958b50c907fcebe6a",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "105872f4c2bb2d2df9932d6fd5296b43",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "105872f4c2bb2d2df9932d6fd5296b43",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8192e25b212ea3bb436078184034bc98",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d741fe0da789e5f1e3cfe73e934e24f7",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "caead741652aa65bc992a7e1f7c33285",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cf2f5d354c8679fbcaab707f8f74879f",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8192e25b212ea3bb436078184034bc98",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "550b2b34209ad5cb6a0750156ee1212f",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1780db3a90190fa7aba6181cc2c31b6b",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8e9b0c78ab26fd21d32e1363d48e5742",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1bbfa8e373c9750b1ba0a163f8d5fe09",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8192e25b212ea3bb436078184034bc98",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8192e25b212ea3bb436078184034bc98",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1bbfa8e373c9750b1ba0a163f8d5fe09",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1bbfa8e373c9750b1ba0a163f8d5fe09",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "acbd673db1a9460722ea7e9995406ac2",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cb5e408ee254c4ab5b5b6708faad0e09",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1b51a58bb6e8d1eabfe8a50ab8a2cc61",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "9a226890d0fe451b67b53809cb7ac5a7",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "34b55ec0bfb23737687e118aa98b15ce",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e98d3f08d9f8b2e3da4b00e40c55b1ac",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1bbfa8e373c9750b1ba0a163f8d5fe09",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3cced8f74ea8608345e850c45790d53f",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d741fe0da789e5f1e3cfe73e934e24f7",
+      "to": "c03"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c03",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ccde78a65072a6c7a4de3459f8689d6e",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "13d156141f4062f754a6511ae2fcbb34",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da0a929807c5d690e3531fd6352be9c2",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "13d156141f4062f754a6511ae2fcbb34",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5be5f25d07c30eb4e1705fbde12297a0",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "13d156141f4062f754a6511ae2fcbb34",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "736fb4c513a708a9bf1da3e03648ff27",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5be5f25d07c30eb4e1705fbde12297a0",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "54334d554e38e4eeebb06e0cd4812fe7",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "550b2b34209ad5cb6a0750156ee1212f",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "9a226890d0fe451b67b53809cb7ac5a7",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4e4582709be98cc898a3f9ab9726d05c",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "550b2b34209ad5cb6a0750156ee1212f",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a36552aa50058783b7f28931995a0522",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "caead741652aa65bc992a7e1f7c33285",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "302a09e8d927d633dfa48b6052e97b49",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "9c9e21486da959823c9460444ffec993",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "736fb4c513a708a9bf1da3e03648ff27",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4db2c5dc03651b4619cdc4ebdd953aed",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e5680a8f834af840e342c878728b4c59",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "70a60c083f98dee8e30a6a642e027d9a",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1de05e3c3dc415fe78eb2ce9a11b58c9",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5be5f25d07c30eb4e1705fbde12297a0",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4e4582709be98cc898a3f9ab9726d05c",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "550b2b34209ad5cb6a0750156ee1212f",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cb5e408ee254c4ab5b5b6708faad0e09",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "550b2b34209ad5cb6a0750156ee1212f",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "736fb4c513a708a9bf1da3e03648ff27",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a36552aa50058783b7f28931995a0522",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2a7f23fc2ebe68fee3e7cece313023c1",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "736fb4c513a708a9bf1da3e03648ff27",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "54334d554e38e4eeebb06e0cd4812fe7",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "789df596454e002402c3bedd80e5d990",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cb5e408ee254c4ab5b5b6708faad0e09",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "13d156141f4062f754a6511ae2fcbb34",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ccde78a65072a6c7a4de3459f8689d6e",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "caead741652aa65bc992a7e1f7c33285",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "15dfc3faaf38e29bf0584ba550e73a20",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0301"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "4be1713d825f5a80ebf1f2ea3efd7a45"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "3c9d7aa94b336e19b210ab6b46c5a295"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0301",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d89dcd78cffab45a4647358fada09e68",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4692bd79f80f412717f9d1078b7db6c5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "84e89cd6b114f4b3e13439d2542aa09d",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7316e88fbdbdba2f8126782eabcced2",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "76d16c6482c53731b853cd9cd09eec5d",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6e24373b7adb5a0963aa06f26d4048af",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "07c5f3c6b2f5a494fb28e0885f383604",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "84e89cd6b114f4b3e13439d2542aa09d",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7316e88fbdbdba2f8126782eabcced2",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "87583b77e7643aebaa860e42f60392ab",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8384abe9916d86579c81bf52e38be05e",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d89dcd78cffab45a4647358fada09e68",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "53f06f5bad1becad57707f87fa50d266",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0c35309ca14e8c9eb97587b15f67ab9b",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4b0d386a5c9d79c16cfe7c92ad732376",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8e9b0c78ab26fd21d32e1363d48e5742",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3c0633c2749fa3ef06b737764437ad4c",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "8e9b0c78ab26fd21d32e1363d48e5742",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3c0633c2749fa3ef06b737764437ad4c",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4b0d386a5c9d79c16cfe7c92ad732376",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b4adc575c53dd8f124fb763e9165b425",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "500b5a37aa95f12432f5ec27c9354d08",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d89dcd78cffab45a4647358fada09e68",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "53f06f5bad1becad57707f87fa50d266",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6639d60db6bda901f10aecdec9f5708d",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "500b5a37aa95f12432f5ec27c9354d08",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7316e88fbdbdba2f8126782eabcced2",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "77ffa178225018f0b019377f01b41a29",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ed86ed7676fb736f20f6c3f0255ffdd6",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c0c74304d014148fae069d6ec41e796f",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2be6ec2385d3fc7fd254129a9fa3dd8a",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6919baa6d8dd78afb4bea52465a7bb0e",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c9a103a5f53081a6aada8a8f7b76e0d3",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "63ceaee21d5887ce3d60f11bc77b31f8",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "85880181ad9fc7a4eb0fd39c2ed6cf51",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d247cd2a636eee361864bae97084d3d4",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a9d5f143c9c2d630edab4203fb451ad8",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d11cc86d0aacc29fde090f18f263eef4",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a418f96ebb61a8d035610778b8bd139",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "a9d5f143c9c2d630edab4203fb451ad8",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2b9b1687df72d507ab31c08a10014485",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d247cd2a636eee361864bae97084d3d4",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6dac4a9cb2b7814c9d85b2398928a172",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0409a57481ba0f23c2dd35f34d290051",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c0c74304d014148fae069d6ec41e796f",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7e34dbc690e4e6991e97d0d3c68e5aba",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "77ece06475d06940f328b2a3ae71458b",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f4c83022282bf20d98a15c762aed0803",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "234d71f6687db3a3d336df57e4c27d0b",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e98d3f08d9f8b2e3da4b00e40c55b1ac",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d77b508e4102229cda2e9fbada0a5e",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3fb396f80f22825cb4e12fe1a8ca89e6",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1780db3a90190fa7aba6181cc2c31b6b",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b750e0e9b6b20281b6f94648cebf52b5",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "84e89cd6b114f4b3e13439d2542aa09d",
+      "to": "c0302"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "6105e4bbb321772222f4916b2a1ab9fc"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "c4911b66f2e73556a178676ebd28f972"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "1e03d4ca7ea08a217216ddd8da21d6f4"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "29a74aaed6af320a63caf02d927a76ba"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "d75260a1ca043033a1d944c502fa8e3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0302",
+      "to": "ab859057a0eeee4ff8492b90d4956cec"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "41249978a896c52fa8be4d1c53528f16",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42b680481bb1581e0c751c4d6f235f1c",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "16d90b51f2b6cd9c9ffcc7d94d975767",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a8bf87af87ac2b9eb416d5c2b691451",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "897a364fe7890fec670dd261682fb7c6",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5acb4dc113737f92bc93bf7ecef6bf82",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d9f13f309c4c89f4e3feccfcb4ed39c9",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1f87eae6f446a35759174eef992ada67",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42b680481bb1581e0c751c4d6f235f1c",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "76a51a218ca219ffc71ec4538516e399",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "abc01e30abc4c4c8b1381e97350feee4",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42b680481bb1581e0c751c4d6f235f1c",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "16d90b51f2b6cd9c9ffcc7d94d975767",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "41249978a896c52fa8be4d1c53528f16",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1f87eae6f446a35759174eef992ada67",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "abc01e30abc4c4c8b1381e97350feee4",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1f87eae6f446a35759174eef992ada67",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "abc01e30abc4c4c8b1381e97350feee4",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ac571adadf52ab882115afc4036b73f3",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5acb4dc113737f92bc93bf7ecef6bf82",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7b3b37d455f1cba02fdf148e4c70711",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6922afb16c54545d208fbfee6bdae13b",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d9f13f309c4c89f4e3feccfcb4ed39c9",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5acb4dc113737f92bc93bf7ecef6bf82",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "52b38b733feace257c5b7d12a4598af5",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5a4b9fcc507d40bb00d2b0742f977825",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42b680481bb1581e0c751c4d6f235f1c",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "16d90b51f2b6cd9c9ffcc7d94d975767",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "996b82efaa13daa5e30f90c3d8f5cccd",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e9f8829205976c3544565354cface3a3",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "58925f738d2a9cce222c628436e209a5",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4dfb52b7e5726606e96f4e0abfec258e",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0ff03d2330ac0fe4167c4b4be013c67b",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "88cb5450886b961676d95178e43d9f08",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "c75439c8212498e2e005b05dbab20195",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b7b3b37d455f1cba02fdf148e4c70711",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "996b82efaa13daa5e30f90c3d8f5cccd",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42b680481bb1581e0c751c4d6f235f1c",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d9f13f309c4c89f4e3feccfcb4ed39c9",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "da59517fdefd2c753cec2c8c1618fc86",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e9f8829205976c3544565354cface3a3",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1f87eae6f446a35759174eef992ada67",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5acb4dc113737f92bc93bf7ecef6bf82",
+      "to": "c04"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c04",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ca15c583eb5e4068a8b51b2b979a74e0",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "67f8855f93e5f3ac31bac14c76bba42a",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d9f13f309c4c89f4e3feccfcb4ed39c9",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "41249978a896c52fa8be4d1c53528f16",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1f87eae6f446a35759174eef992ada67",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "897a364fe7890fec670dd261682fb7c6",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f66d7beda4180594ae961f7ef0da68e5",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "76a51a218ca219ffc71ec4538516e399",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f66d7beda4180594ae961f7ef0da68e5",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4fa8e6a94150f4b480f7e9e1db47e90d",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2442c971cdec003347bde34b939e3164",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0338a8924b5c8cc18264c5f2e152647e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "67f8855f93e5f3ac31bac14c76bba42a",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "21074a96150fbc6e9831d2aea79d2f29",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4dfb52b7e5726606e96f4e0abfec258e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "0ff03d2330ac0fe4167c4b4be013c67b",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "94e935cf431d01e9d31942e18a785409",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cc50b627f07bf3989b784f5119c72c3f",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "4fa8e6a94150f4b480f7e9e1db47e90d",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "af8754ac417a01362cf9c9321f15e057",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "ae31c7c68267de7331d31be3517b019c",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "63c1205976c9606018f067d266f53d1e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "6a127866ca340f86de3015444481f0ca",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f66d7beda4180594ae961f7ef0da68e5",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e546b639c7caa1bf01a216e374e6bbb7",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "2c32e64fb5d908e274609d1b1eb3aae8",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "86697dd041be329c1973700f80ab700e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "75536219988d9e2313292325923b868e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "76a51a218ca219ffc71ec4538516e399",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "81fa18fdb43ccaf2d2d20bbcf81c6390",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "cef9db94151200b4679c1cc91bab6461",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "90e0f4135991ad1d38e7477b0bb64af8",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "42b680481bb1581e0c751c4d6f235f1c",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "16d90b51f2b6cd9c9ffcc7d94d975767",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "897a364fe7890fec670dd261682fb7c6",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "f66d7beda4180594ae961f7ef0da68e5",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "5acb4dc113737f92bc93bf7ecef6bf82",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "79d0a08f1cda8342fd8bbdeb8a7c53dd",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d70778375c68f2d9eceffc4115430a",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "16d90b51f2b6cd9c9ffcc7d94d975767",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "e9f8829205976c3544565354cface3a3",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "b6d70778375c68f2d9eceffc4115430a",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "341b4695ab52feef79e688ffbc427241",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "3f39b7844bf0d9e3bf9625071fff9243",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "385cf0e27129911b183aab0ad242a2ba",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "d9f13f309c4c89f4e3feccfcb4ed39c9",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "7a5c621a8397763732169efd886b8637",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "1f87eae6f446a35759174eef992ada67",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "652baa4377b4f5ccb574fa829253e056",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "REFERENCED_BY",
+      "from": "19976d34f4dfe52c5d55dbd3e16f675e",
+      "to": "c0401"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "1a55b1ceeb5182b4f1c55b22af375a3c"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "02a6bb46fb2ccdfe985a715f6a2fea13"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "b9cfc7f2cdf78a7f4b91a753d10865a2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "aeb42283af8ef8e9da40ededd3ae2ab2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "04c6e90faac2675aa89e2176d2eec7d8"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "a084b794bc0759e7a6b77810e01874f2"
+    },
+    {
+      "type": "CONTAINS",
+      "from": "c0401",
+      "to": "fc723d30b02a4cca7a534518111c1a66"
+    }
+  ],
+  "wiki_overview": "# personalwebsite Wiki 总览\n\n这是一个面向个人作品集的无框架静态站点，使用 Node.js 原生模块把站点配置、共享 HTML 外壳和页面正文模板生成可提交的根目录 HTML。页面内容聚焦 AI 产品经理、电商运营、Workflow、商品视觉、数据分析与 RPA 实践，仓库本身负责静态展示和发布，不承载这些案例背后的模型或业务后端。\n\n仓库将源文件与产物分开管理：`site.config.json` 维护品牌、页面清单和公开联系方式，`templates/` 保存共享布局与各页正文，`build.mjs` 负责校验、渲染、漂移检查和 `dist/` 发布构建。浏览器端的 `site.js` 只提供日期、任职时长和复制邮箱等渐进增强，`pages.css` 负责共享视觉系统与响应式布局。\n\n发布侧同时保留两种兼容边界。根目录生成 HTML 可配合 `_config.yml` 的 Jekyll 根目录设置，GitHub Actions 则在 Node.js 22 环境中执行部署构建并上传 `dist/` 到 GitHub Pages。维护时应先修改模板、配置或素材，再运行 `npm run build`，用 `npm run check` 检查生成 HTML 与源文件是否一致，最后按需要生成部署目录。\n\n## 章节导航\n\n- 开发与构建 —— 解释无框架静态站的源文件边界、Node.js 要求、构建命令和渲染输出。\n- 配置与页面 —— 说明页面配置模型、八个入口的内容职责、共享布局与媒体素材。\n- 交互与样式 —— 记录 `site.js` 的渐进增强、无障碍反馈、CSS 设计系统和响应式断点。\n- 部署与维护 —— 说明 GitHub Actions 的 `dist/` 发布、Jekyll 兼容配置和日常一致性校验。\n\n## 如何使用本 Wiki\n\n新手可以先阅读“开发与构建”，了解模板、配置、生成 HTML 和 `dist/` 的关系；然后阅读“配置与页面”，建立页面导航、案例内容和素材路径的整体认识；最后阅读“交互与样式”与“部署与维护”，补齐浏览器行为、响应式设计和发布操作。按这个顺序阅读，可以先掌握静态文件如何产生，再理解访客看到什么以及页面如何上线。\n\n贡献者可以从准备修改的边界进入：改页面文案或截图时查看“配置与页面”，改复制邮箱、日期或可访问反馈时查看“交互与样式”，改工作流或发布路径时查看“部署与维护”。每次修改完成后按“开发与构建”中的命令顺序重建并检查，确认生成 HTML 和部署目录符合预期，再提交源文件与需要提交的根目录产物。\n\n## 术语表\n\n- 静态站（Static site）：由预生成 HTML、CSS、JavaScript 和媒体文件组成，浏览器无需等待应用服务器渲染页面。\n- 共享布局（Shared layout）：`templates/layout.html` 提供所有页面共用的头部、导航、元数据、正文插槽和页脚。\n- 页面正文模板（Page template）：`templates/pages/` 下与页面文件同名的 HTML 片段，保存各页具体文案和区块。\n- 站点配置（SiteConfig）：`site.config.json` 中的站点级字段与 `pages` 页面清单，作为生成器的结构化输入。\n- 页面配置（PageConfig）：`pages` 数组中的一项，描述文件名、导航标签、标题、摘要和预留图标字段。\n- 构建器（Build script）：`build.mjs`，负责校验配置、展开占位符、生成 HTML、检查漂移和创建 `dist/`。\n- 占位符（Placeholder）：布局或正文中的 `{{NAME}}`、`{{CONTENT}}` 等命名标记，由构建器替换为转义后的值或生成内容。\n- 渐进增强（Progressive enhancement）：先保证静态 HTML 可用，再由 `site.js` 添加日期更新和剪贴板反馈等浏览器能力。\n- Open Graph：布局输出的 `og:*` 社交分享元数据，用于为页面提供标题、描述、URL 和固定预览图。\n- canonical URL：页面的规范链接，帮助搜索引擎将每个生成页面关联到配置中的公开站点地址。\n- Workflow：把商品信息、趋势、模型和筛选步骤串起来的可复用业务流程，在仓库中以案例说明和截图呈现。\n- RPA：Robotic Process Automation，站点案例中用于承接固定、重复操作的自动化方式。\n- `dist/`：`node build.mjs --deploy` 生成的部署目录，只包含页面、样式、脚本和 `assets/`。\n- GitHub Pages：工作流将 `dist/` 上传并部署到的静态托管环境。\n- Jekyll exclude：`_config.yml` 的排除列表，用于根目录 Pages 兼容发布时隐藏模板、构建脚本和配置源文件。\n"
+}

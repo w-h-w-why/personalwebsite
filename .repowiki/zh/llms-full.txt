@@ -1,0 +1,2467 @@
+# personalwebsite Wiki
+
+> repowiki 为仓库 personalwebsite 生成的结构化 Wiki：以下链接按章节索引全部 markdown 页面，llms-full.txt 为全文合并版。
+
+---
+
+# personalwebsite Wiki 总览
+
+这是一个面向个人作品集的无框架静态站点，使用 Node.js 原生模块把站点配置、共享 HTML 外壳和页面正文模板生成可提交的根目录 HTML。页面内容聚焦 AI 产品经理、电商运营、Workflow、商品视觉、数据分析与 RPA 实践，仓库本身负责静态展示和发布，不承载这些案例背后的模型或业务后端。
+
+仓库将源文件与产物分开管理：`site.config.json` 维护品牌、页面清单和公开联系方式，`templates/` 保存共享布局与各页正文，`build.mjs` 负责校验、渲染、漂移检查和 `dist/` 发布构建。浏览器端的 `site.js` 只提供日期、任职时长和复制邮箱等渐进增强，`pages.css` 负责共享视觉系统与响应式布局。
+
+发布侧同时保留两种兼容边界。根目录生成 HTML 可配合 `_config.yml` 的 Jekyll 根目录设置，GitHub Actions 则在 Node.js 22 环境中执行部署构建并上传 `dist/` 到 GitHub Pages。维护时应先修改模板、配置或素材，再运行 `npm run build`，用 `npm run check` 检查生成 HTML 与源文件是否一致，最后按需要生成部署目录。
+
+## 章节导航
+
+- 开发与构建 —— 解释无框架静态站的源文件边界、Node.js 要求、构建命令和渲染输出。
+- 配置与页面 —— 说明页面配置模型、八个入口的内容职责、共享布局与媒体素材。
+- 交互与样式 —— 记录 `site.js` 的渐进增强、无障碍反馈、CSS 设计系统和响应式断点。
+- 部署与维护 —— 说明 GitHub Actions 的 `dist/` 发布、Jekyll 兼容配置和日常一致性校验。
+
+## 如何使用本 Wiki
+
+新手可以先阅读“开发与构建”，了解模板、配置、生成 HTML 和 `dist/` 的关系；然后阅读“配置与页面”，建立页面导航、案例内容和素材路径的整体认识；最后阅读“交互与样式”与“部署与维护”，补齐浏览器行为、响应式设计和发布操作。按这个顺序阅读，可以先掌握静态文件如何产生，再理解访客看到什么以及页面如何上线。
+
+贡献者可以从准备修改的边界进入：改页面文案或截图时查看“配置与页面”，改复制邮箱、日期或可访问反馈时查看“交互与样式”，改工作流或发布路径时查看“部署与维护”。每次修改完成后按“开发与构建”中的命令顺序重建并检查，确认生成 HTML 和部署目录符合预期，再提交源文件与需要提交的根目录产物。
+
+## 术语表
+
+- 静态站（Static site）：由预生成 HTML、CSS、JavaScript 和媒体文件组成，浏览器无需等待应用服务器渲染页面。
+- 共享布局（Shared layout）：`templates/layout.html` 提供所有页面共用的头部、导航、元数据、正文插槽和页脚。
+- 页面正文模板（Page template）：`templates/pages/` 下与页面文件同名的 HTML 片段，保存各页具体文案和区块。
+- 站点配置（SiteConfig）：`site.config.json` 中的站点级字段与 `pages` 页面清单，作为生成器的结构化输入。
+- 页面配置（PageConfig）：`pages` 数组中的一项，描述文件名、导航标签、标题、摘要和预留图标字段。
+- 构建器（Build script）：`build.mjs`，负责校验配置、展开占位符、生成 HTML、检查漂移和创建 `dist/`。
+- 占位符（Placeholder）：布局或正文中的 `{{NAME}}`、`{{CONTENT}}` 等命名标记，由构建器替换为转义后的值或生成内容。
+- 渐进增强（Progressive enhancement）：先保证静态 HTML 可用，再由 `site.js` 添加日期更新和剪贴板反馈等浏览器能力。
+- Open Graph：布局输出的 `og:*` 社交分享元数据，用于为页面提供标题、描述、URL 和固定预览图。
+- canonical URL：页面的规范链接，帮助搜索引擎将每个生成页面关联到配置中的公开站点地址。
+- Workflow：把商品信息、趋势、模型和筛选步骤串起来的可复用业务流程，在仓库中以案例说明和截图呈现。
+- RPA：Robotic Process Automation，站点案例中用于承接固定、重复操作的自动化方式。
+- `dist/`：`node build.mjs --deploy` 生成的部署目录，只包含页面、样式、脚本和 `assets/`。
+- GitHub Pages：工作流将 `dist/` 上传并部署到的静态托管环境。
+- Jekyll exclude：`_config.yml` 的排除列表，用于根目录 Pages 兼容发布时隐藏模板、构建脚本和配置源文件。
+
+---
+
+# 开发与构建
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+本仓库是一个无框架、无构建依赖的静态作品集站点。开发时维护配置、共享布局和页面正文，`build.mjs` 将它们展开为根目录 HTML；发布构建则把同一套页面及资源复制到 `dist/`。运行环境要求 Node.js 20 或以上，仓库明确不需要先执行 `npm install`。
+
+- 页面语言与站点文案以简体中文为主，生成器使用原生 Node.js 模块。
+- `site.config.json` 集中维护导航、标题、摘要和公开联系方式，模板负责结构。
+- 根目录 HTML 是提交给现有 Pages 根目录发布的生成结果，`dist/` 是部署构建产物。
+
+章节来源
+- [README.md:1-7](file://README.md#L1-L7)
+- [package.json:1-10](file://package.json#L1-L10)
+
+## 项目结构
+与开发和构建有关的文件边界如下：
+
+```text
+.
+├── site.config.json        # 站点信息、页面清单和公开联系方式
+├── templates/
+│   ├── layout.html         # 全站 HTML 外壳
+│   └── pages/              # 各页面正文模板
+├── build.mjs               # 校验、渲染、检查和部署复制
+├── pages.css               # 共享样式
+├── site.js                 # 浏览器端渐进增强
+├── assets/                 # 截图、图标和分享预览
+├── *.html                  # 提交到根目录的生成页面
+└── dist/                   # --deploy 生成的发布目录
+```
+
+`templates/` 是源文件边界，根目录的 HTML 不应直接手工编辑。`build.mjs` 在普通模式写入根目录，在部署模式先重建 `dist/`，再复制样式、脚本与图片；因此新增页面通常需要先改配置和正文模板，再运行构建。
+
+```mermaid
+graph TB
+subgraph "源文件"
+CFG["站点配置<br/>site.config.json"]
+LAYOUT["共享外壳<br/>templates/layout.html"]
+PAGES["页面正文<br/>templates/pages/*.html"]
+end
+BUILD["渲染器<br/>build.mjs"]
+ROOT["根目录 HTML<br/>*.html"]
+DIST["发布目录<br/>dist/"]
+ASSETS["静态资源<br/>pages.css / site.js / assets/"]
+CFG --> BUILD
+LAYOUT --> BUILD
+PAGES --> BUILD
+BUILD --> ROOT
+BUILD --> DIST
+ASSETS --> DIST
+```
+
+图表来源
+- [README.md:3-7](file://README.md#L3-L7)
+- [build.mjs:15-18](file://build.mjs#L15-L18)
+- [build.mjs:90-93](file://build.mjs#L90-L93)
+
+章节来源
+- [README.md:3-7](file://README.md#L3-L7)
+- [build.mjs:15-18](file://build.mjs#L15-L18)
+- [build.mjs:90-93](file://build.mjs#L90-L93)
+
+## 核心组件
+下表按“谁提供输入、谁负责生成、谁承载结果”的顺序阅读，可以快速定位一次页面修改需要触及的文件。
+
+| 组件 | 关键文件 | 一句话职责 |
+| --- | --- | --- |
+| 站点配置 | `site.config.json` | 提供身份信息、日期基准、页面元数据和导航清单。 |
+| 共享外壳 | `templates/layout.html` | 定义头部、导航、 SEO 分享标签、正文插槽和页脚。 |
+| 页面正文 | `templates/pages/*.html` | 保存各页面的业务文案、区块和案例图片引用。 |
+| 构建脚本 | `build.mjs` | 校验配置，展开占位符，写入根目录或 `dist/`。 |
+| 运行时增强 | `site.js`、`pages.css` | 提供日期更新、复制邮箱、布局和响应式表现。 |
+
+构建器没有插件注册点或外部构建框架；可定制位置集中在 JSON 配置、布局模板和页面正文模板。页面清单新增文件后，生成器会从 `templates/pages/` 读取同名正文，并为每页自动生成导航和元数据。
+
+章节来源
+- [build.mjs:17-29](file://build.mjs#L17-L29)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+- [templates/layout.html:1-27](file://templates/layout.html#L1-L27)
+- [package.json:4-9](file://package.json#L4-L9)
+
+## 架构总览
+构建过程是一次从配置与模板到静态文件的确定性转换。脚本先读取配置和共享布局，验证 URL、日期与页面清单，再对每页正文展开占位符；普通构建直接写根目录，`--check` 比较现有文件，`--deploy` 则把页面和资源放入受保护的 `dist/` 目录。
+
+下面的时序图强调一次构建调用中各输入的读取顺序，以及检查和写入在同一渲染循环中的分支。
+
+```mermaid
+sequenceDiagram
+participant Dev as "开发者"
+participant Build as "build.mjs"
+participant Config as "site.config.json"
+participant Templates as "layout + pages"
+participant Output as "根目录或 dist/"
+Dev->>Build : "npm run build / check / deploy:build"
+Build->>Config : "读取并校验站点配置"
+Build->>Templates : "读取共享布局与页面正文"
+Build->>Build : "展开占位符并生成导航/元数据"
+Build->>Output : "写入或比较每个 HTML 页面"
+Build-->>Dev : "Built / Checked 结果"
+```
+
+图表来源
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:10-34](file://build.mjs#L10-L34)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+
+章节来源
+- [build.mjs:10-34](file://build.mjs#L10-L34)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+- [templates/layout.html:29-52](file://templates/layout.html#L29-L52)
+
+## 详细组件分析
+本页相关子主题的职责索引如下；子主题之间通过构建器传递字符串和文件，而不是通过运行时模块导入连接。
+
+| 子页 | 核心实体/机制 | 一句话职责 |
+| --- | --- | --- |
+| 配置与页面 | 页面清单、占位符值 | 决定站点身份、页面数量及每页元数据。 |
+| 交互与样式 | CSS、浏览器 JavaScript | 负责视觉系统、响应式布局与渐进增强。 |
+| 部署与维护 | `--deploy`、检查命令 | 负责生成发布目录并防止源文件与产物漂移。 |
+
+### 配置与页面
+`build.mjs` 将配置中的站点值转换为 `NAME`、`ROLE`、`PHONE`、`EMAIL`、`WORK_START`、`YEAR` 和 `EXPERIENCE` 等模板值。每个页面必须有唯一的 `.html` 文件名，以及非空的 `label`、`icon`、`title` 和 `description`；`index.html` 是强制入口。
+
+构建循环读取 `templates/pages/<file>`，根据当前页面标记导航项，并将标题、描述、规范 URL、分享图片和正文插入布局。配置文本先经过 HTML 转义，正文只展开有限的命名占位符，未知占位符会让构建失败。
+
+章节来源
+- [build.mjs:17-29](file://build.mjs#L17-L29)
+- [build.mjs:40-55](file://build.mjs#L40-L55)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+
+### 构建输出
+普通 `build` 模式将每个页面写回仓库根目录，便于兼容现有 Pages 根目录发布。`--deploy` 模式只允许清空固定的 `dist/` 目录，重新创建目录后写入页面，并复制 `pages.css`、`site.js` 和 `assets`；`--check` 不写文件，只将生成结果与已存在的页面比较。
+
+这种输出策略把可审阅的生成 HTML 与可上传的部署目录分开。维护者应先改模板或配置，再执行 `npm run build`，需要发布时执行 `npm run deploy:build`，而提交前可运行 `npm run check` 发现漂移。
+
+章节来源
+- [README.md:3-7](file://README.md#L3-L7)
+- [build.mjs:57-62](file://build.mjs#L57-L62)
+- [build.mjs:79-93](file://build.mjs#L79-L93)
+
+### 模板外壳
+共享布局使用 `{{...}}` 占位符承接构建值，固定输出文档类型、中文语言、描述和 Open Graph/Twitter 分享标签。正文通过 `{{CONTENT}}` 插入，导航通过 `{{NAV}}` 插入，页脚同时保留电话和邮件链接。
+
+布局还加载 `pages.css` 与延迟执行的 `site.js`，并提供无 JavaScript 时的 `mailto:` 链接。这样页面的静态内容和可访问联系入口由生成 HTML 直接承载，交互增强不会成为首屏渲染的唯一来源。
+
+章节来源
+- [templates/layout.html:1-27](file://templates/layout.html#L1-L27)
+- [templates/layout.html:29-52](file://templates/layout.html#L29-L52)
+
+## 依赖关系分析
+运行时依赖保持在 Node.js 内置模块和浏览器原生能力范围内。`package.json` 只声明 Node.js 版本门槛与三个脚本命令；构建脚本使用 `node:fs/promises`、`node:path` 和 `node:url`，不需要安装第三方包。
+
+```mermaid
+graph LR
+N["Node.js >= 20"] --> B["build.mjs"]
+FS["node:fs/promises"] --> B
+PATH["node:path + node:url"] --> B
+B --> T["HTML 模板与站点配置"]
+B --> O["根目录 HTML / dist/"]
+WEB["浏览器原生 DOM 与 Clipboard API"] --> JS["site.js"]
+CSS["CSS 渲染引擎"] --> STYLE["pages.css"]
+```
+
+图表来源
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:6-8](file://build.mjs#L6-L8)
+- [site.js:1-26](file://site.js#L1-L26)
+
+章节来源
+- [package.json:1-10](file://package.json#L1-L10)
+- [build.mjs:6-8](file://build.mjs#L6-L8)
+- [templates/layout.html:23-27](file://templates/layout.html#L23-L27)
+
+## 性能与一致性考量
+构建器按页面清单顺序串行读取和写入文件，页面数量有限时流程简单且结果可重复。发布构建会先清空并重建固定的 `dist/`，从而避免旧页面或旧资源残留；`--check` 则把生成结果作为一致性基线。
+
+- 配置值在写入属性和文本前统一进行 HTML 转义，降低特殊字符破坏标记的风险。
+- 构建时按 `Asia/Shanghai` 计算年份和任职月数，浏览器端再按同一时区更新动态后备文本。
+- `render` 只接受大写命名占位符，缺失键立即抛错；这会把模板拼写错误提前暴露在发布前。
+- `dist` 路径在清空前核对目录边界，避免部署参数意外指向仓库根目录。
+
+章节来源
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [build.mjs:36-55](file://build.mjs#L36-L55)
+- [build.mjs:57-62](file://build.mjs#L57-L62)
+- [build.mjs:82-85](file://build.mjs#L82-L85)
+
+## 故障排查指南
+排查时先确认命令、Node.js 版本和模板/配置的修改是否符合生成器校验，再根据错误发生在配置读取、模板渲染还是输出比较阶段定位文件。
+
+- **运行命令立即失败** → 原因可能是传入了未知参数或同时传入 `--check` 与 `--deploy` → 先查看 `Usage: node build.mjs [--check | --deploy]`，每次只选择一种模式 → 相关位置为 `build.mjs` 的参数检查。
+- **提示页面字段缺失或 `index.html` 不存在** → 原因是 `site.config.json` 页面对象字段为空、文件名重复或入口缺失 → 检查页面清单中的 `file`、`label`、`icon`、`title`、`description`，再重新运行构建 → 相关位置为配置验证循环。
+- **提示 `needs rebuilding`** → 原因是根目录 HTML 与当前模板、配置或月份后备文本不一致 → 先运行 `npm run build` 更新生成文件，再用 `npm run check` 复核 → 相关位置为 `--check` 分支。
+- **部署后页面或资源缺失** → 原因是只上传了源目录或未执行部署构建 → 使用 `npm run deploy:build`，确认 `dist/` 同时包含 HTML、样式、脚本和 `assets/` → 相关位置为 `--deploy` 复制逻辑。
+
+章节来源
+- [build.mjs:11-14](file://build.mjs#L11-L14)
+- [build.mjs:19-29](file://build.mjs#L19-L29)
+- [build.mjs:79-93](file://build.mjs#L79-L93)
+
+## 结论
+开发时把配置、布局和正文模板视为唯一源文件，使用 `npm run build` 生成根目录页面；用 `npm run check` 检查漂移，用 `npm run deploy:build` 准备 `dist/` 发布目录。该流程通过原生 Node.js 完成，适合页面数量有限、需要静态输出和可审阅生成结果的作品集站点。
+
+章节来源
+- [README.md:3-7](file://README.md#L3-L7)
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:90-95](file://build.mjs#L90-L95)
+
+<cite>
+**本文引用的文件**
+- [README.md](file://README.md)
+- [package.json](file://package.json)
+- [build.mjs](file://build.mjs)
+- [templates/layout.html](file://templates/layout.html)
+- [site.js](file://site.js)
+</cite>
+
+---
+
+# 模板渲染与构建流程
+
+## 目录
+1. [简介](#简介)
+2. [流程总览](#流程总览)
+3. [关键步骤](#关键步骤)
+4. [参与组件](#参与组件)
+5. [数据与状态变化](#数据与状态变化)
+6. [故障排查指南](#故障排查指南)
+7. [结论](#结论)
+
+## 简介
+
+这是仓库把站点配置和 HTML 模板转换成可发布页面的确定性构建流程。它由 `node build.mjs` 触发，默认把八个页面写回仓库根目录；`--check` 只比较已有页面，`--deploy` 则清理并填充 `dist`。构建脚本同时负责配置校验、上海时区的年份与任职时长后备文本、模板占位符替换和部署素材复制。
+
+章节来源
+- [build.mjs:1-18](file://build.mjs#L1-L18)
+- [package.json:4-9](file://package.json#L4-L9)
+
+## 流程总览
+
+流程起点是 npm script 调用 `build.mjs`，脚本读取 `site.config.json`、共享布局和当前页面正文；中间经过配置校验、值转义、导航与元信息组装，终点是写入根目录 HTML、核对已有 HTML，或将发布资源复制到 `dist`。每个页面独立读取和渲染，因此一个页面正文出错会使整个构建在写出该页面前失败。
+
+```mermaid
+sequenceDiagram
+participant Trigger as "命令行<br/>package.json"
+participant Build as "构建脚本<br/>build.mjs"
+participant Config as "站点配置<br/>site.config.json"
+participant Templates as "布局与正文<br/>templates/"
+participant Output as "HTML / dist<br/>输出目录"
+Trigger->>Build : "node build.mjs [--check|--deploy]"
+Build->>Config : "读取并校验配置"
+Build->>Templates : "读取 layout 与 page body"
+Build->>Build : "计算日期、转义值、展开占位符"
+Build->>Output : "写根目录或核对；deploy 时复制素材"
+Output-->>Trigger : "Built / Checked 或抛出错误"
+```
+
+图表来源
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:15-21](file://build.mjs#L15-L21)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+
+图中只有构建脚本写入输出，模板和配置保持输入角色；不同模式共享前半段的校验与渲染逻辑。
+
+章节来源
+- [build.mjs:15-21](file://build.mjs#L15-L21)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+
+## 关键步骤
+
+### 步骤 1：解析模式与输入
+
+输入是最多一个 `--check` 或 `--deploy` 标志；没有标志时代表普通构建。脚本把自身文件所在目录作为仓库根目录，再读取 JSON 配置和共享布局，因此从其他工作目录调用仍会针对脚本所在仓库工作。未知参数或同时传入两个模式会立即抛出用法错误。
+
+- 输入：`package.json` 中的命令或直接运行 `node build.mjs`。
+- 处理：`flags` 只允许 `--check`、`--deploy`；`output` 在部署模式下固定为根目录下的 `dist`。
+- 失败路径：标志非法或模式冲突时在读取配置前终止，不会清理或写出产物。
+
+章节来源
+- [build.mjs:6-18](file://build.mjs#L6-L18)
+- [package.json:4-9](file://package.json#L4-L9)
+
+### 步骤 2：校验站点配置与页面清单
+
+脚本要求站点 URL 是以 `/` 结尾的绝对 HTTP(S) URL，`workStart` 使用 `YYYY-MM`，页面数组非空。随后检查每个页面文件是根目录下的 `.html` 文件、文件名不重复、元数据字段齐全，并要求清单含有 `index.html`；这些规则把配置错误变成发布前的明确失败。
+
+- 输入：`site.config.json` 的站点字段和 `pages` 数组。
+- 处理：建立 `pageFiles` 集合，逐页验证 `file`、`label`、`icon`、`title`、`description`。
+- 失败路径：正则、重复文件、缺少字段或缺少首页都会抛出 `Error`，循环尚未开始写页面。
+
+章节来源
+- [build.mjs:17-29](file://build.mjs#L17-L29)
+- [site.config.json:1-17](file://site.config.json#L1-L17)
+
+### 步骤 3：计算动态值并安全展开模板
+
+脚本按 `Asia/Shanghai` 得到当前年月，再以配置中的起始月计算月数和可读的年/月文本。每个配置标量先经过 `escapeHtml`，布局和正文分别通过 `render` 展开大写占位符；占位符缺少对应值会抛错，从而暴露模板拼写错误。导航由同一页面清单生成，当前页面附加 `aria-current`，页面 URL、分享图和首页特殊 class 也在这里注入。
+
+- 输入：配置标量、页面元数据、`templates/layout.html` 与对应 `templates/pages/*.html`。
+- 处理：转义 HTML 特殊字符，组装 `TITLE`、`DESCRIPTION`、`URL`、`IMAGE`、`NAV`、`CONTENT` 等值。
+- 失败路径：缺少模板值会在 `render` 中终止；模板文件读取失败也会阻断当前页面生成。
+
+章节来源
+- [build.mjs:30-55](file://build.mjs#L30-L55)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+- [templates/layout.html:7-27](file://templates/layout.html#L7-L27)
+
+### 步骤 4：写入、核对或准备部署产物
+
+脚本为每个页面解析目标路径，并确认目标仍位于选定输出目录下。普通模式写入根目录；`--check` 读取已有文件，将 CRLF 归一化后与预期 HTML 比较；`--deploy` 先安全地清空固定 `dist` 目录，再在页面完成后复制 `pages.css`、`site.js` 和 `assets`。循环结束打印当前年月和页面数量。
+
+- 输入：已经渲染的 HTML 字符串与选定 `output`。
+- 处理：逐页 `writeFile` 或比较现有文件；部署模式最后复制静态资源。
+- 失败路径：目标越出输出目录、现有 HTML 漂移或部署目录边界异常时抛错；没有成功构建就不会出现成功日志。
+
+章节来源
+- [build.mjs:57-62](file://build.mjs#L57-L62)
+- [build.mjs:79-95](file://build.mjs#L79-L95)
+
+## 参与组件
+
+这些组件按“配置决定页面集合、模板决定结构、脚本决定生成策略、输出目录承担发布”协作。页面正文保持内容，`layout.html` 提供共享外壳，而 `build.mjs` 是唯一把二者绑定到目标文件的执行入口。
+
+- `package.json`：公开 `build`、`check`、`deploy:build` 三个命令，并声明 Node.js `>=20`。
+- `site.config.json`：保存品牌、联系方式、工作起始月、页面文件名和 SEO 描述。
+- `templates/layout.html`：定义 head 元数据、导航、复制邮箱按钮、正文槽位和页脚。
+- `templates/pages/*.html`：提供每个页面的正文片段；例如首页包含能力概览和三个入口卡片。
+- `build.mjs`：完成校验、日期计算、转义、占位符展开、输出比较与部署资源复制。
+- `pages.css`、`site.js`、`assets/`：仅在 `--deploy` 结束时整体复制到 `dist`。
+
+章节来源
+- [package.json:4-9](file://package.json#L4-L9)
+- [site.config.json:1-17](file://site.config.json#L1-L17)
+- [templates/layout.html:29-53](file://templates/layout.html#L29-L53)
+- [templates/pages/index.html:1-85](file://templates/pages/index.html#L1-L85)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+
+## 数据与状态变化
+
+一次构建不会维护持久化状态机，而是把输入文件映射成一组 HTML 文件。输入中的 `workStart` 被转换为当前年月、月数和展示文本；页面配置被转换为导航项、元标签和目标文件；`--check` 只读比较，`--deploy` 则产生干净的 `dist` 快照。
+
+```mermaid
+graph LR
+Config["site.config.json<br/>页面与站点字段"] --> Values["转义后的模板值<br/>年份/任职时长"]
+Layout["templates/layout.html<br/>共享外壳"] --> Html["渲染后的页面 HTML"]
+Body["templates/pages/*.html<br/>正文片段"] --> Html
+Values --> Html
+Html --> Root["根目录 HTML<br/>普通构建"]
+Html --> Check["比较已有 HTML<br/>--check"]
+Html --> Dist["dist HTML"]
+Assets["pages.css / site.js / assets"] --> Dist
+```
+
+图表来源
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [build.mjs:64-92](file://build.mjs#L64-L92)
+- [templates/layout.html:45-52](file://templates/layout.html#L45-L52)
+
+图中的三个输出分支由命令标志选择：检查模式不写 HTML，部署模式把页面和静态资源汇合到同一发布目录。
+
+章节来源
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [build.mjs:64-92](file://build.mjs#L64-L92)
+- [site.config.json:7-17](file://site.config.json#L7-L17)
+
+## 故障排查指南
+
+排查时先确认命令模式和配置，再定位是模板输入、生成内容还是输出比较失败。错误都来自同步的 `throw new Error` 或文件读写结果，因此应先看终端中的具体文件名和字段名，再回到对应源文件修复并重新运行相同命令。
+
+- **现象：提示 `Usage` 或未知参数。** 原因是同时传入 `--check` 与 `--deploy`，或传入了其他标志。定位步骤：检查 `package.json` script 和实际命令，只保留一个受支持模式；代码位置为 `build.mjs:11-16`。
+- **现象：提示 URL、`workStart`、页面字段或 `index.html` 错误。** 原因是 `site.config.json` 不满足校验约束。定位步骤：逐项检查 `url` 末尾斜线、`YYYY-MM`、文件唯一性和四个页面描述字段；代码位置为 `build.mjs:19-29`。
+- **现象：提示 `Unknown template value`。** 原因是布局或正文写了脚本没有提供的大写占位符。定位步骤：搜索 `{{...}}`，让模板键与 `build.mjs:69-77` 的 values 对齐；不要把动态 HTML 直接拼进未转义配置值。
+- **现象：`--check` 报某个页面 `needs rebuilding`。** 原因是根目录 HTML 与当前模板、配置或月份后备文本不一致。定位步骤：先运行 `node build.mjs` 重建，再运行 `npm run check`；代码位置为 `build.mjs:82-85`。
+- **现象：部署产物缺少 CSS、脚本或图片。** 原因是只做了普通构建，未执行 `--deploy` 的资源复制。定位步骤：运行 `npm run deploy:build`，检查 `dist` 中的三个资源入口；代码位置为 `build.mjs:90-92`。
+
+章节来源
+- [build.mjs:11-16](file://build.mjs#L11-L16)
+- [build.mjs:19-29](file://build.mjs#L19-L29)
+- [build.mjs:50-54](file://build.mjs#L50-L54)
+- [build.mjs:82-92](file://build.mjs#L82-L92)
+
+## 结论
+
+该流程适合页面数量有限、源文件需要可审查且发布产物应可重复生成的静态站。维护时应编辑 `site.config.json`、`templates/` 或资源源文件，然后先普通构建验证页面，再按需要运行 `npm run check` 或 `npm run deploy:build`；不要把根目录生成 HTML 当作模板源文件修改。
+
+章节来源
+- [README.md:1-11](file://README.md#L1-L11)
+- [build.mjs:1-4](file://build.mjs#L1-L4)
+- [package.json:4-9](file://package.json#L4-L9)
+
+<cite>
+**本文引用的文件**
+- [build.mjs](file://build.mjs)
+- [site.config.json](file://site.config.json)
+- [templates/layout.html](file://templates/layout.html)
+- [templates/pages/index.html](file://templates/pages/index.html)
+- [package.json](file://package.json)
+- [README.md](file://README.md)
+</cite>
+
+---
+
+# 配置与页面
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+本仓库以八个静态 HTML 页面呈现个人作品集，页面清单、身份信息和搜索摘要集中保存在 `site.config.json`。共享布局把页面正文包在统一的头部导航、主内容区与页脚中，构建程序负责展开配置和模板。根目录 HTML 是生成产物，案例页中的 Coze、模型 API、RPA 等内容属于作品说明，不能据此把站点理解为在线执行这些流程的应用。
+
+- 页面语言为简体中文，布局声明 `lang="zh-CN"`。
+- 站点包含首页、案例目录、三个案例详情、经历、关于与联系共八个页面。
+- 所有页面共享 `pages.css` 与延迟执行的 `site.js`，主要内容在 HTML 中直接可读。
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [templates/layout.html:1-56](file://templates/layout.html#L1-L56)
+- [case-content.html:53-86](file://case-content.html#L53-L86)
+
+## 项目结构
+配置和模板是页面生成的输入，根目录的同名 HTML 是浏览器与发布环境消费的输出。正文模板按配置中的 `file` 字段寻找，因此页面文件名也是配置与内容之间的连接键。阅读根目录 HTML 可以观察最终导航与元信息，维护内容时应回到模板和配置。
+
+```
+site.config.json
+build.mjs
+templates/
+  layout.html
+  pages/
+    index.html
+    portfolio.html
+    case-content.html
+    case-visual.html
+    case-data.html
+    resume.html
+    about.html
+    contact.html
+index.html
+portfolio.html
+case-content.html
+case-visual.html
+case-data.html
+resume.html
+about.html
+contact.html
+```
+
+- `site.config.json` 定义八个页面的文件名、导航文本、图标预留字段、标题与描述。
+- `templates/layout.html` 定义共享外壳，通过命名占位符接收页面内容和配置值。
+- `templates/pages/` 为每个配置项提供同名正文模板，构建时读取并插入 `CONTENT`。
+- 根目录页面已经包含完整外壳，文件开头标明由 `build.mjs` 生成。
+
+下面的结构图强调“共享输入产生多个独立页面”的关系，避免把生成文件当作唯一内容来源。
+
+```mermaid
+graph TB
+subgraph "配置与模板"
+C["站点与页面清单<br/>site.config.json"]
+L["共享外壳<br/>templates/layout.html"]
+P["页面正文<br/>templates/pages/*.html"]
+end
+B["构建组装<br/>build.mjs"]
+H["八个根目录页面<br/>*.html"]
+C --> B
+L --> B
+P --> B
+B --> H
+```
+
+图中三个输入共同决定页面结果；仅修改已生成 HTML 会与下一次构建产生不一致。
+
+图表来源
+- [build.mjs:17-18](file://build.mjs#L17-L18)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+
+章节来源
+- [site.config.json:8-17](file://site.config.json#L8-L17)
+- [templates/layout.html:30-53](file://templates/layout.html#L30-L53)
+- [index.html:1-2](file://index.html#L1-L2)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+
+## 核心组件
+页面体系由一个清单、一份共享布局、多份正文和一个组装程序构成。页面自己的标题与摘要来自清单，共享身份与联系方式来自顶层配置，正文则由对应模板提供。导航和内容不是运行时从远程服务请求的，而是在构建阶段进入 HTML。
+
+- 站点配置：`name`、`role`、`url`、`email`、`phone`、`workStart` 提供共享身份、地址与日期参数。
+- 页面清单：`pages` 决定导航顺序，并把 `file`、`label`、`title`、`description` 关联起来。
+- 共享布局：`DESCRIPTION`、`TITLE`、`URL`、`IMAGE` 注入搜索与社交元信息，`NAV` 和 `CONTENT` 注入可见内容。
+- 页面正文：首页承担入口，案例目录组织三项实践，经历、关于、联系补充个人背景与沟通渠道。
+- 构建组装：`build.mjs` 转义配置标量、确定当前页面导航状态，并写入对应 HTML。
+- 扩展位置：新增页面需要增加 `pages` 配置和同名正文模板；`icon` 当前经过配置校验但不参与导航输出。
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [templates/layout.html:7-51](file://templates/layout.html#L7-L51)
+- [build.mjs:23-29](file://build.mjs#L23-L29)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+- [portfolio.html:62-94](file://portfolio.html#L62-L94)
+
+## 架构总览
+页面组装从读取配置和布局开始，随后遍历 `pages`，读取每页正文并生成导航和元信息。导航激活态通过 `item.file === page.file` 决定，当前链接同时获得 `class="current"` 和 `aria-current="page"`。访问阶段浏览器直接接收完整页面，再加载共享 CSS 和 JavaScript，案例介绍本身没有模型调用步骤。
+
+下面的时序图把构建阶段与浏览器访问阶段放在一起，展示数据何时被固定到页面中。
+
+```mermaid
+sequenceDiagram
+participant Build as "build.mjs"
+participant Config as "配置与布局"
+participant Content as "页面正文模板"
+participant HTML as "根目录 HTML"
+participant Browser as "浏览器"
+Build->>Config : "读取配置与共享布局"
+Build->>Content : "按 page.file 读取正文"
+Build->>Build : "生成当前导航、标题和 canonical"
+Build->>HTML : "写入展开后的页面"
+Browser->>HTML : "访问静态页面"
+HTML-->>Browser : "完整内容与共享资源引用"
+```
+
+页面结构在构建时已完成，因此当前页状态不依赖浏览器脚本动态识别 URL。
+
+图表来源
+- [build.mjs:17-18](file://build.mjs#L17-L18)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+- [index.html:24-42](file://index.html#L24-L42)
+
+章节来源
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+- [templates/layout.html:24-46](file://templates/layout.html#L24-L46)
+- [case-content.html:53-86](file://case-content.html#L53-L86)
+
+## 详细组件分析
+八个页面共享外壳，但承担不同的阅读路径。首页引导访问者进入作品、经历或方法说明，案例目录再连接三个独立详情页；联系页保留直接电话与邮件链接。下面按配置、外壳与内容组织展开，重点说明可修改位置和现有输出的边界。
+
+章节来源
+- [index.html:114-137](file://index.html#L114-L137)
+- [portfolio.html:62-94](file://portfolio.html#L62-L94)
+- [contact.html:62-71](file://contact.html#L62-L71)
+
+### 页面清单与文件对应
+`pages` 中八个 `file` 值与根目录文件一一对应，顺序也就是导航顺序。构建要求文件为不含目录分隔符的 `.html` 名称，并要求存在 `index.html`，所以页面清单不是任意 URL 的集合。`icon` 字段仍是必填配置，但现有导航输出只使用 `label`。
+
+- `index.html` 对应“首页”，展示个人定位、能力概览与三个入口。
+- `portfolio.html` 对应“案例”，聚合内容、视觉、数据三个作品详情。
+- `case-content.html` 对应“Workflow”，说明标题与种草文案自动化。
+- `case-visual.html` 对应“视觉”，说明商品图生成、参考图和视觉约束。
+- `case-data.html` 对应“数据”，说明商品图分析、预测设想和重复流程。
+- `resume.html` 对应“经历”，呈现任职、教育、业绩与能力。
+- `about.html` 对应“关于”，呈现工作方式与机会方向。
+- `contact.html` 对应“联系”，提供电话与邮箱入口。
+
+章节来源
+- [site.config.json:8-17](file://site.config.json#L8-L17)
+- [build.mjs:23-29](file://build.mjs#L23-L29)
+- [build.mjs:67-68](file://build.mjs#L67-L68)
+- [index.html:53-137](file://index.html#L53-L137)
+- [resume.html:53-106](file://resume.html#L53-L106)
+- [about.html:53-75](file://about.html#L53-L75)
+- [contact.html:53-71](file://contact.html#L53-L71)
+
+### 共享布局、导航和元信息
+布局中的 `header`、`main`、`footer` 保证每个页面保留同一套导航、联系入口和版权信息。`TITLE` 同时进入页面标题、Open Graph 与 Twitter 字段，`DESCRIPTION` 进入三处摘要，`URL` 同时作为社交 URL 与 canonical。首页 URL 使用配置基址，其他页面以文件名解析，首页外层还额外获得 `home-page` 类。
+
+- `NAV` 插入八个文本链接，激活态在构建阶段生成。
+- `CONTENT` 插入正文；共享联系方式通过 `EMAIL`、`PHONE` 进入头部和页脚。
+- 社交预览图片统一解析为 `assets/social-preview.jpg` 的绝对 URL。
+- 复制邮箱按钮起始为隐藏状态，并有 `noscript` 邮件链接作为无脚本入口。
+
+章节来源
+- [templates/layout.html:7-53](file://templates/layout.html#L7-L53)
+- [build.mjs:65-78](file://build.mjs#L65-L78)
+- [index.html:7-50](file://index.html#L7-L50)
+
+### 作品说明与运行代码边界
+三个案例页以段落、标签和截图描述已实践或正在探索的业务流程。内容页写出 Coze 调用模型的方案，视觉页写出图像 API 与约束方式，数据页明确使用“未来可结合”描述预测扩展；这些都是静态展示文本。读者可以理解作品的方法与证据，但页面没有提供商品输入表单、执行按钮或模型返回结果界面。
+
+- 内容案例展示 Workflow 截图及标题优化、文案生成和批量处理的说明。
+- 视觉案例展示工作内容、产品判断和视觉生成 Workflow 截图。
+- 数据案例展示商品图数据矩阵，并区分现有分析说明与未来预测设想。
+- 案例目录是进入详情的导航入口，详情页的返回链接回到 `portfolio.html`。
+
+章节来源
+- [portfolio.html:62-94](file://portfolio.html#L62-L94)
+- [case-content.html:53-86](file://case-content.html#L53-L86)
+- [case-visual.html:53-85](file://case-visual.html#L53-L85)
+- [case-data.html:53-81](file://case-data.html#L53-L81)
+
+## 依赖关系分析
+配置和模板之间的主要依赖是文件名以及固定的占位符集合。页面在浏览器里依赖共享样式、脚本与本地图片，配置中的部署 URL 则用于生成绝对元信息地址。这里没有按案例名称引入 Coze、影刀或模型 SDK；相关产品名称只是内容文本。
+
+- 必选：配置中的每个 `file` 都要有对应 `templates/pages/<file>`，否则构建无法读取正文。
+- 必选：布局占位符必须存在于渲染值集合中，未知占位符会抛出 `Unknown template value`。
+- 必选：生成页面引用 `pages.css`、`site.js`、favicon，案例图引用 `assets/` 中的 WebP 文件。
+- 推荐：`url` 指向实际发布基址，使 canonical、社交链接与预览图片保持一致。
+- 可选：用户浏览器或操作系统可以处理 `tel:`、`mailto:` 联系链接，页面本身不发送通信请求。
+
+下面的依赖图展示内容生成所需输入与浏览器资源依赖，帮助定位遗漏文件。
+
+```mermaid
+graph LR
+C["页面配置<br/>pages[].file"] --> P["同名正文模板<br/>templates/pages"]
+C --> B["构建渲染<br/>build.mjs"]
+P --> B
+L["共享布局<br/>layout.html"] --> B
+B --> H["完整页面<br/>HTML"]
+H --> R["样式、脚本与图片<br/>pages.css / site.js / assets"]
+```
+
+图中内容和资源是两类不同依赖：正文缺失会阻断构建，资源缺失则可能在访问时表现为样式或图片异常。
+
+图表来源
+- [build.mjs:50-54](file://build.mjs#L50-L54)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+- [templates/layout.html:24-27](file://templates/layout.html#L24-L27)
+- [case-visual.html:81-83](file://case-visual.html#L81-L83)
+
+章节来源
+- [build.mjs:19-29](file://build.mjs#L19-L29)
+- [build.mjs:50-54](file://build.mjs#L50-L54)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+- [templates/layout.html:24-27](file://templates/layout.html#L24-L27)
+- [contact.html:63-69](file://contact.html#L63-L69)
+
+## 性能与一致性考量
+静态页面在初始 HTML 中包含主要文本与导航，不需要等应用数据接口才能阅读。共享外壳减少多页人工维护的重复，但配置或布局变化后必须重新生成所有页面，才能让输出一致。案例图片用明确尺寸、异步解码和懒加载控制页面布局与加载时机，JavaScript 通过 `defer` 引用。
+
+- 图片声明 `width`、`height`，让浏览器在图片加载前能预留比例空间。
+- 案例图片使用 `loading="lazy"` 与 `decoding="async"`，其收益取决于浏览器与访问位置。
+- `--check` 比较模板展开结果与根目录 HTML，并忽略平台换行差异。
+- 年份与任职时长由构建程序按 `Asia/Shanghai` 生成年月后备文本，月度变化可能要求重新构建。
+- 配置标量会经过 HTML 转义；正文模板作为可信 HTML 组装，并不通过该过程做安全净化。
+
+章节来源
+- [templates/layout.html:26-27](file://templates/layout.html#L26-L27)
+- [case-content.html:68-70](file://case-content.html#L68-L70)
+- [case-visual.html:81-83](file://case-visual.html#L81-L83)
+- [case-data.html:77-79](file://case-data.html#L77-L79)
+- [build.mjs:30-41](file://build.mjs#L30-L41)
+- [build.mjs:77-85](file://build.mjs#L77-L85)
+
+## 故障排查指南
+排查页面问题时先区分配置、正文模板、共享外壳与已生成输出，再沿构建读取关系检查。导航、标题和联系方式异常通常来自配置或尚未重建，案例内容异常则优先检查同名正文模板。以下场景依据现有实现给出定位路径，不推断未出现的后端功能。
+
+- 导航文本或顺序不符合预期 → `pages` 是唯一导航来源 → 检查配置的 `label` 和顺序，再检查生成页面的导航区 → 定位 `site.config.json` 第 8–17 行与 `build.mjs` 第 68 行。
+- 新页面构建失败或导航出现页面却无内容 → 缺少同名正文模板，或 `file` 格式不符合约束 → 核对配置文件名与 `templates/pages/` 下同名文件，再查看读取错误 → 定位 `build.mjs` 第 23–29、66 行。
+- 页签标题或分享摘要旧 → 修改生成 HTML、配置变化后未重建，或使用了错误字段 → 核对 `title`、`description` 及布局占位符，执行构建一致性检查 → 定位 `templates/layout.html` 第 7–25 行与 `build.mjs` 第 71–74、82–85 行。
+- 当前导航激活项错误 → 对应配置文件名与构建当前页不一致，或输出过旧 → 核对生成 HTML 中唯一的 `aria-current="page"` 链接和配置 `file` → 定位 `build.mjs` 第 68 行与 `portfolio.html` 第 35–42 行。
+- 点击案例页无法执行 AI 流程 → 页面提供的是作品介绍与截图 → 查看案例正文中是否只有静态说明，按作品展示用途理解此页面 → 定位 `case-content.html` 第 53–86 行与 `case-data.html` 第 64–79 行。
+
+章节来源
+- [site.config.json:8-17](file://site.config.json#L8-L17)
+- [build.mjs:23-29](file://build.mjs#L23-L29)
+- [build.mjs:64-85](file://build.mjs#L64-L85)
+- [templates/layout.html:7-25](file://templates/layout.html#L7-L25)
+- [portfolio.html:35-42](file://portfolio.html#L35-L42)
+- [case-content.html:53-86](file://case-content.html#L53-L86)
+- [case-data.html:64-79](file://case-data.html#L64-L79)
+
+## 结论
+配置与页面模块把八个作品集页面组织为共享外壳下的静态展示内容。维护时应以 `site.config.json` 和同名正文模板为输入，重新构建并检查输出，保证导航、元信息与联系方式统一。阅读案例时应把业务 Workflow 描述与站点自身的运行行为分开，页面的直接职责是说明作品并提供浏览与联系入口。
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+- [case-content.html:53-86](file://case-content.html#L53-L86)
+- [contact.html:62-71](file://contact.html#L62-L71)
+
+<cite>
+**本文引用的文件**
+- [site.config.json](file://site.config.json)
+- [layout.html](file://templates/layout.html)
+- [build.mjs](file://build.mjs)
+- [index.html](file://index.html)
+- [portfolio.html](file://portfolio.html)
+- [case-content.html](file://case-content.html)
+- [case-visual.html](file://case-visual.html)
+- [case-data.html](file://case-data.html)
+- [resume.html](file://resume.html)
+- [about.html](file://about.html)
+- [contact.html](file://contact.html)
+</cite>
+
+---
+
+# 站点配置模型
+
+## 目录
+1. [简介](#简介)
+2. [数据模型总览](#数据模型总览)
+3. [核心实体分析](#核心实体分析)
+4. [状态机](#状态机)
+5. [存储与序列化](#存储与序列化)
+6. [数据生命周期](#数据生命周期)
+7. [故障排查指南](#故障排查指南)
+8. [结论](#结论)
+
+## 简介
+站点的品牌信息、联系方式和页面清单集中保存在 `site.config.json`，由 `build.mjs` 读取并写入生成的 HTML。配置同时影响导航、浏览器标题、搜索描述、分享信息和页脚，因此一次修改会作用于多张页面。本页使用 `SiteConfig` 和 `PageConfig` 作为数据结构的说明名称；仓库没有声明同名类或类型，也没有数据库模型。
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [build.mjs:17-29](file://build.mjs#L17-L29)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+
+## 数据模型总览
+一个 `SiteConfig` 对象包含站点级标量和一个有序的 `pages` 数组，数组中的每个 `PageConfig` 对应一个正文模板和一个输出文件。配置的数组顺序直接决定导航链接顺序以及构建遍历顺序，而模板通过 `file` 字段与页面记录匹配。下面的实体关系图展示这些逻辑关系，`PageTemplate` 是文件关系的概念实体，不是额外的 JSON 字段。
+
+```mermaid
+erDiagram
+SiteConfig ||--|{ PageConfig : "包含有序页面"
+PageConfig ||--|| PageTemplate : "通过 file 读取正文"
+SiteConfig {
+    string name
+    string role
+    string url
+    string email
+    string phone
+    string workStart
+}
+PageConfig {
+    string file
+    string label
+    string icon
+    string title
+    string description
+}
+PageTemplate {
+    string relativePath
+}
+```
+
+该模型把共享信息和逐页信息分开管理；正文模板的存在性在读取阶段确认，而非写成配置内的引用完整性规则。
+
+图表来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [build.mjs:64-79](file://build.mjs#L64-L79)
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [build.mjs:21-29](file://build.mjs#L21-L29)
+- [build.mjs:64-79](file://build.mjs#L64-L79)
+
+## 核心实体分析
+配置采用可直接编辑的 JSON，没有运行时表单或独立的 schema 文件。构建脚本对 URL、工作起始月和页面清单执行显式验证，其余字段依靠模板消费和 HTML 转义。维护时应区分“当前 JSON 的字段类型”和“构建程序真正强制的约束”，避免把编辑约定误认为完整的输入校验。
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [build.mjs:17-29](file://build.mjs#L17-L29)
+- [build.mjs:36-42](file://build.mjs#L36-L42)
+
+### SiteConfig
+`SiteConfig` 的当前标量均为字符串，提供所有页面共享的信息。`name` 和 `role` 形成品牌与职业定位，`email` 和 `phone` 进入可见文本与联系链接，`url` 提供绝对地址基准。联系方式会被发布到生成页面，不能把此文件当作私密配置存储；此处只说明字段用途，不重复具体号码或地址。
+
+- `name`：写入品牌、站点名、页面标题和页脚。
+- `role`：写入页脚职业说明。
+- `url`：必须满足构建脚本的 HTTP/HTTPS 绝对地址模式，并以 `/` 结尾；首页使用 `./`，其余页面使用文件名，经 `new URL()` 生成 canonical 和分享地址。
+- `email`：写入邮箱复制按钮的 `data-copy-email`、`mailto:` 链接和联系页文本。
+- `phone`：写入 `tel:` 链接和联系页、页脚文本。
+- `workStart`：必须符合 `YYYY-MM`，月份限制为 `01` 至 `12`；构建时按上海时区当前年月计算任职月数，负值钳制为零。
+- `pages`：必须是非空数组，且至少包含 `index.html`。
+
+脚本没有单独验证 `name`、`role`、`email`、`phone` 的非空性或格式，`escapeHtml()` 会把输入转为字符串。维护者因此仍需保证这些字段为合适的公开文本。日期约束只检查格式，没有限制起始年份的业务范围。
+
+章节来源
+- [site.config.json:2-8](file://site.config.json#L2-L8)
+- [build.mjs:19-34](file://build.mjs#L19-L34)
+- [build.mjs:40-42](file://build.mjs#L40-L42)
+- [build.mjs:64-74](file://build.mjs#L64-L74)
+- [templates/layout.html:33-51](file://templates/layout.html#L33-L51)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+
+### PageConfig
+`PageConfig` 把输出文件名、导航标签和页面元数据绑定在一条记录中。`file` 同时用于读取 `templates/pages/<file>`、确定输出位置和生成链接，因此新页面需要配置与正文模板同时就绪。`pages` 当前包含八条记录，构建过程不会另行排序。
+
+- `file`：必须是字符串、无目录分隔符且以 `.html` 结尾；文件名通过 `Set` 检查精确重复，至少一条记录必须恰好为 `index.html`。
+- `label`：非空字符串，作为顶部导航可见文本。
+- `icon`：非空字符串，保留在配置中；当前导航生成逻辑只使用文字标签，并未渲染图标。
+- `title`：非空字符串，与站点名称拼接后写入 `<title>` 和分享标题。
+- `description`：非空字符串，用于普通描述、Open Graph 描述和 Twitter 描述。
+
+非空校验使用字符串真值判断，没有去除首尾空白，也没有对这些字段施加长度限制。正文模板必须存在，但这是后续 `readFile()` 的要求；配置验证没有预先扫描模板目录。当前页面的链接增加 `class="current"` 和 `aria-current="page"`，其余导航链接不带这两个属性。
+
+章节来源
+- [site.config.json:8-17](file://site.config.json#L8-L17)
+- [build.mjs:21-29](file://build.mjs#L21-L29)
+- [build.mjs:64-78](file://build.mjs#L64-L78)
+- [templates/layout.html:7-25](file://templates/layout.html#L7-L25)
+
+## 状态机
+配置没有 `status` 字段，也没有草稿、发布或归档的业务状态机。它的隐式状态来自构建过程：JSON 成功解析后先验证约束，再逐页渲染，最后选择写文件或与现有 HTML 比较。以下状态图是对程序控制流的概念表达，状态名称并非仓库中的持久化字段。
+
+```mermaid
+stateDiagram-v2
+state "JSON 已解析" as parsed
+state "配置验证通过" as valid
+state "逐页渲染" as rendered
+state "HTML 写入完成" as written
+state "现有 HTML 一致" as checked
+state "构建失败" as failed
+[*] --> parsed
+parsed --> valid : "字段满足约束"
+parsed --> failed : "验证抛出错误"
+valid --> rendered : "读取正文模板"
+rendered --> written : "普通或部署构建"
+rendered --> checked : "--check 比较通过"
+rendered --> failed : "未知占位符或文件漂移"
+written --> [*]
+checked --> [*]
+failed --> [*]
+```
+
+配置修改本身不会自动刷新根目录 HTML；只有成功运行构建后，新值才进入静态页面，检查模式则只判断是否存在漂移。
+
+图表来源
+- [build.mjs:17-29](file://build.mjs#L17-L29)
+- [build.mjs:50-55](file://build.mjs#L50-L55)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+
+章节来源
+- [build.mjs:11-29](file://build.mjs#L11-L29)
+- [build.mjs:50-55](file://build.mjs#L50-L55)
+- [build.mjs:79-88](file://build.mjs#L79-L88)
+
+## 存储与序列化
+持久源数据是仓库根目录的 `site.config.json`，构建时经 UTF-8 读取和 `JSON.parse()` 形成内存对象。程序不把这个对象写回 JSON，也不把整个配置直接交给浏览器；浏览器消费的是已生成的 HTML 文本、属性和 `data-*` 值。此过程采用有限的占位符替换，不执行配置或模板中的脚本表达式。
+
+- 输入存储：JSON 文件提供共享标量与页面数组，正文和布局分别保存在 HTML 模板文件中。
+- 输出序列化：标量经 `escapeHtml()` 处理 `&`、`<`、`>`、双引号和单引号，再写入 UTF-8 HTML。
+- 模板边界：`render()` 仅替换形如 `{{NAME}}` 的大写命名占位符；缺少键会抛错。正文模板本身作为可信 HTML 插入布局，标量转义不等于模板内容净化。
+- 浏览器消费：邮箱从 `data-copy-email` 读取，年份更新使用 `textContent`，任职时长从 `data-experience-start` 读取。
+
+转义解决文本与属性中的特殊字符问题，没有为邮箱或电话号码做语义格式验证。联系方式仍是公开内容；维护者应只填写愿意展示的值，并保持模板来源可信。
+
+章节来源
+- [build.mjs:17-18](file://build.mjs#L17-L18)
+- [build.mjs:36-55](file://build.mjs#L36-L55)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+- [templates/layout.html:38-51](file://templates/layout.html#L38-L51)
+- [site.js:6-18](file://site.js#L6-L18)
+- [site.js:27-40](file://site.js#L27-L40)
+
+## 数据生命周期
+配置由维护者修改，随后在每次构建中重新读取、验证和映射到各页模板。普通构建将 HTML 写入根目录，`--deploy` 将页面写入固定的 `dist` 目录并复制样式、脚本和素材；浏览器访问时继续更新年份和任职时长。仓库没有配置归档或历史状态管理，删除页面记录也不会在普通构建中清理此前生成的根目录文件。
+
+下面的依赖图展示配置从编辑到浏览器使用的路径，也标出部署目录清理的位置。
+
+```mermaid
+graph LR
+A["修改 site.config.json"] --> B["解析与字段验证<br/>build.mjs"]
+B --> C["读取共享布局与正文模板"]
+C --> D["转义标量并渲染 HTML"]
+D --> E["写入根目录 HTML"]
+D --> F["写入已清空的 dist"]
+F --> G["复制样式、脚本和素材"]
+E --> H["浏览器读取页面与 data 属性"]
+G --> H
+H --> I["site.js 更新日期与处理邮箱复制"]
+```
+
+生命周期中的清理仅针对部署产物目录；配置文件和源模板不由该流程清理。
+
+图表来源
+- [build.mjs:15-29](file://build.mjs#L15-L29)
+- [build.mjs:57-94](file://build.mjs#L57-L94)
+- [site.js:5-43](file://site.js#L5-L43)
+
+章节来源
+- [build.mjs:15-29](file://build.mjs#L15-L29)
+- [build.mjs:57-94](file://build.mjs#L57-L94)
+- [site.js:5-43](file://site.js#L5-L43)
+
+## 故障排查指南
+配置问题通常在构建阶段暴露，浏览器显示异常则需要同时检查模板属性和生成结果。排查时先依据异常文本定位验证或渲染阶段，再确认配置字段与对应模板是否同步。任职时长尤其需要区分构建的后备文本和浏览器重新计算的文本，两者当前并不共享同一个模板起始月来源。
+
+- URL 错误：检查 `url` 是否为以 `/` 结尾的 HTTP/HTTPS 绝对地址；canonical 与分享链接均依赖该基准。
+- 工作年月错误：检查 `workStart` 的年月格式。`resume.html` 的 `data-experience-start` 当前直接写为固定年月，未使用构建提供的 `WORK_START` 占位符；修改配置时应注意这一同步边界。
+- 页面清单错误：依次检查非空数组、唯一文件名、`.html` 后缀和 `index.html` 记录；再确认对应正文模板真实存在。
+- 文字字段缺失：页面记录的 `label`、`icon`、`title`、`description` 会触发显式错误，共享标量则缺少对应的非空校验，应直接检查 JSON 内容。
+- `Unknown template value`：检查模板占位符名称是否属于构建提供的键，而非把任意 JSON 字段写进模板。
+- `needs rebuilding`：`--check` 比较发现生成结果与根目录 HTML 不一致；配置变更或上海时区跨月都可能要求重新构建。
+
+章节来源
+- [build.mjs:19-34](file://build.mjs#L19-L34)
+- [build.mjs:50-55](file://build.mjs#L50-L55)
+- [build.mjs:64-85](file://build.mjs#L64-L85)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [site.js:6-15](file://site.js#L6-L15)
+
+## 结论
+站点配置是静态生成过程的共享数据入口，正确维护它可以同步品牌、导航和页面元数据。使用时应遵守 URL、年月和页面清单约束，并在修改后重新构建确认输出。共享联系信息会直接公开，模板起始月等独立写入的数据还需要维护者同步核对。
+
+章节来源
+- [site.config.json:1-18](file://site.config.json#L1-L18)
+- [build.mjs:19-29](file://build.mjs#L19-L29)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+
+<cite>
+**本文引用的文件**
+- [site.config.json](file://site.config.json)
+- [build.mjs](file://build.mjs)
+- [layout.html](file://templates/layout.html)
+- [site.js](file://site.js)
+- [contact.html](file://templates/pages/contact.html)
+- [resume.html](file://templates/pages/resume.html)
+</cite>
+
+---
+
+# 页面内容与媒体素材
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+本页描述作品集站点面向访客呈现的页面内容、导航关系和媒体素材。页面模板只承载展示层文案与截图引用，真实的模型、Workflow、RPA 或数据分析后端不在本仓库中；`site.config.json` 负责页面元数据，`templates/layout.html` 负责共享外壳与分享标签。
+
+- 页面由首页、案例目录、三张案例详情、经历、关于和联系共八类入口组成。
+- 案例素材使用 WebP 截图，分享卡片使用固定的 JPEG 预览图。
+- 联系方式、经历起始月份和页面描述从共享配置或布局占位符生成。
+
+章节来源
+- [README.md:3-13](file://README.md#L3-L13)
+- [site.config.json:1-17](file://site.config.json#L1-L17)
+- [templates/layout.html:1-27](file://templates/layout.html#L1-L27)
+
+## 项目结构
+页面正文集中在 `templates/pages/`，各文件按导航清单中的 HTML 文件名对应一个入口。布局和配置不复制到正文中，而是由构建器统一插入，因此内容修改应优先落在模板源文件。
+
+```text
+site.config.json
+├── pages[]                  # 8 个页面的文件名、标签、标题和摘要
+templates/
+├── layout.html              # 导航、分享元数据、页脚和正文插槽
+└── pages/
+    ├── index.html           # 首页定位与入口卡片
+    ├── portfolio.html       # 案例目录
+    ├── case-content.html    # 内容自动化案例
+    ├── case-visual.html     # 视觉生成案例
+    ├── case-data.html       # 数据分析与自动化案例
+    ├── resume.html          # 工作与教育经历
+    ├── about.html           # 工作方式与求职方向
+    └── contact.html         # 电话和邮箱入口
+assets/
+├── content-automation-workflow.webp
+├── visual-generation-workflow.webp
+├── product-image-data-grid.webp
+├── social-preview.jpg
+└── favicon.svg
+```
+
+首页的入口卡片分别指向案例、经历和关于页面，案例目录再指向三个具体案例。详情模板中的图片路径均相对页面使用，布局则统一加载 favicon、样式、脚本和联系动作。
+
+```mermaid
+graph TB
+CONFIG["页面元数据<br/>site.config.json"]
+LAYOUT["共享布局<br/>templates/layout.html"]
+HOME["首页<br/>index.html"]
+PORTFOLIO["案例目录<br/>portfolio.html"]
+CASES["案例详情<br/>case-content / case-visual / case-data"]
+PROFILE["经历与关于<br/>resume / about"]
+CONTACT["联系页<br/>contact.html"]
+MEDIA["截图与品牌素材<br/>assets/"]
+CONFIG --> LAYOUT
+LAYOUT --> HOME
+LAYOUT --> PORTFOLIO
+LAYOUT --> CASES
+LAYOUT --> PROFILE
+LAYOUT --> CONTACT
+CASES --> MEDIA
+LAYOUT --> MEDIA
+```
+
+图表来源
+- [site.config.json:8-16](file://site.config.json#L8-L16)
+- [templates/pages/index.html:62-83](file://templates/pages/index.html#L62-L83)
+- [templates/pages/portfolio.html:10-41](file://templates/pages/portfolio.html#L10-L41)
+- [templates/layout.html:23-27](file://templates/layout.html#L23-L27)
+
+章节来源
+- [site.config.json:8-16](file://site.config.json#L8-L16)
+- [templates/pages/index.html:62-83](file://templates/pages/index.html#L62-L83)
+- [templates/pages/portfolio.html:10-41](file://templates/pages/portfolio.html#L10-L41)
+- [templates/layout.html:29-52](file://templates/layout.html#L29-L52)
+
+## 核心组件
+下表按访客浏览路径和内容类型梳理页面组件；案例详情与个人信息页共同复用同一布局，但各自保持独立正文。
+
+| 组件 | 关键文件 | 一句话职责 |
+| --- | --- | --- |
+| 首页入口 | `templates/pages/index.html` | 说明 AI 产品经理定位，并把访客引向案例、经历和关于页。 |
+| 案例目录 | `templates/pages/portfolio.html` | 提供内容自动化、视觉生成、数据分析三个案例入口。 |
+| 案例详情 | `templates/pages/case-content.html`、`case-visual.html`、`case-data.html` | 分别展示问题、方案、Workflow、数据和截图证据。 |
+| 个人信息页 | `templates/pages/resume.html`、`about.html` | 呈现工作教育时间线、工作方式和期望机会。 |
+| 联系页与布局 | `templates/pages/contact.html`、`templates/layout.html` | 输出电话、邮箱、导航、SEO 分享标签和页脚联系链接。 |
+| 媒体资源 | `assets/*.webp`、`assets/social-preview.jpg`、`assets/favicon.svg` | 支撑案例证据、分享预览和品牌图标。 |
+
+页面标题、摘要和导航标签不是散落在正文里的重复数据，而是由配置清单集中声明；布局中的 `{{TITLE}}`、`{{DESCRIPTION}}`、`{{IMAGE}}` 等占位符负责承接这些值。
+
+章节来源
+- [site.config.json:8-16](file://site.config.json#L8-L16)
+- [templates/pages/case-content.html:7-33](file://templates/pages/case-content.html#L7-L33)
+- [templates/pages/case-visual.html:11-32](file://templates/pages/case-visual.html#L11-L32)
+- [templates/pages/case-data.html:11-28](file://templates/pages/case-data.html#L11-L28)
+- [templates/layout.html:7-27](file://templates/layout.html#L7-L27)
+
+## 架构总览
+访客先从布局生成的导航或首页入口进入页面，案例目录再把流量分配到三个详情模板。详情页中的图片是静态证据，联系页则输出可点击的电话和邮箱；`site.js` 只更新日期、任职时长和复制邮箱状态，不负责加载任何案例后端数据。
+
+```mermaid
+sequenceDiagram
+participant Visitor as "访客"
+participant HTML as "生成的 HTML"
+participant Build as "构建器"
+participant Source as "配置与模板"
+participant Asset as "静态资源"
+participant JS as "site.js"
+Build->>Source : "读取配置、布局与正文模板"
+Source-->>Build : "静态内容与页面元数据"
+Build->>HTML : "生成完整静态 HTML"
+Visitor->>HTML : "打开首页或导航入口"
+HTML->>Asset : "请求案例截图或 favicon"
+HTML->>JS : "defer 加载渐进增强"
+JS-->>HTML : "更新年份/任职时长或复制状态"
+HTML-->>Visitor : "呈现静态作品集页面"
+```
+
+图表来源
+- [templates/layout.html:23-52](file://templates/layout.html#L23-L52)
+- [templates/pages/portfolio.html:10-41](file://templates/pages/portfolio.html#L10-L41)
+- [templates/pages/case-content.html:16-18](file://templates/pages/case-content.html#L16-L18)
+- [site.js:5-42](file://site.js#L5-L42)
+
+章节来源
+- [templates/layout.html:29-52](file://templates/layout.html#L29-L52)
+- [templates/pages/portfolio.html:10-41](file://templates/pages/portfolio.html#L10-L41)
+- [site.js:5-42](file://site.js#L5-L42)
+
+## 详细组件分析
+页面内容可按“入口定位、案例证据、个人资料、联系动作”四个主题理解。每个主题都在静态模板中完成，构建器只负责共享字段和外壳拼接。
+
+### 首页与导航入口
+首页 Hero 说明 AI 产品经理、电商业务和 Workflow 定位，并列出内容自动化、商品视觉生成、RPA 流程和数据分析四个实践方向。能力概览用四个指标条压缩展示经验重点，底部三张入口卡片将访客带到案例、经历和关于页面。
+
+章节来源
+- [templates/pages/index.html:1-36](file://templates/pages/index.html#L1-L36)
+- [templates/pages/index.html:39-83](file://templates/pages/index.html#L39-L83)
+
+### 案例目录与详情
+案例目录把内容生产、视觉生成和数据分析与自动化作为三类产品案例，并在卡片中说明所用 Workflow、模型 API、Prompt、RPA 和 Excel Macro。内容自动化详情描述业务问题、方案和批量处理指标；视觉详情描述输入、约束与筛选；数据详情覆盖竞品色系、预测探索和固定操作自动化。
+
+三个详情页各自引用一张截图：内容页使用 `assets/content-automation-workflow.webp`，视觉页使用 `assets/visual-generation-workflow.webp`，数据页使用 `assets/product-image-data-grid.webp`。图片都声明 `width`、`height`、`loading="lazy"`、`decoding="async"` 和中文 `alt`，让布局尺寸和无障碍文本在图片加载前已有依据。
+下表记录模板中声明的图片尺寸；这些是页面保留的原始宽高，浏览器可再按 CSS 容器缩放显示。
+
+| 文件路径 | 宽 × 高 | 页面 | 替代文本 |
+| --- | --- | --- | --- |
+| `assets/content-automation-workflow.webp` | 1534 × 355 | 内容自动化详情 | 电商标题与种草文案自动化 Workflow 截图 |
+| `assets/visual-generation-workflow.webp` | 1160 × 788 | 商品视觉详情 | 商品视觉生成与图像模型 Workflow 截图 |
+| `assets/product-image-data-grid.webp` | 1271 × 916 | 数据分析详情 | 商品图数据分析矩阵截图 |
+
+章节来源
+- [templates/pages/portfolio.html:10-41](file://templates/pages/portfolio.html#L10-L41)
+- [templates/pages/case-content.html:7-33](file://templates/pages/case-content.html#L7-L33)
+- [templates/pages/case-visual.html:11-32](file://templates/pages/case-visual.html#L11-L32)
+- [templates/pages/case-data.html:11-28](file://templates/pages/case-data.html#L11-L28)
+- [README.md:13-13](file://README.md#L13-L13)
+
+### 经历、关于与联系
+经历页提供 2025 年 7 月至今的电商运营时间线和 2021—2025 年教育经历，并把 AI 预测、视觉生产、Prompt、Workflow、RPA 等能力放到业绩和标签中。关于页将工作方式归纳为理解场景、低成本验证和沉淀复用流程；联系页把电话和 QQ 邮箱包装成 `tel:` 与 `mailto:` 链接。
+
+工作起始月份同时出现在经历文案的 `data-experience-start` 和配置的 `workStart` 中，构建器和浏览器脚本据此生成任职时长。布局还提供带 `noscript` 退化路径的邮件链接，确保禁用 JavaScript 时仍可联系。
+
+章节来源
+- [templates/pages/resume.html:1-52](file://templates/pages/resume.html#L1-L52)
+- [templates/pages/about.html:1-22](file://templates/pages/about.html#L1-L22)
+- [templates/pages/contact.html:1-18](file://templates/pages/contact.html#L1-L18)
+- [site.config.json:2-7](file://site.config.json#L2-L7)
+- [templates/layout.html:37-43](file://templates/layout.html#L37-L43)
+
+### 分享与品牌素材
+布局为每页输出 `description`、Open Graph、Twitter 和 canonical 元数据；`IMAGE` 固定指向 `assets/social-preview.jpg`，所以不同页面共享同一张分享预览图。`assets/favicon.svg` 使用深色圆角方块和白色 W 的矢量路径，与页头品牌标记保持一致，不依赖本地字体。
+
+README 说明三张案例截图保持原尺寸的无损 WebP，分享预览则采用 JPEG 以兼容分享客户端。素材本身只承担展示和分享职责，页面没有从远程 API 读取模型或 Workflow 结果。
+
+章节来源
+- [templates/layout.html:7-24](file://templates/layout.html#L7-L24)
+- [README.md:11-13](file://README.md#L11-L13)
+- [assets/favicon.svg:1-6](file://assets/favicon.svg#L1-L6)
+
+## 依赖关系分析
+页面渲染只依赖模板、配置、浏览器静态资源和少量原生脚本能力。案例内容与媒体文件通过相对路径连接，页面不声明外部运行时服务；联系动作由浏览器处理 `tel:`、`mailto:` 和 Clipboard API。
+
+```mermaid
+graph LR
+META["页面元数据<br/>site.config.json"] --> SHELL["共享布局<br/>templates/layout.html"]
+BODY["正文内容<br/>templates/pages/*.html"] --> SHELL
+SHELL --> HTML["静态 HTML"]
+HTML --> STYLE["pages.css"]
+HTML --> SCRIPT["site.js"]
+HTML --> MEDIA["WebP / JPEG / SVG<br/>assets/"]
+SCRIPT --> CLIP["Clipboard API<br/>可选增强"]
+```
+
+图表来源
+- [site.config.json:8-16](file://site.config.json#L8-L16)
+- [templates/layout.html:7-27](file://templates/layout.html#L7-L27)
+- [templates/layout.html:37-51](file://templates/layout.html#L37-L51)
+- [site.js:17-42](file://site.js#L17-L42)
+
+章节来源
+- [templates/layout.html:7-27](file://templates/layout.html#L7-L27)
+- [templates/layout.html:37-51](file://templates/layout.html#L37-L51)
+- [site.js:17-42](file://site.js#L17-L42)
+- [README.md:11-13](file://README.md#L11-L13)
+
+## 性能与一致性考量
+页面将案例截图标记为异步解码、延迟加载并声明原始宽高，减少图片加载对布局稳定性的影响。布局和正文静态生成后可直接被抓取，分享元数据固定输出；脚本仅在浏览器加载后补充动态文本和复制邮箱状态。
+
+- WebP 截图保留原尺寸与逐像素一致性，适合作为案例证据。
+- `loading="lazy"` 让首屏外的案例图片按需加载，`width` 和 `height` 为布局预留空间。
+- `social-preview.jpg` 作为固定预览图，尺寸在布局中声明为 1534 × 355。
+- 联系功能有静态 `mailto:` 退化路径；Clipboard API 不可用时显示可手动选择的邮箱。
+
+章节来源
+- [README.md:11-13](file://README.md#L11-L13)
+- [templates/layout.html:14-22](file://templates/layout.html#L14-L22)
+- [templates/pages/case-content.html:16-18](file://templates/pages/case-content.html#L16-L18)
+- [templates/pages/case-visual.html:29-32](file://templates/pages/case-visual.html#L29-L32)
+- [templates/pages/case-data.html:25-28](file://templates/pages/case-data.html#L25-L28)
+- [site.js:17-39](file://site.js#L17-L39)
+
+## 故障排查指南
+排查页面内容时先看对应正文模板和配置中的页面条目，再确认布局是否仍插入资源路径、元数据和联系动作；图片问题则核对文件名、尺寸属性和部署目录是否包含资源。
+
+- **导航标签、标题或摘要不一致** → 原因是 `site.config.json` 页面条目与模板文件名不匹配或字段未更新 → 同时检查 `pages[]` 的 `file`、`label`、`title`、`description` 与对应 `templates/pages/<file>` → 相关位置为配置清单和布局元数据占位符。
+- **案例截图不显示** → 原因是相对路径、资源文件名或部署复制缺失 → 对照详情页 `src`、`width`、`height` 与 `assets/` 实际文件，并确认部署目录包含 `assets/` → 相关位置为三份案例模板和 README 素材约定。
+- **分享卡片错误** → 原因是布局中的固定 `IMAGE` 或 Open Graph/Twitter 字段被改动 → 检查 `og:image`、`twitter:image`、canonical 和站点 URL 是否仍由生成器填入 → 相关位置为 `templates/layout.html` 与 `site.config.json`。
+- **任职时长或复制邮箱没有更新** → 原因是 `data-experience-start`、配置起始月份或浏览器 Clipboard API 状态不一致 → 检查经历页标记、`site.config.json` 的 `workStart` 及 `site.js` 的错误退化文案 → 相关位置为经历模板和脚本。
+
+章节来源
+- [site.config.json:4-16](file://site.config.json#L4-L16)
+- [templates/layout.html:7-27](file://templates/layout.html#L7-L27)
+- [templates/pages/case-content.html:16-18](file://templates/pages/case-content.html#L16-L18)
+- [templates/pages/case-visual.html:29-32](file://templates/pages/case-visual.html#L29-L32)
+- [templates/pages/case-data.html:25-28](file://templates/pages/case-data.html#L25-L28)
+- [site.js:5-42](file://site.js#L5-L42)
+
+## 结论
+页面层是一个以静态模板为核心的作品集展示系统：首页负责定位和分流，案例页负责叙述问题与证据，经历/关于页负责补充背景，联系页负责转化动作。维护时应同步更新配置清单、对应正文模板和 `assets/` 文件，并保留截图尺寸、替代文本、分享字段和 JavaScript 退化路径。
+
+章节来源
+- [README.md:3-13](file://README.md#L3-L13)
+- [site.config.json:8-16](file://site.config.json#L8-L16)
+- [templates/layout.html:7-52](file://templates/layout.html#L7-L52)
+
+<cite>
+**本文引用的文件**
+- [templates/pages/index.html](file://templates/pages/index.html)
+- [templates/pages/portfolio.html](file://templates/pages/portfolio.html)
+- [templates/pages/case-content.html](file://templates/pages/case-content.html)
+- [templates/pages/case-visual.html](file://templates/pages/case-visual.html)
+- [templates/pages/case-data.html](file://templates/pages/case-data.html)
+- [templates/pages/resume.html](file://templates/pages/resume.html)
+- [templates/pages/about.html](file://templates/pages/about.html)
+- [templates/pages/contact.html](file://templates/pages/contact.html)
+- [templates/layout.html](file://templates/layout.html)
+- [site.config.json](file://site.config.json)
+- [README.md](file://README.md)
+- [assets/favicon.svg](file://assets/favicon.svg)
+- [site.js](file://site.js)
+</cite>
+
+---
+
+# 交互与样式
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+
+全站通过一份共享 `pages.css` 和一份短小的 `site.js` 保持页面一致。CSS 管理视觉变量、导航、卡片和响应式布局，JavaScript 则只增强年份、任职时长和邮箱复制。正文、导航以及联系链接均来自静态 HTML，浏览器脚本没有承担页面路由或数据获取。
+
+章节来源
+- [pages.css:1-26](file://pages.css#L1-L26)
+- [site.js:1-20](file://site.js#L1-L20)
+- [templates/layout.html:24-51](file://templates/layout.html#L24-L51)
+
+## 项目结构
+
+视觉与交互源码放在仓库根目录，共享布局负责引入资源、定义交互所需的 DOM 标记。正文模板只提供语义内容和对应 CSS class；最终生成的每个页面都经过同一布局，因此基础样式和增强逻辑共用同一入口。
+
+```
+pages.css
+site.js
+templates/
+  layout.html
+  pages/
+    index.html
+    contact.html
+    resume.html
+```
+
+以下结构图说明正文与共享布局如何分别向 CSS 和脚本提供选择器，而不是形成组件框架。
+
+```mermaid
+graph TB
+Layout["共享布局<br/>templates/layout.html"] --> Css["视觉规则<br/>pages.css"]
+Layout --> Script["渐进增强<br/>site.js"]
+Body["页面正文<br/>templates/pages/*.html"] --> Css
+Body --> Date["年份 / 任职时长标记<br/>data-* 属性"]
+Date --> Script
+Script --> Status["邮箱复制状态<br/>copy-status"]
+```
+
+图表来源
+- [templates/layout.html:24-43](file://templates/layout.html#L24-L43)
+- [site.js:6-20](file://site.js#L6-L20)
+- [templates/pages/index.html:1-19](file://templates/pages/index.html#L1-L19)
+
+图中最重要的边界是 CSS 只决定呈现，脚本只更新已有 DOM；两者都不生成页面导航结构。
+
+章节来源
+- [templates/layout.html:24-51](file://templates/layout.html#L24-L51)
+- [pages.css:49-60](file://pages.css#L49-L60)
+- [site.js:6-20](file://site.js#L6-L20)
+
+## 核心组件
+
+组件以文件和 DOM 契约组织，不依赖第三方 UI 库。样式变量覆盖颜色、容器、圆角和字体，布局模板则固定按钮、状态区域和页脚标记，浏览器脚本据此执行有限的增强。
+
+- `pages.css`：统一容器、sticky 顶栏、首页入口卡片、子页面板、联系卡片、时间线和三个宽度断点。
+- `site.js`：加载后计算上海时区年月，更新已标记的年份与任职时长，绑定邮箱复制事件。
+- `templates/layout.html`：以 `defer` 引入脚本，输出默认隐藏的复制按钮、无脚本邮件入口和实时状态区域。
+- `templates/pages/index.html`：组织 hero、能力概览和三个页面入口卡片。
+- `templates/pages/contact.html`：用 `tel:`、`mailto:` 链接构造无需脚本的联系卡片。
+
+章节来源
+- [pages.css:49-111](file://pages.css#L49-L111)
+- [pages.css:116-196](file://pages.css#L116-L196)
+- [site.js:5-42](file://site.js#L5-L42)
+- [templates/layout.html:24-43](file://templates/layout.html#L24-L43)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+
+## 架构总览
+
+浏览器先解析静态页面并应用共享 CSS，随后执行 `defer` 脚本。日期更新与邮箱复制各自使用现成的 DOM 标记；复制操作只有在用户点击之后才访问剪贴板，成功和失败都将状态反馈给用户。
+
+```mermaid
+sequenceDiagram
+participant Browser as "浏览器"
+participant Dom as "生成 HTML<br/>layout + body"
+participant Css as "共享样式<br/>pages.css"
+participant Js as "增强脚本<br/>site.js"
+participant Clipboard as "Clipboard API"
+Browser->>Dom : "解析正文、导航和联系链接"
+Browser->>Css : "应用容器、卡片与断点"
+Browser->>Js : "defer 执行"
+Js->>Dom : "更新年月并显示复制按钮"
+Browser->>Js : "用户点击复制邮箱"
+Js->>Clipboard : "writeText"
+Clipboard-->>Js : "成功或拒绝 / 缺少 API"
+Js->>Dom : "更新按钮与 aria-live 状态"
+```
+
+图表来源
+- [templates/layout.html:24-43](file://templates/layout.html#L24-L43)
+- [site.js:6-42](file://site.js#L6-L42)
+- [pages.css:207-243](file://pages.css#L207-L243)
+
+这条路径说明剪贴板能力是可失败的附加功能，静态邮件链接始终由 HTML 提供。
+
+章节来源
+- [templates/layout.html:38-51](file://templates/layout.html#L38-L51)
+- [site.js:17-42](file://site.js#L17-L42)
+
+## 详细组件分析
+
+### 渐进增强与无障碍反馈
+
+脚本按 `Asia/Shanghai` 更新 `data-current-year` 和 `data-experience-start` 元素，不请求服务器时间。复制处理过程中暂时禁用按钮，成功后显示“已复制”，失败后给出可手动选中的邮箱；`finally` 重新启用按钮并展示状态。共享布局通过 `aria-describedby`、`role="status"` 和 `aria-live="polite"` 把状态与操作关联。
+
+本章的《渐进增强与无障碍反馈》主题集中解释日期算法、DOM 契约和剪贴板的失败路径。其范围限定在源码现有行为，页面没有更复杂的前端状态库或浏览器事件总线。
+
+章节来源
+- [site.js:6-42](file://site.js#L6-L42)
+- [templates/layout.html:38-43](file://templates/layout.html#L38-L43)
+
+### 响应式视觉系统
+
+CSS 使用 `:root` 变量和普通 class 管理视觉体系，通用容器最大宽度为 `1120px`。在 `900px` 以下，首页入口和内容网格改为单列、数据条改为两列；在 `720px` 以下，头部操作区隐藏、导航可横向滚动、容器左右留白缩小；在 `480px` 以下，品牌文字隐藏。键盘焦点有独立轮廓，入场动画只在用户未请求减少动态效果时启用。
+
+本章的《响应式视觉系统》主题说明具体选择器、模板 class 和断点变化。调整页面结构时应同时检查共享布局和正文中的 class 是否仍被 CSS 覆盖。
+
+章节来源
+- [pages.css:7-26](file://pages.css#L7-L26)
+- [pages.css:47-60](file://pages.css#L47-L60)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+## 依赖关系分析
+
+运行时依赖来自浏览器内置 DOM、CSS、`Intl.DateTimeFormat` 和可选的 Clipboard API。布局必须提供准确的选择器与 data 属性；CSS 和脚本没有包管理依赖。剪贴板 API 不可用会进入已实现的失败反馈，静态电话和邮件联系仍由链接承担。
+
+- 必选：生成 HTML 中的 class、`data-current-year` 和交互 DOM 元素，是样式和脚本的定位依据。
+- 必选：浏览器 DOM 和 `Intl.DateTimeFormat`，用于元素查找、年月计算和文本更新。
+- 可选：`navigator.clipboard.writeText`，仅影响复制操作；脚本在缺少 API 时捕获失败。
+
+以下依赖图把静态呈现和复制增强的边界放在同一张图中。
+
+```mermaid
+graph LR
+HTML["生成 HTML<br/>class / data-* / ARIA"] --> CSS["pages.css"]
+HTML --> JS["site.js"]
+JS --> Intl["Intl.DateTimeFormat<br/>Asia/Shanghai"]
+JS --> Clipboard["可选 Clipboard API"]
+HTML --> Links["tel: / mailto:<br/>静态联系方式"]
+```
+
+图表来源
+- [templates/layout.html:26-51](file://templates/layout.html#L26-L51)
+- [site.js:6-42](file://site.js#L6-L42)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+
+图中联系链接直接依赖 HTML，复制按钮则额外依赖脚本和剪贴板接口。
+
+章节来源
+- [site.js:6-42](file://site.js#L6-L42)
+- [templates/layout.html:26-51](file://templates/layout.html#L26-L51)
+
+## 性能与一致性考量
+
+全站共享一份样式和一份脚本，脚本不请求 API，也不持续轮询；其工作集中在加载时更新日期和点击时复制邮箱。静态 HTML 为无脚本环境保留正文、导航和联系入口，而运行时日期只修正标记元素，不改变历史事实。CSS 断点和 `clamp` 用于适配布局，媒体偏好限制 hero 入场动画。
+
+- `defer` 让增强脚本在文档解析后执行，选择器可定位布局已提供的元素。
+- 复制期间 `disabled` 阻止重复触发，`finally` 在成功或失败后恢复操作。
+- `720px` 以下隐藏头部操作区，因此移动端需要依赖正文和页脚联系入口。
+- `[hidden]` 强制隐藏默认复制按钮与状态区域，脚本通过 `hidden = false` 显示它们。
+- 日期按浏览器本地时钟和上海时区计算，网页没有服务器时间同步机制。
+
+章节来源
+- [templates/layout.html:26-51](file://templates/layout.html#L26-L51)
+- [site.js:6-14](file://site.js#L6-L14)
+- [site.js:27-40](file://site.js#L27-L40)
+- [pages.css:28-29](file://pages.css#L28-L29)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+## 故障排查指南
+
+排查时先观察视口宽度，再核对生成页面的 DOM 标记和脚本是否加载。视觉问题通常定位到 class 与断点，复制问题定位到按钮、状态区域或 Clipboard API，日期问题则定位到对应 data 属性。
+
+- **现象：移动端看不到顶部复制按钮。** 原因可能是 `720px` 断点主动隐藏 `.header-actions`。定位步骤：调宽视口并查看 `pages.css:220-232`，再检查联系页和页脚链接是否可用。
+- **现象：桌面端复制按钮仍然隐藏。** 原因可能是脚本没有执行，或按钮/状态选择器缺失导致提前返回。定位步骤：检查布局中的 `defer` 引入和 `data-copy-email`、`#copy-status`；源码位置为 `site.js:17-20`。
+- **现象：点击后出现无法自动复制。** 原因是 Clipboard API 缺少或拒绝写入。定位步骤：查看显示出的邮箱并尝试手动复制，再核查 `site.js:29-39` 的错误分支；页面没有失败时自动打开邮件客户端。
+- **现象：年份或任职时长不更新。** 原因可能是脚本未加载或 DOM 标记缺少。定位步骤：检查 `data-current-year`、`data-experience-start` 与浏览器时钟，源码位置为 `site.js:6-14`。
+- **现象：卡片没有正常排列。** 原因可能是模板 class 与 CSS 不一致，或处于单列断点。定位步骤：核对 `.home-entry`、`.content-grid` 和 `900px` 媒体查询，源码位置为 `pages.css:138-160`、`208-219`。
+
+章节来源
+- [site.js:6-20](file://site.js#L6-L20)
+- [site.js:27-42](file://site.js#L27-L42)
+- [pages.css:138-160](file://pages.css#L138-L160)
+- [pages.css:208-243](file://pages.css#L208-L243)
+
+## 结论
+
+交互与样式围绕静态 HTML 的共享契约组织，适合当前无需前端框架的作品集网站。维护时优先保证模板语义、CSS class 和脚本选择器一致，再分别验证宽屏、窄屏、无脚本与剪贴板失败的用户行为。
+
+章节来源
+- [templates/layout.html:26-51](file://templates/layout.html#L26-L51)
+- [site.js:1-4](file://site.js#L1-L4)
+- [pages.css:207-243](file://pages.css#L207-L243)
+
+<cite>
+**本文引用的文件**
+- [pages.css](file://pages.css)
+- [site.js](file://site.js)
+- [templates/layout.html](file://templates/layout.html)
+- [templates/pages/index.html](file://templates/pages/index.html)
+- [templates/pages/contact.html](file://templates/pages/contact.html)
+</cite>
+
+---
+
+# 渐进增强与无障碍反馈
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+`site.js` 为生成的静态页面提供日期更新和邮箱复制两类增强，不负责页面路由或正文加载。页面模板预先包含导航、联系方式和可读的日期后备文本，浏览器脚本再通过 `data-*` 属性定位需要更新或交互的节点。复制结果写入共享状态区域，使成功与失败都能给出可见反馈。
+
+- 运行形态：一个立即执行函数，使用原生 DOM 和浏览器 API，没有客户端框架入口。
+- 日期口径：构建与浏览器均以 `Asia/Shanghai` 的年月计算年份和近似任职时长。
+- 反馈契约：隐藏按钮、`noscript` 邮件链接以及状态区域共同定义增强前后的界面行为。
+
+章节来源
+- [site.js:1-43](file://site.js#L1-L43)
+- [templates/layout.html:27-51](file://templates/layout.html#L27-L51)
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+
+## 项目结构
+交互脚本位于仓库根目录，所有页面通过共享布局以 `defer` 引入它。日期标记既分布在布局页脚，也出现在首页和经历页正文中；联系方式则同时存在于页脚和联系页。下面的目录树列出本主题直接涉及的输入文件，构建后它们共同形成根目录 HTML。
+
+```
+personalwebsite/
+├── site.js
+├── build.mjs
+└── templates/
+    ├── layout.html
+    └── pages/
+        ├── index.html
+        ├── resume.html
+        └── contact.html
+```
+
+- `site.js`：读取日期标记，绑定复制按钮的点击处理。
+- `templates/layout.html`：提供脚本引用、复制按钮、反馈区域和页脚联系链接。
+- `templates/pages/`：提供首页年份、任职起始月标记和联系卡片。
+- `build.mjs`：提前填入 `YEAR` 与 `EXPERIENCE`，为静态阅读保留后备文本。
+
+结构图展示静态模板与浏览器增强的分工，便于判断一个显示值来自构建还是访问时计算。
+
+```mermaid
+graph TB
+subgraph "静态生成"
+B["后备日期与配置标量<br/>build.mjs"]
+L["交互 DOM 契约<br/>templates/layout.html"]
+P["页面日期和联系方式<br/>templates/pages/"]
+end
+subgraph "浏览器运行"
+H["生成的静态 HTML"]
+J["日期与邮箱增强<br/>site.js"]
+end
+B --> H
+L --> H
+P --> H
+H --> J
+```
+
+脚本围绕已有 HTML 工作，所以查看正文和跟随普通链接无需等待额外的数据请求。
+
+图表来源
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [build.mjs:64-88](file://build.mjs#L64-L88)
+- [templates/layout.html:27-51](file://templates/layout.html#L27-L51)
+- [site.js:5-20](file://site.js#L5-L20)
+
+章节来源
+- [templates/layout.html:27-51](file://templates/layout.html#L27-L51)
+- [templates/pages/index.html:3-9](file://templates/pages/index.html#L3-L9)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+
+## 核心组件
+这套实现可以分为静态交互契约、日期更新和邮箱复制三个组件。静态契约指定可查询的节点与属性，日期更新在初始化阶段直接修改文本，复制处理则只在用户点击时执行异步写入。源码没有插件注册机制，扩展需要同步调整模板标记和脚本选择器。
+
+- 静态契约：`data-current-year`、`data-experience-start` 和 `data-copy-email` 为脚本提供数据入口，`#copy-status` 为交互提供结果出口。
+- 日期更新：立即执行函数先计算年月，再对所有日期标记写入 `textContent`。
+- 邮箱复制：`copyEmail()` 禁用按钮，等待 `navigator.clipboard.writeText()`，按结果更新按钮与状态文本，最终恢复可点击状态。
+
+脚本为日期使用 `querySelectorAll()`，为按钮和状态使用 `querySelector()`。因此所有日期节点都会更新，而复制逻辑绑定的是第一个匹配按钮及状态节点，并未建立多按钮管理器。
+
+章节来源
+- [site.js:5-20](file://site.js#L5-L20)
+- [site.js:27-43](file://site.js#L27-L43)
+- [templates/layout.html:38-43](file://templates/layout.html#L38-L43)
+
+## 架构总览
+初始化时，脚本先更新时间文本，再寻找复制按钮和状态节点。两个节点均存在才显示按钮并注册点击处理；缺少其中之一则提前返回，但已经完成的日期更新不会回滚。下面的时序图追踪一次复制操作，展示成功和失败路径共享的收尾步骤。
+
+```mermaid
+sequenceDiagram
+participant User as "访问者"
+participant DOM as "静态页面 DOM"
+participant Script as "site.js"
+participant Clipboard as "浏览器剪贴板 API"
+Script->>DOM : "更新日期并查询按钮和状态"
+DOM-->>Script : "返回匹配节点"
+Script->>DOM : "显示复制按钮并绑定 click"
+User->>DOM : "点击复制邮箱"
+DOM->>Script : "调用 copyEmail"
+Script->>DOM : "button.disabled = true"
+alt "存在 API 且写入成功"
+Script->>Clipboard : "writeText(data-copy-email)"
+Clipboard-->>Script : "Promise 完成"
+Script->>DOM : "显示已复制和成功提示"
+else "API 缺失或写入失败"
+Script->>DOM : "显示含邮箱的手动复制提示"
+end
+Script->>DOM : "显示状态区域并恢复按钮"
+```
+
+成功提示只有在写入 Promise 完成后出现，失败路径则给出可手动选中的邮箱文本，不把失败当作成功。
+
+图表来源
+- [site.js:6-20](file://site.js#L6-L20)
+- [site.js:27-42](file://site.js#L27-L42)
+
+章节来源
+- [site.js:6-20](file://site.js#L6-L20)
+- [site.js:22-43](file://site.js#L22-L43)
+- [templates/layout.html:38-43](file://templates/layout.html#L38-L43)
+
+## 详细组件分析
+浏览器行为取决于模板中的属性与脚本执行顺序，而不是额外的客户端配置文件。日期更新和复制反馈使用同一个立即执行函数，但复制动作具有独立的 `try`、`catch` 和 `finally`。下面分别说明计算口径、DOM 约定和异常处理边界。
+
+章节来源
+- [site.js:5-43](file://site.js#L5-L43)
+- [templates/layout.html:38-51](file://templates/layout.html#L38-L51)
+
+### 日期与工作时长更新
+脚本通过 `Intl.DateTimeFormat('sv-SE', ...)` 获取上海时区的年月，再拆分成数值。所有 `data-current-year` 节点会更新为当年数字，所有 `data-experience-start` 节点按起始年月计算经过的日历月数，未来日期的负差值被钳制为零。展示规则为完整年数加剩余月数，恰好整年时省略零个月，而零时长显示 `0 个月`。
+
+- 更新时机：立即执行函数运行一次，没有定时器持续更新时间。
+- 静态后备：构建提前生成 `YEAR` 与 `EXPERIENCE`，脚本不可用时保留这些文本。
+- 输入边界：浏览器代码检查起始年份为整数，并检查月份不小于 1、不大于 12；它没有完整校验属性格式、月份整数性或缺失值。
+- 配置同步：构建时长从配置的 `workStart` 计算，但经历页的 `data-experience-start` 当前使用写在模板中的固定年月。
+
+任职时长按月近似计算，不使用入职日。若修改工作起始月，只改配置可能造成静态后备文本与浏览器重新计算结果不一致，应同时核对模板属性。
+
+章节来源
+- [site.js:6-15](file://site.js#L6-L15)
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [build.mjs:65-65](file://build.mjs#L65-L65)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [templates/pages/index.html:3-9](file://templates/pages/index.html#L3-L9)
+- [templates/layout.html:48-51](file://templates/layout.html#L48-L51)
+
+### 静态契约与无障碍反馈
+复制控件是原生 `<button type="button">`，初始带有 `hidden`，只有脚本成功找到按钮与状态区域后才显示。按钮的 `aria-describedby="copy-status"` 关联反馈段落，后者声明 `role="status"` 和 `aria-live="polite"`，并在操作结束后解除隐藏。源码配置了这些语义属性，但没有记录跨浏览器或辅助技术的验证结果，不能据此声称所有环境下体验完全一致。
+
+- JavaScript 被禁用时，`noscript` 中的 `mailto:` 链接提供邮件联系入口。
+- 页脚和联系页本来就包含邮件、电话链接与可见联系文本。
+- 导航通过普通 `<a>` 链接工作，脚本不拦截跳转。
+- 状态区开始为空并隐藏，复制完成后由 `finally` 显示结果。
+
+`noscript` 回退取决于脚本是否被禁用，不代表脚本加载失败或运行异常时一定会显示。即便增强按钮未出现，页脚与联系页已有的静态联系入口仍保存在 HTML 中。
+
+章节来源
+- [templates/layout.html:33-51](file://templates/layout.html#L33-L51)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+- [site.js:17-20](file://site.js#L17-L20)
+- [site.js:37-42](file://site.js#L37-L42)
+
+### 复制操作与失败边界
+`copyEmail()` 在任何剪贴板检查之前先禁用按钮，使同一按钮不会在等待期间重复触发用户点击。若 API 不存在，代码主动抛出错误；若写入 Promise 拒绝，同样进入 `catch`，按钮恢复为“复制邮箱”，状态文本显示手动复制提示。成功路径把按钮改为“已复制”，并写入成功提示，随后 `finally` 显示状态并重新启用按钮。
+
+- 输入来源：读取按钮的 `dataset.copyEmail`，不发起网络请求，也不从页面文本反向解析邮箱。
+- 成功条件：等待 `writeText()` 完成，不只检查 API 是否存在。
+- 失败回退：通过 `textContent` 输出邮箱文本，没有自动打开邮件客户端。
+- 收尾规则：无论成功或失败，都恢复按钮的 `disabled` 状态；成功后的按钮文案会保留到后续操作更新它。
+
+剪贴板错误处理只覆盖 `copyEmail()` 内部的操作。日期初始化或 DOM 查询之前的异常没有外围 `catch`，可能使后续按钮注册无法执行；源码也没有错误上报或自动重试机制。
+
+章节来源
+- [site.js:5-20](file://site.js#L5-L20)
+- [site.js:22-43](file://site.js#L22-L43)
+- [templates/layout.html:38-43](file://templates/layout.html#L38-L43)
+
+## 依赖关系分析
+运行时增强只依赖页面 DOM、日期格式化能力和剪贴板 API，没有额外库依赖。页面的基础浏览与联系链接先由静态 HTML 提供，剪贴板能力缺失则在用户点击后转换为手动复制反馈。源码没有给出浏览器最低版本，下面仅按具体功能所需的能力说明依赖。
+
+- 必选：DOM 查询、事件绑定与 `textContent` 支撑脚本定位和更新节点；匹配的按钮与状态节点是复制绑定的结构要求。
+- 必选：`Intl.DateTimeFormat`、`Date` 和上海时区选项支撑初始化日期计算。
+- 可选：`navigator.clipboard.writeText` 支撑自动复制，缺失或失败由交互处理函数回退。
+
+依赖图展示同一脚本对不同能力的消费位置，便于分辨初始化失败与某次点击失败。
+
+```mermaid
+graph LR
+J["site.js"] --> D["DOM 选择器与 data 属性"]
+J --> T["日期与时区格式化<br/>Intl.DateTimeFormat"]
+J --> C["自动复制能力<br/>navigator.clipboard.writeText"]
+D --> L["模板节点契约<br/>layout.html"]
+D --> P["正文日期标记<br/>index.html / resume.html"]
+C --> F["失败时手动复制文本"]
+```
+
+缺少剪贴板能力可以进入已有回退流程，日期初始化异常则可能阻断后续复制按钮的显示和绑定。
+
+图表来源
+- [site.js:6-20](file://site.js#L6-L20)
+- [site.js:27-40](file://site.js#L27-L40)
+- [templates/layout.html:38-43](file://templates/layout.html#L38-L43)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [templates/pages/index.html:3-9](file://templates/pages/index.html#L3-L9)
+
+章节来源
+- [site.js:5-43](file://site.js#L5-L43)
+- [templates/layout.html:27-43](file://templates/layout.html#L27-L43)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [templates/pages/index.html:3-9](file://templates/pages/index.html#L3-L9)
+
+## 性能与一致性考量
+脚本在初始化时格式化一次日期并遍历相应节点，复制时才调用异步剪贴板能力。实现没有轮询、客户端数据缓存或网络获取流程，性能成本主要是少量 DOM 查询与文本更新。构建与运行时使用相同的时区和月差公式，但数据来源仍需维护者保持一致。
+
+- 初始化成本：日期节点使用集合遍历，复制控件只查询一次，监听器只绑定一次。
+- 交互并发：等待复制时禁用同一按钮，完成后恢复；代码没有跨标签页协调机制。
+- 时间一致性：静态 HTML 展示构建时的年份与任职时长，脚本运行后展示访问时的年月；页面长期打开不会自动跨月更新。
+- 源数据一致性：配置的 `workStart` 与正文模板中的 `data-experience-start` 应同步，避免增强前后时长跳变。
+
+源码未包含基准测试或浏览器兼容性结果，因此这里的性能描述只依据操作数量和控制流，不给出未经测量的响应时间。
+
+章节来源
+- [site.js:6-20](file://site.js#L6-L20)
+- [site.js:27-43](file://site.js#L27-L43)
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+
+## 故障排查指南
+先确认静态 HTML 是否包含预期节点，再检查脚本初始化是否完成，最后观察某次点击的反馈路径。日期与复制初始化处于同一个函数，早期异常可能解释按钮始终隐藏。对于复制失败，页面已经提供手动复制文本，排查时应保留这一回退能力。
+
+- 复制按钮不显示：确认 `site.js` 已加载且无初始化异常，再检查 `[data-copy-email]` 和 `#copy-status` 是否同时存在；任一节点缺失都会在显示按钮前返回。
+- 点击后出现手动复制提示：说明 API 不存在或写入抛错/拒绝，定位 `writeText` 调用与浏览器控制台；此提示是预期失败分支，静态邮件链接仍可使用。
+- 按钮一直禁用且无反馈：检查异步写入是否仍在等待以及运行错误；正常成功或捕获到的失败都会经过 `finally` 恢复按钮。
+- 任职时长更新异常：检查 `data-experience-start` 的年月格式，并与配置的起始月比较；当前浏览器校验不覆盖全部异常输入。
+- 禁用脚本后年份仍旧：这是构建后备文本，检查是否重新生成 HTML；源码没有纯 HTML 的自动日期更新能力。
+- 状态反馈未按预期被读取：检查 `aria-describedby` 指向的 ID、状态区的 `role`、`aria-live` 和 `hidden`；相关环境仍需实际验证。
+
+章节来源
+- [site.js:6-20](file://site.js#L6-L20)
+- [site.js:27-40](file://site.js#L27-L40)
+- [templates/layout.html:27-51](file://templates/layout.html#L27-L51)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+
+## 结论
+这套增强让静态作品集在访问时获得新的日期文本和带结果反馈的邮箱复制操作。维护时应同时核对模板节点、日期属性和脚本选择器，复制失败则保留可读的手动操作提示。已有实现提供了清晰的回退分支与语义标记，其输入校验和环境兼容性仍应按源码实际边界理解。
+
+章节来源
+- [site.js:1-43](file://site.js#L1-L43)
+- [templates/layout.html:38-51](file://templates/layout.html#L38-L51)
+- [templates/pages/resume.html:8-12](file://templates/pages/resume.html#L8-L12)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+
+<cite>
+**本文引用的文件**
+- [site.js](file://site.js)
+- [layout.html](file://templates/layout.html)
+- [contact.html](file://templates/pages/contact.html)
+- [resume.html](file://templates/pages/resume.html)
+- [index.html](file://templates/pages/index.html)
+- [build.mjs](file://build.mjs)
+</cite>
+
+---
+
+# 响应式视觉系统
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+`pages.css` 是八页作品集共用的视觉系统，以 CSS 自定义属性、共享选择器和三个宽度断点控制布局。HTML 模板通过 `home-hero`、`content-grid`、`panel` 等类名选择规则，页面不依赖组件框架来呈现这些结构。颜色变量只定义一套固定配色，文件中没有主题切换实现；字体优先使用操作系统提供的中文与西文字体。
+
+- 内容容器最大宽度为 `1120px`，默认两侧合计预留 `40px`。
+- 首页有四列数据条与三列入口卡片，子页通常采用两列内容网格。
+- 宽度适配断点为 `900px`、`720px`、`480px`。
+- 键盘焦点使用蓝色轮廓，hero 入场动画仅在没有减少动态效果偏好时启用。
+
+章节来源
+- [pages.css:7-60](file://pages.css#L7-L60)
+- [pages.css:131-158](file://pages.css#L131-L158)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+## 项目结构
+共享布局负责挂载样式表和站点外壳，正文模板提供可被 CSS 匹配的类名。首页、案例目录和联系页各自选择共享组件，再用少量专属类调整结构。样式文件本身只负责视觉，不存储页面文案，也不在访问时读取站点配置。
+
+```
+pages.css
+templates/
+  layout.html
+  pages/
+    index.html
+    portfolio.html
+    contact.html
+    case-visual.html
+```
+
+- `pages.css` 从变量、基础元素、容器一路定义到页头、hero、网格、页脚、动效与响应式规则。
+- `templates/layout.html` 在 `head` 中引用 `pages.css`，提供 `site-header`、`main-nav` 和 `site-footer`。
+- `templates/pages/index.html` 提供首页 hero、数据条与三个入口卡片。
+- 案例和联系正文复用 `page-hero`、`content-grid`、`panel`，而截图使用 `evidence`。
+
+下面的结构图展示类名来自何处、样式由何处统一解释，便于确定视觉修改范围。
+
+```mermaid
+graph TB
+subgraph "HTML 结构"
+L["共享页头与页脚<br/>templates/layout.html"]
+I["首页区块<br/>templates/pages/index.html"]
+P["案例与联系区块<br/>templates/pages/*.html"]
+end
+S["变量与组件规则<br/>pages.css"]
+V["浏览器布局结果<br/>CSS cascade"]
+L --> V
+I --> V
+P --> V
+S --> V
+```
+
+同一个选择器可以作用于多页模板，因此通用规则变化会同步影响所有使用该类名的页面。
+
+图表来源
+- [templates/layout.html:26-53](file://templates/layout.html#L26-L53)
+- [templates/pages/index.html:1-85](file://templates/pages/index.html#L1-L85)
+- [templates/pages/portfolio.html:1-42](file://templates/pages/portfolio.html#L1-L42)
+- [pages.css:49-60](file://pages.css#L49-L60)
+
+章节来源
+- [pages.css:1-6](file://pages.css#L1-L6)
+- [templates/layout.html:26-53](file://templates/layout.html#L26-L53)
+- [templates/pages/index.html:1-85](file://templates/pages/index.html#L1-L85)
+- [templates/pages/contact.html:1-19](file://templates/pages/contact.html#L1-L19)
+- [templates/pages/case-visual.html:1-33](file://templates/pages/case-visual.html#L1-L33)
+
+## 核心组件
+视觉系统先建立文字、颜色和盒模型的共同基础，再通过区块类名组织布局。最大宽度、颜色、圆角、阴影和字体保存在 `:root` 中；间距和字号多数仍在具体选择器中以固定值或 `clamp()` 表达。维护时应区分全站变量与组件局部规则，避免认为所有尺寸都已抽象为变量。
+
+- 设计变量：`--container`、`--canvas`、`--ink`、`--muted` 等定义基础配色与容器，`--radius-lg`、`--radius-md`、`--shadow-1`、`--shadow-2` 提供卡片质感。
+- 基础规则：全局 `border-box`、图片自适应和元素 margin 重置建立统一基础，`[hidden]` 强制隐藏带该属性的元素。
+- 共享容器：页头、页脚、hero、数据条、入口与内容网格分别共享同一宽度计算与水平居中。
+- 页头与导航：sticky 顶栏使用 Flex 排列品牌、导航和动作，当前链接由 `.current` 显示蓝色下划线。
+- 卡片与网格：`.entry-card` 服务首页入口，`.panel` 服务正文块，`.wide` 让项目横跨全部网格列。
+- 联系与证据：`.contact-card` 调整联系方式排版，`.evidence` 为截图提供全宽、边框和圆角。
+- 扩展位置：增加页面组件时可复用已有类，新增配色或全站尺寸时可扩展 `:root` 与对应选择器。
+
+章节来源
+- [pages.css:7-60](file://pages.css#L7-L60)
+- [pages.css:63-111](file://pages.css#L63-L111)
+- [pages.css:137-170](file://pages.css#L137-L170)
+
+## 架构总览
+浏览器加载共享 CSS 后，基础规则先提供默认布局，媒体查询再根据视口宽度覆盖部分属性。`clamp()` 使标题与部分间距在断点之间连续变化，Grid 列数则在明确断点发生切换。鼠标悬停、键盘焦点和动态效果偏好由 CSS 伪类与媒体查询直接匹配，无需脚本计算屏幕宽度。
+
+下面的时序图展示视口与交互状态如何影响同一份 HTML 的最终样式。
+
+```mermaid
+sequenceDiagram
+participant Browser as "浏览器"
+participant HTML as "模板生成的 HTML"
+participant CSS as "pages.css"
+participant Viewport as "视口与用户偏好"
+Browser->>HTML : "解析类名与语义结构"
+HTML->>CSS : "加载共享样式表"
+Browser->>Viewport : "读取宽度与动态效果偏好"
+Viewport-->>Browser : "匹配媒体查询条件"
+Browser->>CSS : "合并基础、组件与响应式规则"
+CSS-->>Browser : "容器、网格、字体和交互外观"
+```
+
+视口改变后浏览器重新匹配规则，页面仍使用原来的卡片和导航元素，而不是生成另一套移动端页面。
+
+图表来源
+- [templates/layout.html:24-27](file://templates/layout.html#L24-L27)
+- [pages.css:47-60](file://pages.css#L47-L60)
+- [pages.css:117-121](file://pages.css#L117-L121)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+章节来源
+- [pages.css:47-60](file://pages.css#L47-L60)
+- [pages.css:117-121](file://pages.css#L117-L121)
+- [pages.css:198-243](file://pages.css#L198-L243)
+- [templates/layout.html:24-27](file://templates/layout.html#L24-L27)
+
+## 详细组件分析
+组件规则按页面外壳、首页和通用子页组织，便于从 HTML 的类名回到样式位置。响应式部分位于文件末尾，使用相同类名覆盖列数、间距和显示状态。以下说明只对应现有选择器，不把颜色变量、CSS 网格或 hover 效果扩展解释为主题系统或前端框架。
+
+章节来源
+- [pages.css:62-243](file://pages.css#L62-L243)
+- [templates/layout.html:30-53](file://templates/layout.html#L30-L53)
+
+### 变量、容器与共享页头页脚
+`body` 使用浅灰到近白的渐变背景，正文颜色为 `--ink`，基础字体为 `15px/1.75` 的系统字体栈。容器规则直接列出多个区块选择器，使用 `width: min(var(--container), 100% - 40px)` 与 `margin-inline: auto`；布局中的 `page-wrap` 并没有独立宽度声明。顶栏固定在滚动容器顶部，页脚采用可换行的 Flex 布局。
+
+- `.site-header` 使用 `position: sticky`、`top: 0`、`z-index: 50`，并以半透明背景和 `backdrop-filter` 产生视觉层次。
+- `.header-inner` 默认高 `64px`；品牌不换行，导航通过 `margin-left: auto` 靠向右侧。
+- `.main-nav a.current` 加深文字并通过 `::after` 绘制 `2px` 蓝色底线。
+- `.footer-inner` 用 `justify-content: space-between` 与 `flex-wrap: wrap` 排列版权和联系方式。
+- `.copy-mail` 与 `.dark` 分别是浅色描边按钮和深色联系链接；两者的视觉规则不改变实际 HTML 行为。
+
+章节来源
+- [pages.css:7-60](file://pages.css#L7-L60)
+- [pages.css:63-111](file://pages.css#L63-L111)
+- [pages.css:192-196](file://pages.css#L192-L196)
+- [templates/layout.html:30-53](file://templates/layout.html#L30-L53)
+
+### 首页、案例与联系类名对应
+首页模板把介绍、状态、能力条和入口明确拆成 `.home-hero`、`.home-stats`、`.home-entry`。案例目录的可点击面板使用 `<a class="panel">`，因此会获得 `a.panel:hover` 的浮起与阴影；案例详情的普通 `<div class="panel">` 没有这条链接悬停效果。联系页在同一个 `.content-grid` 中叠加 `.contact-card`，用较小标签和较大的联系方式强调可点击信息。
+
+- 首页 hero 的标题默认在 `40px` 到 `72px` 之间变化；简介最大宽度为 `640px`。
+- 首页数据条默认四列，三个入口默认三列；入口颜色来自 `entry-yellow`、`entry-lilac`、`entry-mint`。
+- 案例目录默认两列，第三张 `panel wide` 卡片横跨全部列。
+- 联系面板的最小高度为 `190px`，`.contact-value` 字号在 `20px` 到 `28px` 之间变化。
+- 视觉案例的截图使用 `evidence`，宽度为 `100%`；全局图片规则同时保证最大宽度不超过父级且高度按比例调整。
+
+章节来源
+- [templates/pages/index.html:1-85](file://templates/pages/index.html#L1-L85)
+- [templates/pages/portfolio.html:10-42](file://templates/pages/portfolio.html#L10-L42)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+- [templates/pages/case-visual.html:11-33](file://templates/pages/case-visual.html#L11-L33)
+- [pages.css:117-170](file://pages.css#L117-L170)
+
+### 断点、溢出与交互状态
+响应式规则使用三个 `max-width` 查询，因此更窄的视口会同时继承较宽断点的调整。`900px` 以下改变列数，`720px` 以下收紧页边距和顶栏，`480px` 以下仅隐藏品牌文字。导航保持横排并允许横向滚动，没有折叠菜单或汉堡按钮规则。
+
+- 宽度不大于 `900px`：首页入口与内容网格变为一列，数据条变为两列，指标条变为一列，并重排分隔线。
+- 宽度不大于 `720px`：容器改为 `100% - 32px`，页头高 `56px`，`.header-actions` 隐藏，导航启用 `overflow-x: auto` 并隐藏滚动条。
+- 同一 `720px` 规则还缩小 hero 顶部间距、调整标题 `clamp()` 范围、把面板与入口内边距改为 `24px`。
+- 宽度不大于 `480px`：`.brand-name` 隐藏，但品牌标记保留。
+- 数据条与指标条使用 `overflow: hidden` 约束圆角边界；导航使用的是可滚动溢出，两者目的不同。
+- 链接和按钮的 `:focus-visible` 为键盘焦点提供蓝色轮廓；hover 会改变部分颜色、阴影或纵向位移。
+- hero 的 `rise` 入场动画受 `prefers-reduced-motion: no-preference` 控制，hover 的过渡规则并未放在该查询中。
+
+章节来源
+- [pages.css:47-47](file://pages.css#L47-L47)
+- [pages.css:77-110](file://pages.css#L77-L110)
+- [pages.css:131-160](file://pages.css#L131-L160)
+- [pages.css:177-181](file://pages.css#L177-L181)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+## 依赖关系分析
+样式体系的必需依赖是浏览器加载 `pages.css`，以及 HTML 使用匹配的类名和元素类型。字体通过系统字体栈选择，不引入远程字体下载；颜色与尺寸来自本地规则。页面脚本负责其他交互时，CSS 仍通过 `hidden`、`disabled` 和状态类提供对应外观。
+
+- 必选：共享布局中的 `<link rel="stylesheet" href="pages.css">` 与正文中的组件类名。
+- 必选：浏览器对 Flex、Grid、自定义属性、媒体查询与 `clamp()` 的解析能力；仓库样式文件没有声明具体最低浏览器版本。
+- 推荐：系统存在字体栈中的中文字体，以得到预期文字排版；最后保留 `sans-serif` 回退。
+- 可选：`backdrop-filter` 提升顶栏玻璃感，样式同时定义半透明背景与 WebKit 属性。
+- 可选：浏览器对 `text-wrap: balance`、`scrollbar-width` 等属性的支持影响细节显示，相关结构仍由基础布局描述。
+
+下面的依赖图按“结构匹配”和“浏览器环境”分出样式生效的条件，适合排查不同设备间的差异。
+
+```mermaid
+graph LR
+L["布局样式链接<br/>layout.html"] --> C["共享 CSS<br/>pages.css"]
+T["正文组件类名<br/>templates/pages"] --> C
+C --> B["浏览器样式引擎<br/>Flex / Grid / media"]
+B --> F["系统字体<br/>--font"]
+B --> V["视口与偏好<br/>width / reduced-motion"]
+```
+
+类名匹配决定哪些规则进入候选集，浏览器能力、字体和视口则决定具体渲染结果。
+
+图表来源
+- [templates/layout.html:26-26](file://templates/layout.html#L26-L26)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+- [pages.css:25-25](file://pages.css#L25-L25)
+- [pages.css:63-69](file://pages.css#L63-L69)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+章节来源
+- [templates/layout.html:26-27](file://templates/layout.html#L26-L27)
+- [pages.css:25-47](file://pages.css#L25-L47)
+- [pages.css:63-69](file://pages.css#L63-L69)
+- [pages.css:131-170](file://pages.css#L131-L170)
+- [pages.css:198-243](file://pages.css#L198-L243)
+
+## 性能与一致性考量
+一份共享 CSS 让各页复用相同设计规则，避免为每页维护重复样式。布局使用原生 CSS 计算视口变化，动态效果主要作用于 `transform`、阴影和透明度；源码没有提供性能基准或缓存策略，因此不能量化加载和重绘收益。固定图片比例与响应式宽度也需要同时阅读 HTML 属性和 CSS 规则，才能判断实际布局。
+
+- 系统字体栈避免额外远程字体引用，但不同系统可能呈现不同字形和换行。
+- `minmax(0, 1fr)` 和导航的 `min-width: 0` 为较窄容器中的收缩留出空间。
+- `clamp()` 把标题字号限制在上下界，避免按视口比例无限放大或缩小。
+- 入口和链接面板共享 hover 规则，非链接面板不产生同样的浮起效果。
+- hero 入场动画尊重减少动态效果偏好；其他 hover 过渡仍按原规则保留。
+- `evidence` 与全局图片规则控制显示宽度，截图模板本身还声明真实宽高及懒加载。
+
+章节来源
+- [pages.css:25-25](file://pages.css#L25-L25)
+- [pages.css:40-40](file://pages.css#L40-L40)
+- [pages.css:76-76](file://pages.css#L76-L76)
+- [pages.css:117-170](file://pages.css#L117-L170)
+- [pages.css:198-205](file://pages.css#L198-L205)
+- [templates/pages/case-visual.html:29-31](file://templates/pages/case-visual.html#L29-L31)
+
+## 故障排查指南
+视觉排查先检查对应 HTML 类名，再确认正在生效的断点和选择器。移动端的隐藏动作区、单列卡片和横向滚动导航都是明确规则，不能仅凭外观判断为内容丢失。对于浏览器差异，优先看 computed styles 和字体匹配结果，再区分缺失资源与不支持的属性。
+
+- 窄屏看不到顶栏复制邮箱或联系按钮 → `720px` 以下隐藏 `.header-actions` → 检查视口宽度和对应 computed display，联系正文仍提供直接链接 → 定位 `pages.css` 第 220–231 行与联系模板第 10–19 行。
+- 卡片从并排变为纵排 → `900px` 以下覆盖 `.home-entry`、`.content-grid` 的列数 → 检查媒体查询是否匹配，并比较较宽视口 → 定位 `pages.css` 第 208–214 行。
+- 小屏导航似乎只显示部分项目 → 导航保持横排并使用隐藏滚动条的横向滚动 → 检查是否可左右滚动，不要寻找源码中不存在的折叠菜单 → 定位 `pages.css` 第 231–232 行。
+- 卡片没有悬停浮起 → 规则仅作用于 `.entry-card` 与 `a.panel` → 检查元素是 `<a>` 还是 `<div>`，再确认 hover 状态 → 定位 `pages.css` 第 139–140、159–160 行与视觉案例模板第 11–29 行。
+- 英文或中文换行与另一台设备不同 → 系统字体栈及 `text-wrap: balance` 支持存在环境差异 → 查看实际使用字体、字号和容器宽度，再测试相同视口 → 定位 `pages.css` 第 25、43、58 行。
+- 键盘聚焦时出现蓝色轮廓 → `:focus-visible` 提供明确焦点反馈 → 使用 Tab 检查链接和按钮的定位，保留该反馈有助于确认当前位置 → 定位 `pages.css` 第 47 行。
+
+章节来源
+- [pages.css:25-60](file://pages.css#L25-L60)
+- [pages.css:139-160](file://pages.css#L139-L160)
+- [pages.css:208-243](file://pages.css#L208-L243)
+- [templates/pages/contact.html:10-19](file://templates/pages/contact.html#L10-L19)
+- [templates/pages/case-visual.html:11-29](file://templates/pages/case-visual.html#L11-L29)
+
+## 结论
+响应式视觉系统以一份原生 CSS 连接共享布局和各页正文，核心组织方式是变量、组件类名与明确的媒体查询覆盖。维护时应先判断修改影响全站还是单个组件，再检查 `900px`、`720px` 和 `480px` 下的实际结构。现有样式提供固定配色、横向滚动导航和有限动态效果，应按这些已实现行为解释页面。
+
+章节来源
+- [pages.css:7-26](file://pages.css#L7-L26)
+- [pages.css:198-243](file://pages.css#L198-L243)
+- [templates/layout.html:26-53](file://templates/layout.html#L26-L53)
+
+<cite>
+**本文引用的文件**
+- [pages.css](file://pages.css)
+- [layout.html](file://templates/layout.html)
+- [index.html](file://templates/pages/index.html)
+- [portfolio.html](file://templates/pages/portfolio.html)
+- [contact.html](file://templates/pages/contact.html)
+- [case-visual.html](file://templates/pages/case-visual.html)
+</cite>
+
+---
+
+# 部署与维护
+
+## 目录
+1. [简介](#简介)
+2. [项目结构](#项目结构)
+3. [核心组件](#核心组件)
+4. [架构总览](#架构总览)
+5. [详细组件分析](#详细组件分析)
+6. [依赖关系分析](#依赖关系分析)
+7. [性能与一致性考量](#性能与一致性考量)
+8. [故障排查指南](#故障排查指南)
+9. [结论](#结论)
+
+## 简介
+仓库用 GitHub Actions 从模板源文件构建 `dist/`，再将该目录作为 GitHub Pages 产物部署。根目录同时保留生成 HTML 和 `_config.yml`，用于兼容现有的 Jekyll 根目录发布设置；两种产物来自同一个构建脚本，而日常维护依靠生成检查保持源文件与提交页面一致。
+
+- `main` 分支推送和手动 `workflow_dispatch` 都可触发部署工作流。
+- CI 使用 Node.js 22，仓库声明本地最低版本为 Node.js 20。
+- `dist/` 和 `artifacts-screens/` 被 Git 忽略，文本统一使用 LF 换行。
+
+章节来源
+- [README.md:5-9](file://README.md#L5-L9)
+- [package.json:4-9](file://package.json#L4-L9)
+- [.github/workflows/static.yml:4-10](file://.github/workflows/static.yml#L4-L10)
+- [.gitignore:1-2](file://.gitignore#L1-L2)
+- [.gitattributes:1-3](file://.gitattributes#L1-L3)
+
+## 项目结构
+部署与维护职责集中在工作流、构建器和版本库配置三个层面。工作流选择运行环境并上传产物，构建器决定发布边界，版本库配置决定哪些产物需要提交和如何保存换行。
+
+```
+.github/workflows/static.yml  # GitHub Pages 工作流
+build.mjs                     # 普通构建、漂移检查、dist 生成
+package.json                  # build / check / deploy:build 命令
+_config.yml                   # Jekyll 根目录发布排除清单
+.gitignore                    # 忽略 dist 和本地截图产物
+.gitattributes                # 文本 LF 与图片二进制规则
+*.html                        # 根目录生成页面，随源码提交
+dist/                         # Actions 上传的发布产物
+```
+
+结构图对比两条发布路径：Actions 以 `dist/` 为明确上传边界，而根目录兼容配置通过 `_config.yml` 排除模板和构建源码。
+
+```mermaid
+graph TB
+SRC["配置与模板<br/>site.config.json / templates/"]
+BUILD["构建器<br/>build.mjs"]
+ROOT["提交的生成 HTML<br/>仓库根目录"]
+DIST["部署产物<br/>dist/"]
+ACTION["GitHub Actions<br/>.github/workflows/static.yml"]
+JEKYLL["根目录兼容配置<br/>_config.yml"]
+PAGES["GitHub Pages"]
+SRC --> BUILD
+BUILD --> ROOT
+BUILD --> DIST
+DIST --> ACTION
+ROOT --> JEKYLL
+ACTION --> PAGES
+JEKYLL --> PAGES
+```
+
+图表来源
+- [README.md:3-7](file://README.md#L3-L7)
+- [build.mjs:15-18](file://build.mjs#L15-L18)
+- [.github/workflows/static.yml:40-48](file://.github/workflows/static.yml#L40-L48)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+
+章节来源
+- [README.md:5-7](file://README.md#L5-L7)
+- [.github/workflows/static.yml:24-48](file://.github/workflows/static.yml#L24-L48)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+- [.gitignore:1-2](file://.gitignore#L1-L2)
+
+## 核心组件
+下表将发布职责与仓库内控制文件对应起来；每一行都控制一个明确边界，便于根据发布问题选择排查入口。
+
+| 组件 | 关键文件 | 一句话职责 |
+| --- | --- | --- |
+| Actions 工作流 | `.github/workflows/static.yml` | 检出仓库、设置 Pages 与 Node.js，构建并部署 `dist/`。 |
+| 部署构建器 | `build.mjs` | 重建固定 `dist/`，写 HTML 并复制样式、脚本和素材。 |
+| 开发命令 | `package.json` | 提供 `build`、`check`、`deploy:build` 三个一致的命令入口。 |
+| 根目录兼容配置 | `_config.yml` | 为 Jekyll 根目录发布排除模板、脚本、配置和 `dist/`。 |
+| Git 文件策略 | `.gitignore`、`.gitattributes` | 忽略本地部署/截图产物，规范文本与图片保存方式。 |
+
+仓库没有额外的部署插件或自定义服务进程。发布配置可在工作流中调整触发分支、运行 Node.js 版本和上传目录，但上传目录必须与构建器输出边界保持一致。
+
+章节来源
+- [.github/workflows/static.yml:4-48](file://.github/workflows/static.yml#L4-L48)
+- [build.mjs:57-93](file://build.mjs#L57-L93)
+- [package.json:4-9](file://package.json#L4-L9)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+- [.gitignore:1-2](file://.gitignore#L1-L2)
+- [.gitattributes:1-3](file://.gitattributes#L1-L3)
+
+## 架构总览
+工作流只有一个 `deploy` 作业，运行在 `ubuntu-latest`，环境名称为 `github-pages`。检出源码后依次配置 Pages、安装 Node.js 22、执行 `node build.mjs --deploy`、上传 `./dist`，最后调用 Pages 部署动作；环境 URL 使用部署步骤返回的 `page_url`。
+
+时序图展示一个触发事件如何产生可发布的静态目录，帮助确认生成步骤发生在上传之前。
+
+```mermaid
+sequenceDiagram
+participant Git as "main 推送或手动触发"
+participant Runner as "Actions deploy 作业"
+participant Build as "build.mjs --deploy"
+participant Dist as "dist/"
+participant Pages as "GitHub Pages"
+Git->>Runner : "触发 workflow"
+Runner->>Runner : "checkout / configure-pages / setup-node 22"
+Runner->>Build : "运行部署构建"
+Build->>Dist : "重建 HTML 与资源目录"
+Dist-->>Runner : "静态站点产物"
+Runner->>Pages : "upload-pages-artifact + deploy-pages"
+Pages-->>Runner : "返回 page_url"
+```
+
+图表来源
+- [.github/workflows/static.yml:4-10](file://.github/workflows/static.yml#L4-L10)
+- [.github/workflows/static.yml:24-48](file://.github/workflows/static.yml#L24-L48)
+- [build.mjs:57-93](file://build.mjs#L57-L93)
+
+章节来源
+- [.github/workflows/static.yml:24-48](file://.github/workflows/static.yml#L24-L48)
+- [build.mjs:57-93](file://build.mjs#L57-L93)
+
+## 详细组件分析
+部署控制可分为 Actions 产物路径、根目录兼容路径以及日常维护路径。它们共享配置和模板输入，但对目录清理、提交与校验的职责各不相同。
+
+### Actions 的 dist 发布
+`deploy` 作业给 `GITHUB_TOKEN` 设置 `contents: read`、`pages: write` 和 `id-token: write`。同一 `pages` 并发组中的部署串行处理，并明确设置 `cancel-in-progress: false`，避免正在执行的生产部署被后续运行中断。
+
+构建器在部署模式中只允许清空固定的 `dist/` 子目录，重新生成每个 HTML 后复制 `pages.css`、`site.js` 和 `assets/`。工作流上传的路径为 `./dist`，因此模板、构建脚本和配置 JSON 不作为浏览器站点资源被上传。
+
+章节来源
+- [.github/workflows/static.yml:12-22](file://.github/workflows/static.yml#L12-L22)
+- [.github/workflows/static.yml:40-48](file://.github/workflows/static.yml#L40-L48)
+- [build.mjs:57-62](file://build.mjs#L57-L62)
+- [build.mjs:90-93](file://build.mjs#L90-L93)
+
+### 根目录 Jekyll 兼容
+根目录保留普通 `npm run build` 生成的 HTML，供仍然使用根目录发布设置的 Pages 配置消费。`_config.yml` 将 `templates`、`build.mjs`、`site.config.json`、`package.json`、`README.md` 和 `dist` 排除，避免将维护源文件当作网页输出。
+
+这是一份兼容配置，不代表 Actions 作业会执行 Jekyll；当前工作流使用明确的 `dist` 上传路径。维护时应理解两条路径各自的边界，避免只更新 `dist/` 而忘记需要提交的根目录 HTML。
+
+章节来源
+- [README.md:5-7](file://README.md#L5-L7)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+- [.github/workflows/static.yml:40-48](file://.github/workflows/static.yml#L40-L48)
+
+### 维护顺序与校验范围
+新增页面时应在 `site.config.json` 添加合法且唯一的 `.html` 文件名、导航标签、图标字段、标题与摘要，并准备同名 `templates/pages/<file>` 正文。修改共享布局、配置或素材后，再执行 `npm run build` 更新根目录生成 HTML，提交前运行 `npm run check`，需要预览发布产物时再执行 `npm run deploy:build`。
+
+`npm run check` 只验证当前渲染结果与根目录 HTML 是否一致，不检查链接可用性、浏览器样式或 GitHub Pages 发布成功。年份和任职时长按上海时区在构建时生成后备文本，换月后检查可能提示重建；教育年份与真实入职月份继续作为历史事实保留。
+
+章节来源
+- [README.md:5-9](file://README.md#L5-L9)
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:19-34](file://build.mjs#L19-L34)
+- [build.mjs:64-85](file://build.mjs#L64-L85)
+
+### Git 文件保存策略
+`.gitignore` 忽略 `dist/` 和 `artifacts-screens/`，让发布目录与本地截图成果无需进入版本库。`.gitattributes` 对文本启用自动识别并固定 `eol=lf`，同时将 WebP 和 JPEG 声明为二进制文件。
+
+生成检查会将已有文件的 CRLF 替换为 LF 再比较，减少 Windows 与 Linux 环境的换行差异。该规则针对文本一致性，图片是否更新仍需要维护者检查文件本身和引用路径。
+
+章节来源
+- [.gitignore:1-2](file://.gitignore#L1-L2)
+- [.gitattributes:1-3](file://.gitattributes#L1-L3)
+- [build.mjs:82-85](file://build.mjs#L82-L85)
+
+## 依赖关系分析
+本地生成需要 Node.js 20 或以上，CI 选择 Node.js 22；构建器通过 Node.js 内置模块完成文件读写和路径处理。发布阶段依赖仓库内固定版本的 GitHub Actions 动作，以及 GitHub Pages 环境和令牌权限。
+
+```mermaid
+graph LR
+TRIGGER["main 推送 / workflow_dispatch"] --> WF["static.yml"]
+WF --> NODE["Node.js 22"]
+NODE --> BUILD["build.mjs --deploy"]
+BUILD --> DIST["dist/"]
+DIST --> UPLOAD["upload-pages-artifact@v3"]
+UPLOAD --> DEPLOY["deploy-pages@v5"]
+TOKEN["Pages / OIDC 权限"] --> DEPLOY
+```
+
+图表来源
+- [.github/workflows/static.yml:4-16](file://.github/workflows/static.yml#L4-L16)
+- [.github/workflows/static.yml:32-48](file://.github/workflows/static.yml#L32-L48)
+- [package.json:9-9](file://package.json#L9-L9)
+
+章节来源
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:6-8](file://build.mjs#L6-L8)
+- [.github/workflows/static.yml:12-48](file://.github/workflows/static.yml#L12-L48)
+
+## 性能与一致性考量
+部署构建每次从固定目录重建，避免残留页面或过期资源混入发布产物。工作流不设置依赖安装步骤，因为构建器没有第三方包；并发组控制部署顺序，生成检查则关注提交页面与源文件的一致性。
+
+- `dist/` 清空前验证目录边界，降低误清理源码目录的风险。
+- 不取消正在进行的部署，保证一个运行完成后再处理后续发布。
+- `--check` 忽略 CRLF 与 LF 差异，但换月后年份/任职后备文本变化仍会被检测。
+- 根目录生成 HTML 应随模板或配置修改同步提交，`dist/` 作为临时发布产物保留在忽略清单中。
+
+章节来源
+- [README.md:5-9](file://README.md#L5-L9)
+- [.github/workflows/static.yml:18-22](file://.github/workflows/static.yml#L18-L22)
+- [build.mjs:57-62](file://build.mjs#L57-L62)
+- [build.mjs:82-85](file://build.mjs#L82-L85)
+- [.gitignore:1-2](file://.gitignore#L1-L2)
+
+## 故障排查指南
+遇到发布问题时先确认失败发生在构建、上传还是部署步骤，再核对产物路径与版本库生成文件；不要把 `npm run check` 的成功视为远程 Pages 已成功发布。
+
+- **检查提示 `needs rebuilding`** → 原因是模板、配置或年月后备文本与根目录 HTML 不一致 → 运行 `npm run build`，审阅生成文件并再次 `npm run check` → 相关位置为 `build.mjs` 的比较分支和 README 维护要求。
+- **Actions 没有运行** → 原因可能是推送分支不是 `main` 或没有手动触发 → 检查工作流 `on.push.branches` 与 `workflow_dispatch` → 相关位置为 `static.yml` 触发配置。
+- **上传的站点缺少页面或图片** → 原因是上传目录与部署构建目录不一致或构建未成功 → 检查 `node build.mjs --deploy` 的输出和 `path: './dist'`，确认资源复制清单包含 CSS、JS 与 `assets` → 相关位置为工作流构建/上传步骤和构建器复制循环。
+- **Pages 部署步骤失败** → 原因可能与环境、令牌权限或 Pages 配置有关 → 检查 `github-pages` 环境、`pages: write` 和 `id-token: write`，再读 `deploy-pages` 步骤日志 → 相关位置为工作流权限和部署步骤。
+- **根目录发布暴露源文件** → 原因是 `_config.yml` 排除清单缺失或发布源设置变化 → 核对模板、构建脚本、配置 JSON 与 `dist` 是否仍列入 `exclude` → 相关位置为 Jekyll 兼容配置。
+
+章节来源
+- [README.md:5-7](file://README.md#L5-L7)
+- [build.mjs:79-93](file://build.mjs#L79-L93)
+- [.github/workflows/static.yml:4-16](file://.github/workflows/static.yml#L4-L16)
+- [.github/workflows/static.yml:24-48](file://.github/workflows/static.yml#L24-L48)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+
+## 结论
+发布维护的核心是同一套模板源文件驱动两种静态产物：根目录 HTML 用于提交和兼容发布，`dist/` 用于 Actions 上传。修改后先构建、审阅、检查生成一致性，再检查部署工作流与实际浏览器页面，能够把源文件、产物和远程发布状态分别验证清楚。
+
+章节来源
+- [README.md:5-9](file://README.md#L5-L9)
+- [package.json:4-9](file://package.json#L4-L9)
+- [.github/workflows/static.yml:40-48](file://.github/workflows/static.yml#L40-L48)
+
+<cite>
+**本文引用的文件**
+- [README.md](file://README.md)
+- [package.json](file://package.json)
+- [build.mjs](file://build.mjs)
+- [.github/workflows/static.yml](file://.github/workflows/static.yml)
+- [_config.yml](file://_config.yml)
+- [.gitignore](file://.gitignore)
+- [.gitattributes](file://.gitattributes)
+</cite>
+
+---
+
+# Pages 发布与一致性校验
+
+## 目录
+1. [简介](#简介)
+2. [流程总览](#流程总览)
+3. [关键步骤](#关键步骤)
+4. [参与组件](#参与组件)
+5. [数据与状态变化](#数据与状态变化)
+6. [故障排查指南](#故障排查指南)
+7. [结论](#结论)
+
+## 简介
+仓库通过 `.github/workflows/static.yml` 将静态站点发布到 GitHub Pages，触发条件为推送到 `main` 或手动执行 `workflow_dispatch`。工作流在 Ubuntu 环境准备 Pages 与 Node.js，运行部署构建，再上传 `dist` 并执行部署。维护者还可以在本地运行 `--check` 比较源模板生成结果与已提交的根目录 HTML，但该检查命令未作为当前发布工作流的一步执行。
+
+章节来源
+- [.github/workflows/static.yml:1-48](file://.github/workflows/static.yml#L1-L48)
+- [package.json:4-9](file://package.json#L4-L9)
+- [build.mjs:79-88](file://build.mjs#L79-L88)
+- [README.md:5-7](file://README.md#L5-L7)
+
+## 流程总览
+一次发布从 `main` 推送或手动触发开始，进入唯一的 `deploy` 作业。该作业依次检出源码、配置 Pages、准备 Node.js 22、生成部署产物，然后上传 `dist` 并部署至 `github-pages` 环境。流程没有在构建与部署之间引入服务器或数据库，输出站点由静态文件组成。
+
+下面的时序图按工作流真实顺序展示四个阶段，便于把失败日志对应到环境、构建、上传或部署。
+
+```mermaid
+sequenceDiagram
+participant Trigger as "main 推送或手动触发"
+participant Prepare as "步骤 1：环境准备<br/>static.yml"
+participant Build as "步骤 2：部署构建<br/>build.mjs"
+participant Upload as "步骤 3：产物上传<br/>upload-pages-artifact"
+participant Deploy as "步骤 4：Pages 部署<br/>deploy-pages"
+Trigger->>Prepare : "启动 deploy 作业"
+Prepare->>Prepare : "checkout → configure-pages → setup-node 22"
+Prepare->>Build : "node build.mjs --deploy"
+Build-->>Prepare : "完成 dist 生成"
+Prepare->>Upload : "上传 ./dist"
+Upload-->>Prepare : "提供 Pages artifact"
+Prepare->>Deploy : "部署上传的静态产物"
+Deploy-->>Prepare : "输出 page_url"
+```
+
+当前发布消费的是本次构建得到的 `dist`，根目录 HTML 的一致性检查需要维护者另行运行。
+
+图表来源
+- [.github/workflows/static.yml:4-10](file://.github/workflows/static.yml#L4-L10)
+- [.github/workflows/static.yml:24-48](file://.github/workflows/static.yml#L24-L48)
+- [build.mjs:15-18](file://build.mjs#L15-L18)
+- [build.mjs:57-94](file://build.mjs#L57-L94)
+
+章节来源
+- [.github/workflows/static.yml:4-48](file://.github/workflows/static.yml#L4-L48)
+- [build.mjs:57-94](file://build.mjs#L57-L94)
+- [package.json:4-7](file://package.json#L4-L7)
+
+## 关键步骤
+这四个步骤对应流程图中的环境准备、部署构建、产物上传和 Pages 部署。配置、模板和生成文件之间的一致性检查是构建器的另一个模式，列在构建步骤中说明其使用边界。当前工作流没有定义自动重试或允许构建失败后继续上传的设置。
+
+章节来源
+- [.github/workflows/static.yml:31-48](file://.github/workflows/static.yml#L31-L48)
+- [build.mjs:11-16](file://build.mjs#L11-L16)
+- [build.mjs:79-88](file://build.mjs#L79-L88)
+
+### 步骤 1：准备环境与并发约束
+作业运行在 `ubuntu-latest`，依次调用 `actions/checkout@v4`、`actions/configure-pages@v5` 和 `actions/setup-node@v4`。Node.js 版本被指定为 22，高于项目在 `package.json` 声明的最低版本 20。构建使用 Node.js 内置模块，工作流没有安装依赖的步骤。
+
+- 输入：触发此次运行的仓库内容与 Pages 设置。
+- 权限：`GITHUB_TOKEN` 声明 `contents: read`、`pages: write` 和 `id-token: write`，分别提供读取仓库与 Pages 部署相关能力。
+- 并发：全工作流使用 `group: "pages"` 和 `cancel-in-progress: false`，避免主动取消正在进行的发布；配置注释说明保留最新排队运行的意图。
+- 失败路径：环境准备动作失败会使后续部署无法顺利完成，定位对应动作日志；源码没有额外重试配置。
+
+环境声明使用 `github-pages` 名称，并引用部署步骤输出的 `page_url` 作为环境地址。此文件描述了执行配置，没有证明任何一次远程部署已经成功。
+
+章节来源
+- [.github/workflows/static.yml:12-39](file://.github/workflows/static.yml#L12-L39)
+- [package.json:9-9](file://package.json#L9-L9)
+- [build.mjs:6-8](file://build.mjs#L6-L8)
+- [README.md:3-5](file://README.md#L3-L5)
+
+### 步骤 2：构建部署目录与检查根目录一致性
+发布工作流实际执行 `node build.mjs --deploy`，与 `npm run deploy:build` 的脚本定义等价。构建器以自身文件位置确定仓库根目录，验证配置，读取布局和正文模板，再逐页生成 HTML。部署模式先核对固定输出边界，再清空并重建 `dist`，最后复制 `pages.css`、`site.js` 和整个 `assets` 目录。
+
+- 输入：`site.config.json`、共享布局、逐页模板及静态资源。
+- 输出：配置页面清单对应的 HTML、样式、浏览器脚本和 `assets` 素材；模板目录、构建源码和配置文件没有进入复制清单。
+- 失败路径：未知参数、非法配置、缺失模板、未知占位符或文件读写失败会抛出错误，阻止构建正常结束。
+- 幂等边界：每次部署构建重新清理固定 `dist`；普通构建写入根目录 HTML，但不会执行这一步目录清理。
+
+`--check` 是独立模式，不能与 `--deploy` 同时指定。它重新计算当前上海时区年月下的 HTML，将现有文件的 CRLF 转为 LF 后比较，发现不一致或目标文件缺失时抛出 `needs rebuilding` 错误；它不写入新 HTML。检查验证生成结果是否一致，不验证视觉排版、外链可用性、浏览器交互或图片文件完整性。
+
+章节来源
+- [.github/workflows/static.yml:40-41](file://.github/workflows/static.yml#L40-L41)
+- [package.json:4-7](file://package.json#L4-L7)
+- [build.mjs:10-34](file://build.mjs#L10-L34)
+- [build.mjs:50-61](file://build.mjs#L50-L61)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+
+### 步骤 3：上传静态产物
+上传步骤调用 `actions/upload-pages-artifact@v3`，输入路径明确为 `./dist`。因此上传范围由部署构建的输出目录决定，不会直接把整个仓库作为站点内容上传。工作流没有配置额外的产物转换或自定义保留时间。
+
+- 输入：前一步成功生成的部署目录。
+- 处理：将 `./dist` 交给 Pages artifact 上传动作。
+- 失败定位：若上传阶段报目录或产物问题，应先查看构建是否完成并确认输出路径；源码没有在上传前执行额外的目录检查命令。
+
+构建失败时不能把本次产物视为已经上传。这里依据工作流步骤顺序解释发布路径，远程 artifact 的具体状态仍须从对应 Actions 运行中确认。
+
+章节来源
+- [.github/workflows/static.yml:40-45](file://.github/workflows/static.yml#L40-L45)
+- [build.mjs:15-16](file://build.mjs#L15-L16)
+- [build.mjs:57-94](file://build.mjs#L57-L94)
+
+### 步骤 4：部署到 Pages 环境
+最后一步调用 `actions/deploy-pages@v5`，步骤 ID 为 `deployment`。作业环境 URL 引用该步骤的 `page_url` 输出，把部署地址关联到 `github-pages` 环境。仓库没有定义部署后的自动浏览器截图、链接巡检或回滚步骤。
+
+- 输入：上传阶段提供的 Pages 静态产物。
+- 处理：通过 Pages 部署动作发布站点，权限由工作流顶部声明。
+- 失败定位：检查部署动作日志、环境和 Pages 配置；不能只依据本地 `dist` 存在就判定远程发布成功。
+
+`_config.yml` 则承担另一种兼容角色：当站点按现有根目录 Jekyll 配置发布时，排除模板、构建源码、配置、包描述、README 和 `dist`。当前 Actions 部署路径直接上传 `dist`，工作流没有调用 Jekyll，排除列表不决定这条路径的产物内容。
+
+章节来源
+- [.github/workflows/static.yml:12-16](file://.github/workflows/static.yml#L12-L16)
+- [.github/workflows/static.yml:27-29](file://.github/workflows/static.yml#L27-L29)
+- [.github/workflows/static.yml:42-48](file://.github/workflows/static.yml#L42-L48)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+- [README.md:7-7](file://README.md#L7-L7)
+
+## 参与组件
+发布路径由工作流控制，构建器负责确定性生成，Pages 动作处理上传和部署。包脚本为维护者提供对应命令，Git 配置则约束哪些产物进入版本控制以及文本换行。下面按实际消费顺序列出主要参与者。
+
+- `.github/workflows/static.yml`：定义触发条件、权限、并发组、运行环境与动作顺序。
+- `build.mjs`：解析配置与模板，选择普通、检查或部署模式，生成页面并准备静态资源。
+- `actions/upload-pages-artifact`：消费 `./dist`，形成 Pages 上传产物。
+- `actions/deploy-pages`：执行 Pages 部署并向环境输出站点地址。
+- `package.json`：公开 `build`、`check` 和 `deploy:build` 三个脚本及 Node.js 最低版本。
+- `_config.yml`：兼容根目录 Jekyll 发布时的排除范围。
+- `.gitignore` 与 `.gitattributes`：忽略 `dist/` 和截图产物，声明文本采用 LF，WebP 与 JPEG 按二进制处理。
+
+章节来源
+- [.github/workflows/static.yml:4-48](file://.github/workflows/static.yml#L4-L48)
+- [build.mjs:11-18](file://build.mjs#L11-L18)
+- [build.mjs:57-95](file://build.mjs#L57-L95)
+- [package.json:4-9](file://package.json#L4-L9)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+- [.gitignore:1-2](file://.gitignore#L1-L2)
+- [.gitattributes:1-3](file://.gitattributes#L1-L3)
+
+## 数据与状态变化
+发布前，配置与模板是源输入，根目录 HTML 是可提交的生成副本。部署构建不会更新这些根目录 HTML，而是在清理后的 `dist` 写出新页面并复制资源；上传与部署再把这些文件送往 Pages。下面的状态图描述产物的流转，状态名称是概念性说明，并非仓库定义的业务字段。
+
+```mermaid
+graph LR
+A["仓库配置、模板与资源"] -->|"--deploy 验证并构建"| B["清理后重新生成 dist"]
+B -->|"复制 CSS、JS、assets"| C["完整部署目录"]
+C -->|"upload-pages-artifact"| D["Pages artifact"]
+D -->|"deploy-pages"| E["Pages 部署结果与 page_url"]
+A -->|"普通 build"| F["根目录生成 HTML"]
+A -->|"--check 比较"| G["一致通过或抛出漂移错误"]
+F --> G
+```
+
+检查路径产生判断结果，不修复漂移；普通构建负责更新根目录副本，部署构建负责准备本次发布目录。
+
+图表来源
+- [build.mjs:15-18](file://build.mjs#L15-L18)
+- [build.mjs:57-94](file://build.mjs#L57-L94)
+- [.github/workflows/static.yml:40-48](file://.github/workflows/static.yml#L40-L48)
+
+日期也是生成结果的一部分：构建按当前上海年月填入年份和任职时长，同月内输入一致时预期结果一致，跨月后后备文本可能改变。因此长期未重建的已提交 HTML 可能在源码未修改时仍无法通过 `--check`。换行比较仅规范化现有文件的 CRLF，结合仓库的 LF 属性约定降低平台换行差异。
+
+章节来源
+- [build.mjs:30-34](file://build.mjs#L30-L34)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+- [.github/workflows/static.yml:27-48](file://.github/workflows/static.yml#L27-L48)
+- [.gitattributes:1-3](file://.gitattributes#L1-L3)
+- [README.md:5-9](file://README.md#L5-L9)
+
+## 故障排查指南
+先根据 Actions 日志确认失败发生在哪个步骤，再在本地运行相同的构建模式复现输入问题。根目录检查失败与远程部署失败属于不同结果，不能互相替代。排查日期漂移时应同时记录上海时区的年月，避免将预期的跨月更新误认为模板损坏。
+
+- `main` 推送后没有运行：确认目标分支是 `main`，或使用手动 `workflow_dispatch`；其他分支推送未列入此触发配置。
+- 构建参数错误：只能运行无参数、`--check` 或 `--deploy` 中的一种，组合参数会触发 usage 错误。
+- 配置验证失败：检查 URL 末尾斜线、`workStart` 格式、非空页面清单、文件名唯一性和首页记录，具体异常在验证代码处抛出。
+- 缺失模板或占位符错误：确认 `templates/pages/<page.file>` 存在，且占位符键由 `values` 或布局渲染参数提供；未知键会抛错。
+- `needs rebuilding`：运行普通构建更新根目录 HTML，再重新检查并按 README 要求提交生成文件；源修改和跨月日期变化都可能触发这一错误。
+- 上传找不到产物：确认 `node build.mjs --deploy` 成功完成，目录应为仓库根目录下的 `dist`，上传配置为 `./dist`。
+- 本地构建成功但 Pages 部署失败：定位 `deployment` 动作日志与环境设置，检查工作流权限声明；本地生成成功不证明远程环境有效。
+- 不希望模板源码成为站点内容：Actions 路径只上传 `dist`；若使用根目录 Jekyll 路径，则核对 `_config.yml` 的排除条目。
+
+章节来源
+- [.github/workflows/static.yml:4-16](file://.github/workflows/static.yml#L4-L16)
+- [.github/workflows/static.yml:27-48](file://.github/workflows/static.yml#L27-L48)
+- [build.mjs:11-29](file://build.mjs#L11-L29)
+- [build.mjs:50-55](file://build.mjs#L50-L55)
+- [build.mjs:64-95](file://build.mjs#L64-L95)
+- [README.md:5-7](file://README.md#L5-L7)
+- [_config.yml:1-8](file://_config.yml#L1-L8)
+
+## 结论
+发布工作流用新生成的 `dist` 完成 Pages 上传与部署，维护流程则通过普通构建和独立的 `--check` 保持已提交 HTML 与源模板一致。修改源码后应重建并检查根目录产物，跨月时也应考虑日期后备文本变化。最终远程发布结果以对应 Actions 运行和部署环境为准，仓库中的工作流定义只说明执行路径。
+
+章节来源
+- [.github/workflows/static.yml:24-48](file://.github/workflows/static.yml#L24-L48)
+- [build.mjs:79-95](file://build.mjs#L79-L95)
+- [README.md:5-9](file://README.md#L5-L9)
+
+<cite>
+**本文引用的文件**
+- [static.yml](file://.github/workflows/static.yml)
+- [build.mjs](file://build.mjs)
+- [package.json](file://package.json)
+- [_config.yml](file://_config.yml)
+- [README.md](file://README.md)
+- [.gitignore](file://.gitignore)
+- [.gitattributes](file://.gitattributes)
+</cite>

@@ -1,0 +1,106 @@
+{
+  "repo_name": "personalwebsite",
+  "chapters": [
+    {
+      "id": "c01",
+      "title": "开发与构建",
+      "slug": "development-build",
+      "summary": "认识无依赖静态站的源文件边界、开发命令和构建职责。",
+      "kind": "chapter",
+      "dependent_files": ["README.md", "package.json", "build.mjs", "templates/layout.html"],
+      "page_brief": "- 解释无框架、无构建依赖的结构及 Node.js 20 环境要求；- 区分源模板、根目录生成 HTML、dist 发布产物；- 给出 npm run build/check/deploy:build 的适用场景与维护顺序。",
+      "children": [
+        {
+          "id": "c0101",
+          "title": "模板渲染与构建流程",
+          "slug": "template-rendering-flow",
+          "summary": "从配置与模板到生成页面，追踪校验、转义、日期计算和不同输出模式。",
+          "kind": "page",
+          "archetype": "flow",
+          "dependent_files": ["build.mjs", "site.config.json", "templates/layout.html", "templates/pages/index.html", "package.json"],
+          "page_brief": "- 流程起点是 node build.mjs 读取 site.config.json、共享 layout 和页面正文，终点是写入根目录 HTML、校验已有 HTML 或创建 dist；- 追踪参数互斥、配置检查、上海时区年月与工作时长、escapeHtml、render 的未知键失败、导航与分享 URL；- 说明输出路径边界、换行归一化与部署素材复制，强调编辑模板后重建。"
+        }
+      ]
+    },
+    {
+      "id": "c02",
+      "title": "配置与页面",
+      "slug": "configuration-pages",
+      "summary": "梳理页面导航、共享布局、站点配置和生成内容的组织方式。",
+      "kind": "chapter",
+      "dependent_files": ["site.config.json", "templates/layout.html", "index.html", "portfolio.html", "case-content.html", "case-visual.html", "case-data.html", "resume.html", "about.html", "contact.html"],
+      "page_brief": "- 展示配置中的八个页面及根目录生成页面的对应关系；- 解释导航激活态、共享 header/footer/main 与元信息由 layout 注入；- 划清静态展示内容与实际运行代码的边界，案例里的 Workflow/AI 能力是作品说明。",
+      "children": [
+        {
+          "id": "c0201",
+          "title": "站点配置模型",
+          "slug": "site-configuration-model",
+          "summary": "说明品牌、联系方式、工作起始月和页面描述字段的约束与消费位置。",
+          "kind": "page",
+          "archetype": "data",
+          "dependent_files": ["site.config.json", "build.mjs", "templates/layout.html", "site.js", "templates/pages/contact.html", "templates/pages/resume.html"],
+          "page_brief": "- 核心实体是 SiteConfig 与 pages 数组内的 PageConfig，源码为显式 JSON 数据结构；- 解释 name/role/url/email/phone/workStart 及 file/label/icon/title/description 字段、顺序和生成映射；- 说明 URL 末尾斜线、YYYY-MM、文件名唯一性与 index.html 必需规则；- 描述公开联系方式、可信配置与 HTML 转义边界，不重复展示实际电话邮箱。"
+        },
+        {
+          "id": "c0202",
+          "title": "页面内容与媒体素材",
+          "slug": "page-content-media",
+          "summary": "定位首页、案例、经历、关于、联系内容以及截图和分享素材的用途。",
+          "kind": "page",
+          "dependent_files": ["templates/pages/index.html", "templates/pages/portfolio.html", "templates/pages/case-content.html", "templates/pages/case-visual.html", "templates/pages/case-data.html", "templates/pages/resume.html", "templates/pages/about.html", "templates/pages/contact.html", "templates/layout.html", "site.config.json", "README.md", "assets/favicon.svg"],
+          "page_brief": "- 按源码梳理八个页面的职责、用户导航与案例入口；- 记录三张 WebP 截图的实际路径、声明尺寸、lazy 加载和替代文本；- 解释分享 JPEG、favicon、Open Graph/Twitter/canonical 来源和固定预览图范围；- 说明联系方式与经历动态标记，明确仓库展示案例成果而不承载模型/Workflow 后端。"
+        }
+      ]
+    },
+    {
+      "id": "c03",
+      "title": "交互与样式",
+      "slug": "interaction-styles",
+      "summary": "认识共享 CSS、浏览器端渐进增强及无障碍反馈的配合。",
+      "kind": "chapter",
+      "dependent_files": ["pages.css", "site.js", "templates/layout.html", "templates/pages/index.html", "templates/pages/contact.html"],
+      "page_brief": "- 解释 defer 加载的 site.js 与单一共享 pages.css 如何覆盖全部页面；- 总结静态正文/导航在无 JavaScript 时的可用性与动态日期/剪贴板的增强范围；- 描述样式职责、布局断点、交互语义与可访问反馈的边界。",
+      "children": [
+        {
+          "id": "c0301",
+          "title": "渐进增强与无障碍反馈",
+          "slug": "progressive-enhancement-accessibility",
+          "summary": "追踪日期更新、工作时长和邮箱复制成功或失败时的浏览器行为。",
+          "kind": "page",
+          "dependent_files": ["site.js", "templates/layout.html", "templates/pages/contact.html", "templates/pages/resume.html", "templates/pages/index.html", "build.mjs"],
+          "page_brief": "- 解释 IIFE、上海时区年月、data-current-year 与 data-experience-start 的更新；- 逐步追踪 copyEmail 的 click、禁用按钮、clipboard.writeText、成功与失败反馈、finally；- 定位 hidden、noscript、aria-describedby、role=status/aria-live 的静态契约；- 说明没有 copy button/status 时的提前返回和脚本失败边界，不声称存在源码未实现的完整校验。"
+        },
+        {
+          "id": "c0302",
+          "title": "响应式视觉系统",
+          "slug": "responsive-visual-system",
+          "summary": "说明 CSS 变量、共享组件、首页布局与窄屏适配的实际组织。",
+          "kind": "page",
+          "dependent_files": ["pages.css", "templates/layout.html", "templates/pages/index.html", "templates/pages/portfolio.html", "templates/pages/contact.html", "templates/pages/case-visual.html"],
+          "page_brief": "- 依据 pages.css 的实际选择器说明颜色/字体/间距变量、页面容器、header/nav/footer、通用按钮与卡片；- 展示首页、案例、联系页 CSS 与 HTML 类名的对应；- 记录真实媒体查询断点及布局变化，说明 overflow/hover/focus 等实际规则；- 区分现有样式行为与建议，不推断源码中不存在的主题切换或组件框架。"
+        }
+      ]
+    },
+    {
+      "id": "c04",
+      "title": "部署与维护",
+      "slug": "deployment-maintenance",
+      "summary": "解释 GitHub Pages 的发布入口、产物边界及日常维护检查。",
+      "kind": "chapter",
+      "dependent_files": ["README.md", "package.json", "build.mjs", ".github/workflows/static.yml", "_config.yml", ".gitignore", ".gitattributes"],
+      "page_brief": "- 介绍 GitHub Actions dist 发布与根目录 Jekyll 兼容配置；- 说明 dist/artifacts-screens 忽略规则和版本库换行策略；- 给出新增页面、改配置/模板/素材后构建校验的顺序及日期后备文本的维护，注明 npm run check 只验证 HTML 与源的一致性。",
+      "children": [
+        {
+          "id": "c0401",
+          "title": "Pages 发布与一致性校验",
+          "slug": "pages-publishing-validation",
+          "summary": "从 main 推送或手动工作流到 dist 上传和 Pages 部署，说明错误如何阻止发布。",
+          "kind": "page",
+          "archetype": "flow",
+          "dependent_files": [".github/workflows/static.yml", "build.mjs", "package.json", "_config.yml", "README.md", ".gitignore", ".gitattributes"],
+          "page_brief": "- 流程起点是 main 分支 push 或 workflow_dispatch，终点是 Actions 发布 dist 到 GitHub Pages；- 按工作流真实步骤描述 checkout/setup-node/configure-pages、构建、upload-pages-artifact/deploy-pages、权限与 concurrency；- 说明 dist 仅含页面、CSS、JS 和 assets，Jekyll exclude 的根目录兼容角色；- 解释 --check 如何比较当前月份的生成 HTML、失败退出、可验证范围和月切换后的重建要求。"
+        }
+      ]
+    }
+  ]
+}
