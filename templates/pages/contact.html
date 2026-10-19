@@ -1,19 +1,48 @@
-<section class="page-hero">
-  <div class="eyebrow">保持联系</div>
-  <h1>
-    聊聊 AI 产品的
-    <br/>
-    可能性。
-  </h1>
-  <p>如果你正在寻找一位既理解业务现场、又愿意深入 AI 工具与产品流程的候选人，欢迎联系我。</p>
+<section class="page-hero page-wrap">
+
+  <div class="page-hero-copy">
+    <p class="section-kicker">保持联系</p>
+    <h1>聊聊 AI 产品的<br>可能性。</h1>
+    <p>如果你正在寻找一位既理解业务现场、又愿意深入 AI 工具与产品流程的候选人，欢迎联系我。</p>
+  </div>
+
+  <aside class="hero-aside" aria-label="联系信息">
+    <span class="aside-label">状态</span>
+    <dl>
+      <div>
+        <dt>机会</dt>
+        <dd>AI 产品 / 应用方向</dd>
+      </div>
+      <div>
+        <dt>地点</dt>
+        <dd>杭州 · 可远程</dd>
+      </div>
+      <div>
+        <dt>方式</dt>
+        <dd>邮件或电话都可以</dd>
+      </div>
+    </dl>
+  </aside>
+
 </section>
-<section class="content-grid">
-  <a class="panel contact-card" href="tel:{{PHONE}}">
-    <h2>电话</h2>
-    <p class="contact-value">{{PHONE}}</p>
+
+<section class="contact-list page-wrap" aria-label="联系方式">
+
+  <a class="contact-row" href="mailto:{{EMAIL}}">
+    <span class="panel-label">邮箱</span>
+    <strong>{{EMAIL}}</strong>
+    <span aria-hidden="true">↗</span>
   </a>
-  <a class="panel contact-card" href="mailto:{{EMAIL}}">
-    <h2>QQ 邮箱</h2>
-    <p class="contact-value">{{EMAIL}}</p>
+
+  <a class="contact-row" href="tel:{{PHONE}}">
+    <span class="panel-label">电话</span>
+    <strong>{{PHONE}}</strong>
+    <span aria-hidden="true">↗</span>
   </a>
+
+  <div class="contact-row">
+    <span class="panel-label">坐标</span>
+    <strong>杭州 · 可远程</strong>
+  </div>
+
 </section>

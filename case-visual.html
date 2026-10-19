@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f2ec">
   <meta name="description" content="商品视觉生成案例：用图像模型和可控 Workflow 提升电商视觉生产效率。">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_CN">
@@ -23,53 +24,89 @@
   <link rel="canonical" href="https://w-h-w-why.github.io/personalwebsite/case-visual.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <title>W.H.W. · 商品视觉生成</title>
-  <link rel="stylesheet" href="pages.css">
-  <script src="site.js" defer></script>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="pages.css?v=99750e7634">
+  <script src="site.js?v=843b715a50" defer></script>
 </head>
 <body>
-  <div class="page">
+  <div class="page" id="top">
     <header class="site-header">
       <div class="header-inner">
-        <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">W</span><span class="brand-name">W.H.W.<em>·</em>作品集</span></a>
-        <nav class="main-nav" aria-label="作品集目录">
-      <a href="index.html">首页</a>
-      <a href="portfolio.html">案例</a>
-      <a href="case-content.html">Workflow</a>
-      <a class="current" aria-current="page" href="case-visual.html">视觉</a>
-      <a href="case-data.html">数据</a>
-      <a href="resume.html">经历</a>
-      <a href="about.html">关于</a>
-      <a href="contact.html">联系</a>
+        <a class="brand" href="index.html" aria-label="W.H.W. 作品集首页">
+          <span class="brand-mark" aria-hidden="true">W</span>
+          <span class="brand-text">W.H.W.<small>AI 产品经理作品集</small></span>
+        </a>
+        <nav class="main-nav" id="site-nav" aria-label="作品集目录">
+          <a href="index.html">首页</a>
+          <a class="current" aria-current="page" href="portfolio.html">案例</a>
+          <a href="resume.html">经历</a>
+          <a href="about.html">关于</a>
+          <a href="contact.html">联系</a>
         </nav>
         <div class="header-actions">
           <button class="copy-mail" type="button" data-copy-email="2878201147@qq.com" aria-describedby="copy-status" hidden>复制邮箱</button>
           <noscript><a class="copy-mail" href="mailto:2878201147@qq.com">邮件联系</a></noscript>
-          <a class="dark" href="contact.html">联系我　↗</a>
+          <a class="btn btn-dark header-cta" href="contact.html">联系我<span aria-hidden="true">↗</span></a>
+          <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="site-nav">
+            <span class="nav-toggle-text">菜单</span>
+            <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i></span>
+          </button>
         </div>
       </div>
       <p id="copy-status" class="copy-status" role="status" aria-live="polite" hidden></p>
     </header>
-    <main class="page-wrap">
-      <section class="page-hero">
-        <div class="eyebrow">02 / AI 商品视觉生成</div>
-        <h1>
-          让商品视觉生产
-          <br/>
-          更快、更可控。
-        </h1>
-        <p>针对电商设计需求，将飞书对接图像模型 API，根据原始商品图生成设计线稿，再用参考图与大货图完成视觉替换。</p>
-        <a class="back" href="portfolio.html">← 返回作品目录</a>
+    <main class="site-main">
+      <section class="page-hero page-wrap">
+
+        <div class="page-hero-copy">
+          <nav class="breadcrumb" aria-label="面包屑">
+            <a href="portfolio.html">作品目录</a>
+            <span aria-hidden="true">/</span>
+            <span>视觉生成</span>
+          </nav>
+          <p class="section-kicker">02 / AI 商品视觉生成</p>
+          <h1>让商品视觉生产<br>更快、更可控。</h1>
+          <p>针对电商设计需求，将飞书对接图像模型 API，根据原始商品图生成设计线稿，再用参考图与大货图完成视觉替换。</p>
+        </div>
+
+        <aside class="hero-aside" aria-label="项目速览">
+          <span class="aside-label">项目速览</span>
+          <dl>
+            <div>
+              <dt>场景</dt>
+              <dd>电商商品视觉</dd>
+            </div>
+            <div>
+              <dt>工具</dt>
+              <dd>图像模型 API · 飞书 · 参考图</dd>
+            </div>
+            <div>
+              <dt>产出</dt>
+              <dd>线稿生成与滞销款视觉替换</dd>
+            </div>
+            <div>
+              <dt>状态</dt>
+              <dd>持续迭代中</dd>
+            </div>
+          </dl>
+        </aside>
+
       </section>
-      <section class="content-grid">
-        <div class="panel">
+
+      <section class="content-grid page-wrap">
+
+        <article class="panel">
+          <span class="panel-label">执行</span>
           <h2>工作内容</h2>
           <ul>
             <li>根据原始商品图生成设计线稿。</li>
             <li>结合商品参考图与大货图替换滞销款视觉表现。</li>
             <li>控制场景、姿势、模特和风格，降低视觉试错成本。</li>
           </ul>
-        </div>
-        <div class="panel">
+        </article>
+
+        <article class="panel">
+          <span class="panel-label">判断</span>
           <h2>产品判断</h2>
           <p>图像模型不是一次性出图工具，而是可以被拆成输入、约束、生成和筛选的视觉 Workflow。流程越清晰，结果越容易复用。</p>
           <div class="tags">
@@ -77,17 +114,55 @@
             <span>参考图</span>
             <span>场景控制</span>
           </div>
-        </div>
-        <div class="panel wide">
-          <h2>视觉生成 Workflow</h2>
-          <img alt="商品视觉生成与图像模型 Workflow 截图" class="evidence" decoding="async" height="788" loading="lazy" src="assets/visual-generation-workflow.webp" width="1160"/>
-        </div>
+        </article>
+
+        <figure class="panel wide evidence-figure">
+          <figcaption>
+            <span class="panel-label">Workflow</span>
+            <h2>视觉生成 Workflow</h2>
+          </figcaption>
+          <div class="evidence-frame">
+            <img alt="商品视觉生成与图像模型 Workflow 截图" src="assets/visual-generation-workflow.webp" width="1160" height="788" loading="lazy" decoding="async">
+          </div>
+        </figure>
+
+      </section>
+
+      <section class="next-case page-wrap">
+        <a href="case-data.html">
+          <span>下一个案例</span>
+          <strong>从商品图数据到 RPA 流程</strong>
+          <i aria-hidden="true">→</i>
+        </a>
       </section>
     </main>
     <footer class="site-footer">
       <div class="footer-inner">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="W.H.W. 作品集首页">
+            <span class="brand-mark" aria-hidden="true">W</span>
+            <span class="brand-text">W.H.W.<small>AI 产品经理作品集</small></span>
+          </a>
+          <p>把前沿模型，变成真正可用的日常。</p>
+        </div>
+        <nav class="footer-nav" aria-label="页脚导航">
+          <span class="footer-label">页面</span>
+          <a href="index.html">首页</a>
+          <a href="portfolio.html">案例</a>
+          <a href="resume.html">经历</a>
+          <a href="about.html">关于</a>
+          <a href="contact.html">联系</a>
+        </nav>
+        <div class="footer-contact">
+          <span class="footer-label">联系</span>
+          <a href="mailto:2878201147@qq.com">2878201147@qq.com</a>
+          <a href="tel:18768464924">18768464924</a>
+          <span>杭州 · 可远程</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
         <span>© <span data-current-year>2026</span> W.H.W. · AI 产品经理</span>
-        <span><a href="tel:18768464924">18768464924</a> · <a href="mailto:2878201147@qq.com">2878201147@qq.com</a></span>
+        <a href="#top">回到顶部 ↑</a>
       </div>
     </footer>
   </div>

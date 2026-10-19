@@ -14,6 +14,34 @@
     element.textContent = [months >= 12 ? `${Math.floor(months / 12)} 年` : '', months % 12 || months === 0 ? `${months % 12} 个月` : ''].filter(Boolean).join(' ');
   });
 
+  // 移动端导航：JS 启用时才折叠为菜单，禁用脚本时仍保留完整链接。
+  const header = document.querySelector('.site-header');
+  const nav = header?.querySelector('.main-nav');
+  const navToggle = header?.querySelector('.nav-toggle');
+  if (header && nav && navToggle) {
+    const setOpen = open => {
+      header.classList.toggle('nav-open', open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+    };
+    navToggle.addEventListener('click', () => setOpen(!header.classList.contains('nav-open')));
+    nav.addEventListener('click', event => {
+      if (event.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && header.classList.contains('nav-open')) {
+        setOpen(false);
+        navToggle.focus();
+      }
+    });
+    document.addEventListener('click', event => {
+      if (header.classList.contains('nav-open') && !header.contains(event.target)) setOpen(false);
+    });
+    matchMedia('(min-width: 901px)').addEventListener('change', event => {
+      if (event.matches) setOpen(false);
+    });
+  }
+
   const button = document.querySelector('[data-copy-email]');
   const status = document.querySelector('#copy-status');
   if (!button || !status) return;

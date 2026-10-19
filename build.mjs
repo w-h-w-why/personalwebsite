@@ -3,6 +3,7 @@
  * --deploy 仅将 HTML、样式、脚本和图片放入 dist；--check 检查源文件与已提交 HTML 的漂移。
  * 年份/任职时长按 Asia/Shanghai 生成可读后备文本，site.js 在访问时继续更新。
  */
+import { createHash } from 'node:crypto';
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,6 +17,15 @@ const deploy = flags.has('--deploy');
 const output = deploy ? resolve(root, 'dist') : root;
 const config = JSON.parse(await readFile(resolve(root, 'site.config.json'), 'utf8'));
 const layout = await readFile(resolve(root, 'templates/layout.html'), 'utf8');
+// 用内容摘要做缓存版本，样式或脚本变化后访问者会自动拿到新文件。
+async function assetVersion(file) {
+  const content = await readFile(resolve(root, file));
+  return createHash('sha1').update(content).digest('hex').slice(0, 10);
+}
+const assetValues = {
+  CSS_HREF: `pages.css?v=${await assetVersion('pages.css')}`,
+  JS_SRC: `site.js?v=${await assetVersion('site.js')}`,
+};
 if (!/^https?:\/\/[^\s/]+(?:\/[^\s]*)?\/$/.test(config.url)) throw new Error('site.config.json url must be an absolute URL ending in /');
 if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(config.workStart)) throw new Error('site.config.json workStart must use YYYY-MM');
 if (!Array.isArray(config.pages) || config.pages.length === 0) throw new Error('site.config.json pages must be a non-empty array');
@@ -25,6 +35,7 @@ for (const page of config.pages) {
   if (pageFiles.has(page.file)) throw new Error(`Duplicate page file: ${page.file}`);
   pageFiles.add(page.file);
   for (const field of ['label', 'icon', 'title', 'description']) if (typeof page[field] !== 'string' || !page[field]) throw new Error(`Missing ${field} for ${page.file}`);
+  if (page.nav !== undefined && typeof page.nav !== 'boolean') throw new Error(`Invalid nav flag for ${page.file}`);
 }
 if (!pageFiles.has('index.html')) throw new Error('site.config.json must include index.html');
 const calendar = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit' }).format(new Date());
@@ -61,19 +72,27 @@ if (deploy) {
   await mkdir(output);
 }
 
+// nav:false 的页面仍会构建，但只从案例目录进入，避免顶栏信息过载。
+const navPages = config.pages.filter(page => page.nav !== false);
+
 for (const page of config.pages) {
   const values = Object.fromEntries(Object.entries({ NAME: config.name, ROLE: config.role, PHONE: config.phone, EMAIL: config.email, WORK_START: config.workStart, YEAR: year, EXPERIENCE: experience }).map(([key, value]) => [key, escapeHtml(value)]));
   const content = await readFile(resolve(root, 'templates/pages', page.file), 'utf8');
   // 顶部导航只输出文字链接，保持排版简洁；site.config.json 里的图标字段保留，便于未来换用图标样式。
-  const nav = config.pages.map(item => `      <a${item.file === page.file ? ' class="current" aria-current="page"' : ''} href="${escapeHtml(item.file)}">${escapeHtml(item.label)}</a>`).join('\n');
+  // 案例详情页归属“案例”目录，让顶栏保持正确的当前位置。
+  const currentPage = page.file.startsWith('case-') ? 'portfolio.html' : page.file;
+  const nav = navPages.map(item => `          <a${item.file === currentPage ? ' class="current" aria-current="page"' : ''} href="${escapeHtml(item.file)}">${escapeHtml(item.label)}</a>`).join('\n');
+  const footerNav = navPages.map(item => `          <a href="${escapeHtml(item.file)}">${escapeHtml(item.label)}</a>`).join('\n');
   const html = render(layout, {
     ...values,
+    ...assetValues,
     TITLE: escapeHtml(`${config.name} · ${page.title}`),
     DESCRIPTION: escapeHtml(page.description),
     URL: escapeHtml(new URL(page.file === 'index.html' ? './' : page.file, config.url).href),
     IMAGE: escapeHtml(new URL('assets/social-preview.jpg', config.url).href),
     PAGE_CLASS: page.file === 'index.html' ? ' home-page' : '',
     NAV: nav,
+    FOOTER_NAV: footerNav,
     CONTENT: render(content, values).trim().replace(/^[ \t]+$/gm, '').split('\n').map(line => line ? `      ${line}` : '').join('\n'),
   });
   const target = resolve(output, page.file);
