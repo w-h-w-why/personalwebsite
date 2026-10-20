@@ -1,6 +1,6 @@
 # W.H.W. 作品集
 
-无框架、无构建依赖的静态站。`site.config.json` 统一维护导航、标题、摘要和公开联系方式；`templates/layout.html` 是全站头部、导航、分享信息和页脚，`templates/pages/` 只放各页正文。
+无框架、无构建依赖的静态站。`site.config.json` 统一维护导航、标题、摘要和公开联系方式；`templates/layout.html` 是全站头部、导航、分享信息和页脚，`templates/pages/` 只放各页正文。业务案例与 AI 项目分开展示：`case-*.html` 记录需求、产品规则、落地过程与真实边界，`projects.html` 汇总项目成果，`project-*.html` 分别介绍每个项目的产品判断、AI 工作流、亮点、验证方式和交付边界。
 
 修改源文件后运行 `npm run build`，提交根目录 HTML；不要直接编辑生成的 HTML。运行 `npm run check` 检查生成文件是否与源文件一致。Node.js 20 或以上即可，无需 `npm install`。
 

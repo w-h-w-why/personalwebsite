@@ -6,13 +6,20 @@
   "phone": "18768464924",
   "workStart": "2025-07",
   "pages": [
-    {"file": "index.html", "label": "首页", "icon": "⌂", "title": "AI 产品经理作品集", "description": "W.H.W. 的 AI 产品经理作品集，展示电商运营、AI 内容自动化、商品视觉生成和数据分析实践。"},
-    {"file": "portfolio.html", "label": "案例", "icon": "▦", "title": "作品集", "description": "查看 W.H.W. 的 AI 电商产品案例，涵盖内容自动化、商品视觉生成、数据分析与流程自动化。"},
+    {"file": "index.html", "label": "首页", "icon": "⌂", "title": "AI 应用产品作品集", "description": "W.H.W. 的 AI 应用产品作品集，展示业务系统、AI 内容自动化、商品视觉生成、数据分析与个人开发项目。"},
+    {"file": "portfolio.html", "label": "案例", "icon": "▦", "title": "业务案例", "description": "查看 W.H.W. 的 AI 应用业务案例，涵盖翻单决策、内容自动化、商品视觉生成、数据分析与流程自动化。"},
+    {"file": "projects.html", "label": "项目", "icon": "⌘", "title": "项目档案", "description": "浏览 W.H.W. 的 AI 项目实践：AI 代码审查桌面端、宠物协作 App、趋势发现原型、Agent Skills 和知识工程。"},
+    {"file": "project-ocr.html", "label": "AI Review", "icon": "⌘", "nav": false, "title": "OpenCodeReview Desktop", "description": "OpenCodeReview Desktop 项目详情：用 Electron 与 React 将 AI 代码审查 CLI 产品化为可执行、可阅读、可追溯的 Windows 桌面工作流。"},
+    {"file": "project-pawcare.html", "label": "PawCare", "icon": "◇", "nav": false, "title": "PawCare 宠物家庭协作 App", "description": "PawCare 项目详情：从多宠家庭场景、PRD、Mock 状态到 Flutter 交互前端和 805 项测试，并规划安全可追溯的宠物健康 AI 能力。"},
+    {"file": "project-trend.html", "label": "Trend", "icon": "◩", "nav": false, "title": "Trend Discovery 趋势发现", "description": "Trend Discovery 项目详情：将女装搜索趋势、关键词、商品关联和品牌方报告整合成可下钻的数据产品原型，并规划 AI 语义分析能力。"},
+    {"file": "project-skills.html", "label": "Skills", "icon": "⌁", "nav": false, "title": "Agent Skills 与知识系统", "description": "Agent Skills 项目详情：用 Skills、AGENTS 规则、评测、来源治理和知识库，让 AI 的工作方法可复用、可追溯、可持续迭代。"},
+    {"file": "project-website.html", "label": "Website", "icon": "▣", "nav": false, "title": "个人作品集站点工程", "description": "个人作品集网站工程详情：用共享模板、统一配置、Node.js 构建和 AI 辅助内容工程，生成可验证、响应式、可静态降级的作品集站点。"},
+    {"file": "case-replenishment.html", "label": "翻单", "icon": "↗", "nav": false, "title": "翻单决策中心", "description": "翻单决策中心案例：统一商品、销量、库存与翻单系数，以可追溯的产品规则支持服饰电商补货判断。"},
     {"file": "case-content.html", "label": "Workflow", "icon": "◫", "nav": false, "title": "电商内容自动化", "description": "电商内容自动化案例：用 Workflow 将商品信息、搜索词与趋势数据转成标题和种草文案。"},
     {"file": "case-visual.html", "label": "视觉", "icon": "◉", "nav": false, "title": "商品视觉生成", "description": "商品视觉生成案例：用图像模型和可控 Workflow 提升电商视觉生产效率。"},
     {"file": "case-data.html", "label": "数据", "icon": "◒", "nav": false, "title": "数据分析与自动化", "description": "数据分析与自动化案例：从商品图数据、竞品色系到 AI 预测和 RPA 流程。"},
-    {"file": "resume.html", "label": "经历", "icon": "▤", "title": "经历", "description": "W.H.W. 的工作与教育经历：电商运营、AI 工具实践与产品能力。"},
-    {"file": "about.html", "label": "关于", "icon": "◎", "title": "关于我", "description": "了解 W.H.W. 的产品方法、AI 应用实践和对下一份机会的期待。"},
-    {"file": "contact.html", "label": "联系", "icon": "✉", "title": "联系我", "description": "联系 W.H.W.：AI 产品经理、电商业务与 Workflow 实践者。"}
+    {"file": "resume.html", "label": "经历", "icon": "▤", "title": "经历", "description": "W.H.W. 的工作与教育经历：电商运营、AI 应用落地、产品设计与项目能力。"},
+    {"file": "about.html", "label": "关于", "icon": "◎", "title": "关于我", "description": "了解 W.H.W. 的产品方法、AI 应用实践、组织赋能经历和对下一份机会的期待。"},
+    {"file": "contact.html", "label": "联系", "icon": "✉", "title": "联系我", "description": "联系 W.H.W.：AI 应用产品实践者、电商业务与 Workflow 实践者。"}
   ]
 }

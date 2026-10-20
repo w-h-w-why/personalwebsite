@@ -79,8 +79,12 @@ for (const page of config.pages) {
   const values = Object.fromEntries(Object.entries({ NAME: config.name, ROLE: config.role, PHONE: config.phone, EMAIL: config.email, WORK_START: config.workStart, YEAR: year, EXPERIENCE: experience }).map(([key, value]) => [key, escapeHtml(value)]));
   const content = await readFile(resolve(root, 'templates/pages', page.file), 'utf8');
   // 顶部导航只输出文字链接，保持排版简洁；site.config.json 里的图标字段保留，便于未来换用图标样式。
-  // 案例详情页归属“案例”目录，让顶栏保持正确的当前位置。
-  const currentPage = page.file.startsWith('case-') ? 'portfolio.html' : page.file;
+  // 案例与项目详情页分别归属一级目录，让顶栏保持正确的当前位置。
+  const currentPage = page.file.startsWith('case-')
+    ? 'portfolio.html'
+    : page.file.startsWith('project-')
+      ? 'projects.html'
+      : page.file;
   const nav = navPages.map(item => `          <a${item.file === currentPage ? ' class="current" aria-current="page"' : ''} href="${escapeHtml(item.file)}">${escapeHtml(item.label)}</a>`).join('\n');
   const footerNav = navPages.map(item => `          <a href="${escapeHtml(item.file)}">${escapeHtml(item.label)}</a>`).join('\n');
   const html = render(layout, {

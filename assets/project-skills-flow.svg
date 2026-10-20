@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Skills 与知识资产运行流程</title>
+  <desc id="desc">任务进入后由 AGENTS 规则选择 Skill 和领域知识，AI 编排模型与工具完成执行，再经过评测门禁、人工确认和结果沉淀；最终成果持续进入 Skill、知识页面和跨工具上下文。</desc>
+  <rect width="1600" height="1000" fill="#f3f2ec"/>
+  <rect x="46" y="46" width="1508" height="908" rx="4" fill="#15150f"/>
+  <path d="M46 126h1508" stroke="#3e4036"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="84" y="96" fill="#fff" font-size="24" font-weight="700">AGENT SKILLS / AI 能力与知识复利系统</text>
+    <circle cx="1470" cy="87" r="7" fill="#d8f45a"/>
+    <text x="1378" y="92" fill="#b9b9ac" font-size="17">持续迭代</text>
+
+    <text x="84" y="177" fill="#d8f45a" font-size="15" font-weight="700" letter-spacing="1">01 / 一次任务如何变成可复用能力</text>
+    <text x="84" y="213" fill="#fff" font-size="22" font-weight="700">不让有效方法停留在一次对话里</text>
+
+    <g>
+      <rect x="84" y="250" width="238" height="184" rx="3" fill="#20212a" stroke="#65675b"/>
+      <text x="110" y="288" fill="#9da1b3" font-size="14">TASK</text>
+      <text x="110" y="327" fill="#fff" font-size="23" font-weight="700">真实任务进入</text>
+      <text x="110" y="363" fill="#b9b9ac" font-size="13">需求 · 开发 · 测试 · 研究</text>
+      <text x="110" y="389" fill="#b9b9ac" font-size="13">知识 · 内容生产</text>
+    </g>
+    <path d="M334 342h42" stroke="#d8f45a" stroke-width="2"/>
+    <path d="M368 335l10 7-10 7" fill="none" stroke="#d8f45a" stroke-width="2"/>
+    <g>
+      <rect x="386" y="250" width="238" height="184" rx="3" fill="#20212a" stroke="#65675b"/>
+      <text x="412" y="288" fill="#9da1b3" font-size="14">ROUTE</text>
+      <text x="412" y="327" fill="#fff" font-size="23" font-weight="700">规则路由</text>
+      <text x="412" y="363" fill="#b9b9ac" font-size="13">AGENTS 读取顺序 · 安全门禁</text>
+      <text x="412" y="389" fill="#b9b9ac" font-size="13">选择 Skill 与领域知识</text>
+    </g>
+    <path d="M636 342h42" stroke="#d8f45a" stroke-width="2"/>
+    <path d="M670 335l10 7-10 7" fill="none" stroke="#d8f45a" stroke-width="2"/>
+    <g>
+      <rect x="688" y="250" width="238" height="184" rx="3" fill="#2438e8"/>
+      <text x="714" y="288" fill="#c7cdff" font-size="14">EXECUTE</text>
+      <text x="714" y="327" fill="#fff" font-size="23" font-weight="700">AI 编排执行</text>
+      <text x="714" y="363" fill="#dce0ff" font-size="13">模型 · 工具 · 文件 · 数据</text>
+      <text x="714" y="389" fill="#dce0ff" font-size="13">结构化输入与输出约束</text>
+    </g>
+    <path d="M938 342h42" stroke="#d8f45a" stroke-width="2"/>
+    <path d="M972 335l10 7-10 7" fill="none" stroke="#d8f45a" stroke-width="2"/>
+    <g>
+      <rect x="990" y="250" width="238" height="184" rx="3" fill="#20212a" stroke="#65675b"/>
+      <text x="1016" y="288" fill="#9da1b3" font-size="14">VERIFY</text>
+      <text x="1016" y="327" fill="#fff" font-size="23" font-weight="700">评测与人工确认</text>
+      <text x="1016" y="363" fill="#b9b9ac" font-size="13">输出格式 · 边界 · 禁止项</text>
+      <text x="1016" y="389" fill="#b9b9ac" font-size="13">高风险动作保留人工确认</text>
+    </g>
+    <path d="M1240 342h42" stroke="#d8f45a" stroke-width="2"/>
+    <path d="M1274 335l10 7-10 7" fill="none" stroke="#d8f45a" stroke-width="2"/>
+    <g>
+      <rect x="1292" y="250" width="210" height="184" rx="3" fill="#d8f45a"/>
+      <text x="1318" y="288" fill="#15150f" font-size="14">RESULT</text>
+      <text x="1318" y="327" fill="#15150f" font-size="23" font-weight="700">交付成果</text>
+      <text x="1318" y="363" fill="#3e4036" font-size="13">代码 · 文档 · 方案</text>
+      <text x="1318" y="389" fill="#3e4036" font-size="13">报告 · 知识页面</text>
+    </g>
+
+    <text x="84" y="500" fill="#d8f45a" font-size="15" font-weight="700" letter-spacing="1">02 / 成果如何产生复利</text>
+    <text x="84" y="536" fill="#fff" font-size="22" font-weight="700">把验证过的方法、知识和上下文继续资产化</text>
+
+    <g>
+      <rect x="84" y="578" width="330" height="194" rx="3" fill="#20212a" stroke="#65675b"/>
+      <text x="110" y="617" fill="#d8f45a" font-size="14" font-weight="700">ASSET 01</text>
+      <text x="110" y="656" fill="#fff" font-size="23" font-weight="700">87 个 Agent Skill</text>
+      <text x="110" y="692" fill="#b9b9ac" font-size="13">按场景分类、启用状态、来源与</text>
+      <text x="110" y="718" fill="#b9b9ac" font-size="13">评测结果持续维护</text>
+      <text x="110" y="748" fill="#9da1b3" font-size="12">需求 · 开发 · 测试 · 研究 · 知识 · 内容</text>
+    </g>
+    <g>
+      <rect x="436" y="578" width="330" height="194" rx="3" fill="#20212a" stroke="#65675b"/>
+      <text x="462" y="617" fill="#d8f45a" font-size="14" font-weight="700">ASSET 02</text>
+      <text x="462" y="656" fill="#fff" font-size="23" font-weight="700">600+ Markdown</text>
+      <text x="462" y="692" fill="#b9b9ac" font-size="13">工程、计算机学习、宠物健康</text>
+      <text x="462" y="718" fill="#b9b9ac" font-size="13">三类知识库与多智能体规则</text>
+      <text x="462" y="748" fill="#9da1b3" font-size="12">来源 · 生命周期 · 置信度 · 关系</text>
+    </g>
+    <g>
+      <rect x="788" y="578" width="330" height="194" rx="3" fill="#20212a" stroke="#65675b"/>
+      <text x="814" y="617" fill="#d8f45a" font-size="14" font-weight="700">ASSET 03</text>
+      <text x="814" y="656" fill="#fff" font-size="23" font-weight="700">跨工具上下文</text>
+      <text x="814" y="692" fill="#b9b9ac" font-size="13">接入多类 AI 工具会话格式</text>
+      <text x="814" y="718" fill="#b9b9ac" font-size="13">检索、主题聚类与长期记忆桥接</text>
+      <text x="814" y="748" fill="#9da1b3" font-size="12">让经验跨会话、跨项目继续工作</text>
+    </g>
+    <g>
+      <rect x="1140" y="578" width="362" height="194" rx="3" fill="#d8f45a"/>
+      <text x="1166" y="617" fill="#15150f" font-size="14" font-weight="700">COMPOUND</text>
+      <text x="1166" y="656" fill="#15150f" font-size="23" font-weight="700">下一次任务起点更高</text>
+      <text x="1166" y="692" fill="#3e4036" font-size="13">已有方法直接复用 · 失败经验形成门禁</text>
+      <text x="1166" y="718" fill="#3e4036" font-size="13">领域知识按需加载 · 自动备份降低丢失</text>
+      <text x="1166" y="748" fill="#3e4036" font-size="12">AI 从一次性工具变成长期工作基础设施</text>
+    </g>
+
+    <text x="84" y="845" fill="#b9b9ac" font-size="15">个人整合、评测与持续维护；部分 Skill 来源于外部社区，不等同于全部独立开发</text>
+    <path d="M84 903h1418" stroke="#3e4036"/>
+    <path d="M84 903h1050" stroke="#d8f45a" stroke-width="4"/>
+    <circle cx="84" cy="903" r="7" fill="#d8f45a"/>
+    <circle cx="650" cy="903" r="7" fill="#d8f45a"/>
+    <circle cx="1134" cy="903" r="8" fill="#2438e8" stroke="#fff" stroke-width="2"/>
+  </g>
+</svg>

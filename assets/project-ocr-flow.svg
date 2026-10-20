@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">OpenCodeReview Desktop AI 代码审查流程</title>
+  <desc id="desc">用户选择审查范围，系统预览文件并调用 AI 审查 CLI，流式接收结果，按文件整理发现，经人工复核后导出或沉淀为历史会话。</desc>
+  <rect width="1600" height="1000" fill="#f3f2ec"/>
+  <rect x="46" y="46" width="1508" height="908" rx="4" fill="#fbfaf6" stroke="#15150f" stroke-width="2"/>
+  <path d="M46 126h1508" stroke="#d8d6ca"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="84" y="96" fill="#15150f" font-size="24" font-weight="700">OPENCODEREVIEW / AI 代码审查工作流</text>
+    <circle cx="1470" cy="87" r="7" fill="#2f9e56"/>
+    <text x="1400" y="92" fill="#65675b" font-size="17">人在回路</text>
+
+    <text x="84" y="178" fill="#2438e8" font-size="15" font-weight="700" letter-spacing="1">01 / 选择范围</text>
+    <text x="84" y="214" fill="#15150f" font-size="22" font-weight="700">先明确让 AI 审查什么</text>
+
+    <g>
+      <rect x="84" y="250" width="210" height="132" rx="3" fill="#e9e8df" stroke="#b6b4a6"/>
+      <text x="108" y="286" fill="#65675b" font-size="14">LOCAL</text>
+      <text x="108" y="324" fill="#15150f" font-size="22" font-weight="700">工作区改动</text>
+      <text x="108" y="355" fill="#65675b" font-size="13">未提交的文件与代码行</text>
+    </g>
+    <g>
+      <rect x="310" y="250" width="210" height="132" rx="3" fill="#e9e8df" stroke="#b6b4a6"/>
+      <text x="334" y="286" fill="#65675b" font-size="14">DIFF</text>
+      <text x="334" y="324" fill="#15150f" font-size="22" font-weight="700">分支对比</text>
+      <text x="334" y="355" fill="#65675b" font-size="13">比较两个分支的变更</text>
+    </g>
+    <g>
+      <rect x="536" y="250" width="210" height="132" rx="3" fill="#e9e8df" stroke="#b6b4a6"/>
+      <text x="560" y="286" fill="#65675b" font-size="14">COMMIT</text>
+      <text x="560" y="324" fill="#15150f" font-size="22" font-weight="700">单次提交</text>
+      <text x="560" y="355" fill="#65675b" font-size="13">聚焦一次提交的影响</text>
+    </g>
+    <g>
+      <rect x="762" y="250" width="210" height="132" rx="3" fill="#15150f"/>
+      <text x="786" y="286" fill="#b9b9ac" font-size="14">REPO</text>
+      <text x="786" y="324" fill="#d8f45a" font-size="22" font-weight="700">全仓扫描</text>
+      <text x="786" y="355" fill="#b9b9ac" font-size="13">按规则检查整个仓库</text>
+    </g>
+
+    <g>
+      <rect x="1012" y="250" width="490" height="132" rx="3" fill="#edf0ff" stroke="#2438e8"/>
+      <text x="1038" y="286" fill="#2438e8" font-size="14" font-weight="700">AI 输入准备</text>
+      <text x="1038" y="324" fill="#15150f" font-size="21" font-weight="700">文件清单 · 代码差异 · 项目上下文</text>
+      <text x="1038" y="355" fill="#65675b" font-size="13">用户先预览范围，再确认启动审查</text>
+    </g>
+    <path d="M1270 382v48" stroke="#2438e8" stroke-width="2"/>
+    <path d="M1263 422l7 10 7-10" fill="none" stroke="#2438e8" stroke-width="2"/>
+
+    <text x="84" y="474" fill="#2438e8" font-size="15" font-weight="700" letter-spacing="1">02 / AI 审查与结果解析</text>
+    <text x="84" y="510" fill="#15150f" font-size="22" font-weight="700">模型负责发现问题，系统负责让过程可管理</text>
+
+    <g>
+      <rect x="84" y="550" width="292" height="178" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="108" y="587" fill="#2438e8" font-size="14" font-weight="700">STEP 01</text>
+      <text x="108" y="624" fill="#15150f" font-size="23" font-weight="700">调用 OCR CLI</text>
+      <text x="108" y="661" fill="#65675b" font-size="13">Electron 主进程封装子进程</text>
+      <text x="108" y="689" fill="#65675b" font-size="13">传递范围、规则与模型配置</text>
+    </g>
+    <path d="M388 639h50" stroke="#2438e8" stroke-width="2"/>
+    <path d="M430 632l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="452" y="550" width="292" height="178" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="476" y="587" fill="#2438e8" font-size="14" font-weight="700">STEP 02</text>
+      <text x="476" y="624" fill="#15150f" font-size="23" font-weight="700">模型阅读与判断</text>
+      <text x="476" y="661" fill="#65675b" font-size="13">结合代码上下文生成审查发现</text>
+      <text x="476" y="689" fill="#65675b" font-size="13">识别缺陷、风险与改进机会</text>
+    </g>
+    <path d="M756 639h50" stroke="#2438e8" stroke-width="2"/>
+    <path d="M798 632l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="820" y="550" width="292" height="178" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="844" y="587" fill="#2438e8" font-size="14" font-weight="700">STEP 03</text>
+      <text x="844" y="624" fill="#15150f" font-size="23" font-weight="700">流式日志与解析</text>
+      <text x="844" y="661" fill="#65675b" font-size="13">实时显示任务状态和进度</text>
+      <text x="844" y="689" fill="#65675b" font-size="13">整理严重度、类别和代码位置</text>
+    </g>
+    <path d="M1124 639h50" stroke="#2438e8" stroke-width="2"/>
+    <path d="M1166 632l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="1188" y="550" width="314" height="178" rx="3" fill="#d8f45a"/>
+      <text x="1212" y="587" fill="#15150f" font-size="14" font-weight="700">STEP 04</text>
+      <text x="1212" y="624" fill="#15150f" font-size="23" font-weight="700">按文件阅读</text>
+      <text x="1212" y="661" fill="#3e4036" font-size="13">筛选、定位、标记与复盘</text>
+      <text x="1212" y="689" fill="#3e4036" font-size="13">人工判断哪些问题确实需要修改</text>
+    </g>
+
+    <text x="84" y="802" fill="#65675b" font-size="15">AI 输出的审查发现是“候选判断”，不是自动修改指令</text>
+    <path d="M84 840h1418" stroke="#d8d6ca"/>
+    <g font-size="14">
+      <text x="84" y="881" fill="#2438e8" font-weight="700">人工复核</text>
+      <text x="347" y="881" fill="#15150f">会话历史</text>
+      <text x="558" y="881" fill="#15150f">两次结果对比</text>
+      <text x="822" y="881" fill="#15150f">继续审查</text>
+      <text x="1057" y="881" fill="#15150f">Markdown / JSON / HTML</text>
+      <text x="1373" y="881" fill="#15150f">本地沉淀</text>
+    </g>
+    <path d="M84 912h1418" stroke="#2438e8" stroke-width="4"/>
+    <circle cx="84" cy="912" r="7" fill="#2438e8"/>
+    <circle cx="337" cy="912" r="7" fill="#2438e8"/>
+    <circle cx="548" cy="912" r="7" fill="#2438e8"/>
+    <circle cx="812" cy="912" r="7" fill="#2438e8"/>
+    <circle cx="1047" cy="912" r="7" fill="#2438e8"/>
+    <circle cx="1363" cy="912" r="8" fill="#d8f45a" stroke="#15150f" stroke-width="2"/>
+  </g>
+</svg>

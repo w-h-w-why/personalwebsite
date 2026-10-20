@@ -1,0 +1,137 @@
+
+<section class="page-hero page-wrap">
+
+  <div class="page-hero-copy">
+    <nav class="breadcrumb" aria-label="面包屑">
+      <a href="portfolio.html">业务案例</a>
+      <span aria-hidden="true">/</span>
+      <span>翻单决策中心</span>
+    </nav>
+    <p class="section-kicker">01 / AI 辅助业务决策系统</p>
+    <h1>让翻单不只依赖经验，<br>而是一条可追溯的决策链路。</h1>
+    <p>面向服饰电商补货场景，统一商品、销量、库存、相似款与翻单系数，帮助商品团队定位需要翻单或持续关注的商品，并解释建议从何而来。</p>
+  </div>
+
+  <aside class="hero-aside" aria-label="项目速览">
+    <span class="aside-label">项目速览</span>
+    <dl>
+      <div>
+        <dt>角色</dt>
+        <dd>需求发现 · 产品设计 · 数据库与开发 · 上线推广</dd>
+      </div>
+      <div>
+        <dt>技术</dt>
+        <dd>Node.js · SQL Server · T-SQL · Excel</dd>
+      </div>
+      <div>
+        <dt>用户</dt>
+        <dd>商品团队 · 运营团队</dd>
+      </div>
+      <div>
+        <dt>状态</dt>
+        <dd>内部日常使用 · 持续迭代</dd>
+      </div>
+    </dl>
+  </aside>
+
+</section>
+
+<section class="content-grid page-wrap">
+
+  <article class="panel">
+    <span class="panel-label">问题</span>
+    <h2>信息分散，判断容易遗漏</h2>
+    <p>翻单需要同时查看商品资料、渠道销量、库存、历史参考款和业务系数。信息散落在多个表和人工 Excel 中，商品人员需要重复查找、比对和计算，也难以保证每次判断口径一致。</p>
+  </article>
+
+  <article class="panel">
+    <span class="panel-label">目标</span>
+    <h2>把“怎么判断”变成产品规则</h2>
+    <p>系统不是简单罗列库存，而是先预估需求，再匹配业务系数、计算库存缺口和优先级，最后形成需翻单与持续关注两个视图，让商品人员基于统一结果复核与执行。</p>
+  </article>
+
+  <figure class="panel wide evidence-figure">
+    <figcaption>
+      <span class="panel-label">系统逻辑</span>
+      <h2>从业务数据到翻单建议</h2>
+    </figcaption>
+    <div class="evidence-frame evidence-frame-system">
+      <img alt="翻单决策中心的数据输入、规则计算与产品闭环示意" src="assets/replenishment-system.svg" width="1600" height="1000" loading="lazy" decoding="async">
+    </div>
+  </figure>
+
+  <div class="metrics wide" aria-label="项目结果">
+    <div class="metric">
+      <strong>秒级查询</strong>
+      <span>大数量场景下，页面打开、查询和销量计算从约 1 分钟以上缩短到秒级</span>
+    </div>
+    <div class="metric">
+      <strong>统一口径</strong>
+      <span>销量、系数、预测需求和库存缺口沿同一条规则链路生成</span>
+    </div>
+    <div class="metric">
+      <strong>可追溯</strong>
+      <span>支持运行快照、版本校验、刷新日志和 Excel 导入审计</span>
+    </div>
+  </div>
+
+  <article class="panel wide">
+    <span class="panel-label">产品设计</span>
+    <h2>一个决策系统，三层使用体验</h2>
+    <div class="detail-columns">
+      <div>
+        <b>01 · 商品工作人员先看结果</b>
+        <p>翻单池优先呈现需要处理的商品，持续关注池承接暂不翻单但值得跟踪的款式，减少在整张数据表中寻找异常项的成本。</p>
+      </div>
+      <div>
+        <b>02 · 业务负责人管理规则</b>
+        <p>系数库、规则配置和相似款关联把经验显性化；Excel 导入包含预检、差异下载、确认写入与审计，避免规则被无痕修改。</p>
+      </div>
+      <div>
+        <b>03 · 技术和运营定位问题</b>
+        <p>通过 traceId、refreshId、分阶段日志和运行快照，区分数据库、计算和运行结果发布环节的耗时与异常。</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel">
+    <span class="panel-label">工程落地</span>
+    <h2>业务系统也需要可靠边界</h2>
+    <ul>
+      <li>支持读、写、管理员三级权限和现有 Acme 登录鉴权。</li>
+      <li>适配嵌入现有业务系统与 <code>/fandan/</code> 子路径部署。</li>
+      <li>加入运行快照、版本校验、缓存恢复和异步重建。</li>
+      <li>使用有界 Worker 与批处理控制大数据量任务。</li>
+      <li>提供独立 Mock 模式，便于无数据库和鉴权环境演示。</li>
+    </ul>
+  </article>
+
+  <article class="panel">
+    <span class="panel-label">上线迭代</span>
+    <h2>先被使用，再继续完善</h2>
+    <p>首版上线后，根据商品团队反馈补充拒退率计算、历史拒退分析和标签 Excel 导入。通过每周 OKR 汇报项目进度，并与 IT 部门完成数据库账户、业务数据接入和云端部署对接。</p>
+    <div class="tags">
+      <span>需求发现</span>
+      <span>业务规则</span>
+      <span>数据库</span>
+      <span>产品开发</span>
+      <span>测试</span>
+      <span>跨部门上线</span>
+    </div>
+  </article>
+
+  <article class="panel wide boundary-panel">
+    <span class="panel-label">真实边界</span>
+    <h2>系统提供决策建议，最终动作仍由商品人员确认</h2>
+    <p>翻单系数来源于业务配置，预测结果依赖输入数据与历史参考关系。系统当前的目标是降低信息遗漏和重复判断，而不是替代商品人员对款式、渠道和经营策略的综合判断；Mock 模式只用于演示，不代表正式业务数据。</p>
+  </article>
+
+</section>
+
+<section class="next-case page-wrap">
+  <a href="case-content.html">
+    <span>下一个案例</span>
+    <strong>商品标题与种草文案 Workflow</strong>
+    <i aria-hidden="true">→</i>
+  </a>
+</section>

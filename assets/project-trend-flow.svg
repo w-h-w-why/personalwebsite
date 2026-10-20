@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Trend Discovery 女装趋势发现流程</title>
+  <desc id="desc">搜索趋势数据进入增长计算和趋势分级，再经过关键词、款式与商品关系下钻，形成可配置报告并打印为 PDF；虚线区域展示未来 AI 语义聚类、商品匹配和洞察摘要能力。</desc>
+  <rect width="1600" height="1000" fill="#f1edf4"/>
+  <rect x="46" y="46" width="1508" height="908" rx="4" fill="#fbfaf6" stroke="#15150f" stroke-width="2"/>
+  <path d="M46 126h1508" stroke="#d8d6ca"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="84" y="96" fill="#15150f" font-size="24" font-weight="700">TREND DISCOVERY / 女装趋势发现流程</text>
+    <rect x="1392" y="69" width="125" height="34" rx="17" fill="#e8e4ee"/>
+    <text x="1415" y="92" fill="#68408e" font-size="14" font-weight="700">Mock 数据原型</text>
+
+    <text x="84" y="177" fill="#8149d8" font-size="15" font-weight="700" letter-spacing="1">01 / 当前分析链路</text>
+    <text x="84" y="213" fill="#15150f" font-size="22" font-weight="700">从搜索热度增长，走到可讨论的商品机会</text>
+
+    <g>
+      <rect x="84" y="250" width="228" height="164" rx="3" fill="#e8e4ee" stroke="#b6b4a6"/>
+      <text x="108" y="287" fill="#71657d" font-size="14">INPUT</text>
+      <text x="108" y="324" fill="#15150f" font-size="23" font-weight="700">搜索趋势</text>
+      <text x="108" y="359" fill="#65675b" font-size="13">关键词 · 品类 · 款式</text>
+      <text x="108" y="385" fill="#65675b" font-size="13">日增长与周增长</text>
+    </g>
+    <path d="M324 332h42" stroke="#8149d8" stroke-width="2"/>
+    <path d="M358 325l10 7-10 7" fill="none" stroke="#8149d8" stroke-width="2"/>
+    <g>
+      <rect x="376" y="250" width="228" height="164" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="400" y="287" fill="#71657d" font-size="14">CALCULATE</text>
+      <text x="400" y="324" fill="#15150f" font-size="23" font-weight="700">增长与排名</text>
+      <text x="400" y="359" fill="#65675b" font-size="13">当前领涨 · Top 品类</text>
+      <text x="400" y="385" fill="#65675b" font-size="13">Top 10 款式</text>
+    </g>
+    <path d="M616 332h42" stroke="#8149d8" stroke-width="2"/>
+    <path d="M650 325l10 7-10 7" fill="none" stroke="#8149d8" stroke-width="2"/>
+    <g>
+      <rect x="668" y="250" width="228" height="164" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="692" y="287" fill="#71657d" font-size="14">DRILL DOWN</text>
+      <text x="692" y="324" fill="#15150f" font-size="23" font-weight="700">逐层下钻</text>
+      <text x="692" y="359" fill="#65675b" font-size="13">趋势 → 搜索词 → 款式</text>
+      <text x="692" y="385" fill="#65675b" font-size="13">关联自家商品</text>
+    </g>
+    <path d="M908 332h42" stroke="#8149d8" stroke-width="2"/>
+    <path d="M942 325l10 7-10 7" fill="none" stroke="#8149d8" stroke-width="2"/>
+    <g>
+      <rect x="960" y="250" width="228" height="164" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="984" y="287" fill="#71657d" font-size="14">REPORT</text>
+      <text x="984" y="324" fill="#15150f" font-size="23" font-weight="700">配置报告</text>
+      <text x="984" y="359" fill="#65675b" font-size="13">选择区块 · 排序 · 隐藏</text>
+      <text x="984" y="385" fill="#65675b" font-size="13">人工调整趋势等级</text>
+    </g>
+    <path d="M1200 332h42" stroke="#8149d8" stroke-width="2"/>
+    <path d="M1234 325l10 7-10 7" fill="none" stroke="#8149d8" stroke-width="2"/>
+    <g>
+      <rect x="1252" y="250" width="250" height="164" rx="3" fill="#d8f45a"/>
+      <text x="1276" y="287" fill="#15150f" font-size="14">OUTPUT</text>
+      <text x="1276" y="324" fill="#15150f" font-size="23" font-weight="700">品牌方报告</text>
+      <text x="1276" y="359" fill="#3e4036" font-size="13">预览 · 浏览器打印</text>
+      <text x="1276" y="385" fill="#3e4036" font-size="13">PDF 输出</text>
+    </g>
+
+    <text x="84" y="490" fill="#8149d8" font-size="15" font-weight="700" letter-spacing="1">02 / AI 增强机会（规划）</text>
+    <text x="84" y="526" fill="#15150f" font-size="22" font-weight="700">AI 把零散趋势信号变成可解释的机会假设</text>
+
+    <rect x="84" y="562" width="1418" height="238" rx="4" fill="#f5f1f7" stroke="#8149d8" stroke-width="2" stroke-dasharray="8 8"/>
+    <g>
+      <rect x="112" y="594" width="316" height="174" rx="3" fill="#fbfaf6" stroke="#c7bad2"/>
+      <text x="138" y="631" fill="#8149d8" font-size="14" font-weight="700">AI 01 / 语义归类</text>
+      <text x="138" y="668" fill="#15150f" font-size="21" font-weight="700">搜索词聚类</text>
+      <text x="138" y="702" fill="#65675b" font-size="13">把“薄针织、空调衫、早秋开衫”</text>
+      <text x="138" y="728" fill="#65675b" font-size="13">归入可解释的消费意图与风格主题</text>
+    </g>
+    <g>
+      <rect x="454" y="594" width="316" height="174" rx="3" fill="#fbfaf6" stroke="#c7bad2"/>
+      <text x="480" y="631" fill="#8149d8" font-size="14" font-weight="700">AI 02 / 商品关联</text>
+      <text x="480" y="668" fill="#15150f" font-size="21" font-weight="700">语义相似匹配</text>
+      <text x="480" y="702" fill="#65675b" font-size="13">综合标题、卖点、图片风格与品类</text>
+      <text x="480" y="728" fill="#65675b" font-size="13">生成待人工确认的自家商品候选</text>
+    </g>
+    <g>
+      <rect x="796" y="594" width="316" height="174" rx="3" fill="#fbfaf6" stroke="#c7bad2"/>
+      <text x="822" y="631" fill="#8149d8" font-size="14" font-weight="700">AI 03 / 洞察摘要</text>
+      <text x="822" y="668" fill="#15150f" font-size="21" font-weight="700">趋势解释</text>
+      <text x="822" y="702" fill="#65675b" font-size="13">根据数据生成变化原因假设、</text>
+      <text x="822" y="728" fill="#65675b" font-size="13">风险提醒和可验证的选品问题</text>
+    </g>
+    <g>
+      <rect x="1138" y="594" width="334" height="174" rx="3" fill="#15150f"/>
+      <text x="1164" y="631" fill="#d8f45a" font-size="14" font-weight="700">Human-in-the-loop</text>
+      <text x="1164" y="668" fill="#fff" font-size="21" font-weight="700">人工确认结论</text>
+      <text x="1164" y="702" fill="#b9b9ac" font-size="13">AI 提供候选解释，不直接替代</text>
+      <text x="1164" y="728" fill="#b9b9ac" font-size="13">运营判断 · 报告发布前人工复核</text>
+    </g>
+
+    <text x="84" y="858" fill="#65675b" font-size="15">当前原型使用 Mock 数据与预置匹配关系；AI 部分为产品规划，不是已上线能力</text>
+    <path d="M84 903h1418" stroke="#d8d6ca"/>
+    <path d="M84 903h1050" stroke="#8149d8" stroke-width="4"/>
+    <circle cx="84" cy="903" r="7" fill="#8149d8"/>
+    <circle cx="648" cy="903" r="7" fill="#8149d8"/>
+    <circle cx="1134" cy="903" r="8" fill="#d8f45a" stroke="#15150f" stroke-width="2"/>
+  </g>
+</svg>

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">PawCare 宠物家庭协作与 AI 能力规划</title>
+  <desc id="desc">从多宠家庭场景和产品定义，到 Flutter 交互前端、状态建模与测试验证；虚线区域展示未来可接入的宠物健康 AI 辅助能力及安全边界。</desc>
+  <rect width="1600" height="1000" fill="#edf1e9"/>
+  <rect x="46" y="46" width="1508" height="908" rx="4" fill="#fbfaf6" stroke="#173326" stroke-width="2"/>
+  <path d="M46 126h1508" stroke="#c9d5ca"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="84" y="96" fill="#173326" font-size="24" font-weight="700">PAWCARE / 宠物家庭协作产品与 AI 规划</text>
+    <rect x="1387" y="69" width="129" height="34" rx="17" fill="#dce8dd"/>
+    <text x="1414" y="92" fill="#365144" font-size="14" font-weight="700">交互前端 MVP</text>
+
+    <text x="84" y="177" fill="#2f7850" font-size="15" font-weight="700" letter-spacing="1">01 / 当前产品闭环</text>
+    <text x="84" y="213" fill="#173326" font-size="22" font-weight="700">先让多人、多宠场景成立，再引入 AI</text>
+
+    <g>
+      <rect x="84" y="250" width="250" height="170" rx="3" fill="#dce8dd" stroke="#173326"/>
+      <text x="110" y="287" fill="#55705e" font-size="14">SCENARIO</text>
+      <text x="110" y="326" fill="#173326" font-size="24" font-weight="700">家庭照护场景</text>
+      <text x="110" y="361" fill="#53665a" font-size="13">多宠、多人共享、离线与权限</text>
+      <text x="110" y="387" fill="#53665a" font-size="13">访谈、PRD、验收条件</text>
+    </g>
+    <path d="M346 335h44" stroke="#2f7850" stroke-width="2"/>
+    <path d="M382 328l10 7-10 7" fill="none" stroke="#2f7850" stroke-width="2"/>
+    <g>
+      <rect x="402" y="250" width="250" height="170" rx="3" fill="#fbfaf6" stroke="#173326"/>
+      <text x="428" y="287" fill="#55705e" font-size="14">PRODUCT</text>
+      <text x="428" y="326" fill="#173326" font-size="24" font-weight="700">核心业务模块</text>
+      <text x="428" y="361" fill="#53665a" font-size="13">宠物档案 · 健康记录 · 提醒</text>
+      <text x="428" y="387" fill="#53665a" font-size="13">家庭共享 · 医疗资料</text>
+    </g>
+    <path d="M664 335h44" stroke="#2f7850" stroke-width="2"/>
+    <path d="M700 328l10 7-10 7" fill="none" stroke="#2f7850" stroke-width="2"/>
+    <g>
+      <rect x="720" y="250" width="250" height="170" rx="3" fill="#fbfaf6" stroke="#173326"/>
+      <text x="746" y="287" fill="#55705e" font-size="14">STATE</text>
+      <text x="746" y="326" fill="#173326" font-size="24" font-weight="700">Mock 状态模型</text>
+      <text x="746" y="361" fill="#53665a" font-size="13">成功 · 失败 · 离线 · 重试</text>
+      <text x="746" y="387" fill="#53665a" font-size="13">草稿 · 权限受限</text>
+    </g>
+    <path d="M982 335h44" stroke="#2f7850" stroke-width="2"/>
+    <path d="M1018 328l10 7-10 7" fill="none" stroke="#2f7850" stroke-width="2"/>
+    <g>
+      <rect x="1038" y="250" width="250" height="170" rx="3" fill="#173326"/>
+      <text x="1064" y="287" fill="#9bb9a4" font-size="14">BUILD</text>
+      <text x="1064" y="326" fill="#d8f45a" font-size="24" font-weight="700">Flutter 交互前端</text>
+      <text x="1064" y="361" fill="#c8d7cc" font-size="13">Material 3 · 设计 Token</text>
+      <text x="1064" y="387" fill="#c8d7cc" font-size="13">无障碍与多尺寸适配</text>
+    </g>
+    <path d="M1300 335h44" stroke="#2f7850" stroke-width="2"/>
+    <path d="M1336 328l10 7-10 7" fill="none" stroke="#2f7850" stroke-width="2"/>
+    <g>
+      <rect x="1356" y="250" width="146" height="170" rx="3" fill="#d8f45a"/>
+      <text x="1382" y="287" fill="#173326" font-size="14">VERIFY</text>
+      <text x="1382" y="326" fill="#173326" font-size="23" font-weight="700">805 项</text>
+      <text x="1382" y="361" fill="#3e4036" font-size="13">前端测试</text>
+      <text x="1382" y="387" fill="#3e4036" font-size="13">13 张基线</text>
+    </g>
+
+    <text x="84" y="492" fill="#2f7850" font-size="15" font-weight="700" letter-spacing="1">02 / AI 辅助层（规划）</text>
+    <text x="84" y="528" fill="#173326" font-size="22" font-weight="700">AI 做整理、提醒与沟通辅助，不做诊断和处方</text>
+
+    <rect x="84" y="566" width="1418" height="252" rx="4" fill="none" stroke="#2f7850" stroke-width="2" stroke-dasharray="8 8"/>
+    <g>
+      <rect x="112" y="600" width="300" height="184" rx="3" fill="#dce8dd"/>
+      <text x="138" y="638" fill="#2f7850" font-size="14" font-weight="700">AI 01 / 记录整理</text>
+      <text x="138" y="677" fill="#173326" font-size="21" font-weight="700">医疗资料结构化</text>
+      <text x="138" y="712" fill="#53665a" font-size="13">从上传资料中提取日期、诊断、</text>
+      <text x="138" y="738" fill="#53665a" font-size="13">用药记录和复诊提醒，供用户确认</text>
+    </g>
+    <g>
+      <rect x="438" y="600" width="300" height="184" rx="3" fill="#fbfaf6" stroke="#9bb9a4"/>
+      <text x="464" y="638" fill="#2f7850" font-size="14" font-weight="700">AI 02 / 主动提醒</text>
+      <text x="464" y="677" fill="#173326" font-size="21" font-weight="700">照护任务解释</text>
+      <text x="464" y="712" fill="#53665a" font-size="13">解释疫苗、驱虫和复诊计划，</text>
+      <text x="464" y="738" fill="#53665a" font-size="13">提醒家庭成员接手未完成任务</text>
+    </g>
+    <g>
+      <rect x="764" y="600" width="300" height="184" rx="3" fill="#fbfaf6" stroke="#9bb9a4"/>
+      <text x="790" y="638" fill="#2f7850" font-size="14" font-weight="700">AI 03 / 沟通辅助</text>
+      <text x="790" y="677" fill="#173326" font-size="21" font-weight="700">就诊问题清单</text>
+      <text x="790" y="712" fill="#53665a" font-size="13">根据健康记录生成问诊摘要</text>
+      <text x="790" y="738" fill="#53665a" font-size="13">帮助主人向兽医准确描述情况</text>
+    </g>
+    <g>
+      <rect x="1090" y="600" width="382" height="184" rx="3" fill="#173326"/>
+      <text x="1116" y="638" fill="#d8f45a" font-size="14" font-weight="700">安全边界</text>
+      <text x="1116" y="677" fill="#fff" font-size="21" font-weight="700">不诊断 · 不自行用药</text>
+      <text x="1116" y="712" fill="#c8d7cc" font-size="13">急症明确提示立即联系兽医</text>
+      <text x="1116" y="738" fill="#c8d7cc" font-size="13">知识来源白名单 · 人工确认 · 可追溯</text>
+    </g>
+
+    <text x="84" y="874" fill="#65675b" font-size="15">当前仓库尚未接入 AI 服务；以上为基于现有场景与知识库能力的产品规划</text>
+    <path d="M84 905h1418" stroke="#d8d6ca"/>
+    <path d="M84 905h1010" stroke="#2f7850" stroke-width="4"/>
+    <circle cx="84" cy="905" r="7" fill="#2f7850"/>
+    <circle cx="650" cy="905" r="7" fill="#2f7850"/>
+    <circle cx="1094" cy="905" r="8" fill="#d8f45a" stroke="#173326" stroke-width="2"/>
+  </g>
+</svg>

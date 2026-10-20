@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">个人作品集网站内容工程与构建流程</title>
+  <desc id="desc">个人材料与项目仓库进入 AI 辅助信息提炼，经人工确认后进入统一配置和页面模板；Node.js 构建生成静态页面，再经过内容一致性、响应式和交互验证后发布。</desc>
+  <rect width="1600" height="1000" fill="#f3f2ec"/>
+  <rect x="46" y="46" width="1508" height="908" rx="4" fill="#fbfaf6" stroke="#15150f" stroke-width="2"/>
+  <path d="M46 126h1508" stroke="#d8d6ca"/>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="84" y="96" fill="#15150f" font-size="24" font-weight="700">PERSONAL WEBSITE / 内容与构建流水线</text>
+    <rect x="1379" y="69" width="138" height="34" rx="17" fill="#edf0ff"/>
+    <text x="1405" y="92" fill="#2438e8" font-size="14" font-weight="700">15 个静态页面</text>
+
+    <text x="84" y="177" fill="#2438e8" font-size="15" font-weight="700" letter-spacing="1">01 / 从真实材料到可展示成果</text>
+    <text x="84" y="213" fill="#15150f" font-size="22" font-weight="700">AI 辅助整理，人负责事实、取舍与最终表达</text>
+
+    <g>
+      <rect x="84" y="250" width="240" height="164" rx="3" fill="#e9e8df" stroke="#b6b4a6"/>
+      <text x="110" y="287" fill="#65675b" font-size="14">SOURCE</text>
+      <text x="110" y="324" fill="#15150f" font-size="23" font-weight="700">真实材料</text>
+      <text x="110" y="359" fill="#65675b" font-size="13">简历 · 项目 · 业务记录</text>
+      <text x="110" y="385" fill="#65675b" font-size="13">截图与代码事实</text>
+    </g>
+    <path d="M336 332h42" stroke="#2438e8" stroke-width="2"/>
+    <path d="M370 325l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="388" y="250" width="240" height="164" rx="3" fill="#edf0ff" stroke="#2438e8"/>
+      <text x="414" y="287" fill="#2438e8" font-size="14">AI ASSIST</text>
+      <text x="414" y="324" fill="#15150f" font-size="23" font-weight="700">信息提炼</text>
+      <text x="414" y="359" fill="#65675b" font-size="13">压缩长文 · 结构建议</text>
+      <text x="414" y="385" fill="#65675b" font-size="13">页面文案与视觉实现</text>
+    </g>
+    <path d="M640 332h42" stroke="#2438e8" stroke-width="2"/>
+    <path d="M674 325l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="692" y="250" width="240" height="164" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="718" y="287" fill="#65675b" font-size="14">REVIEW</text>
+      <text x="718" y="324" fill="#15150f" font-size="23" font-weight="700">人工确认</text>
+      <text x="718" y="359" fill="#65675b" font-size="13">事实 · 口径 · 隐私</text>
+      <text x="718" y="385" fill="#65675b" font-size="13">亮点与真实边界</text>
+    </g>
+    <path d="M944 332h42" stroke="#2438e8" stroke-width="2"/>
+    <path d="M978 325l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="996" y="250" width="240" height="164" rx="3" fill="#fbfaf6" stroke="#15150f"/>
+      <text x="1022" y="287" fill="#65675b" font-size="14">CONTENT MODEL</text>
+      <text x="1022" y="324" fill="#15150f" font-size="23" font-weight="700">配置与模板</text>
+      <text x="1022" y="359" fill="#65675b" font-size="13">site.config.json</text>
+      <text x="1022" y="385" fill="#65675b" font-size="13">layout + 页面正文</text>
+    </g>
+    <path d="M1248 332h42" stroke="#2438e8" stroke-width="2"/>
+    <path d="M1282 325l10 7-10 7" fill="none" stroke="#2438e8" stroke-width="2"/>
+    <g>
+      <rect x="1300" y="250" width="202" height="164" rx="3" fill="#d8f45a"/>
+      <text x="1326" y="287" fill="#15150f" font-size="14">BUILD</text>
+      <text x="1326" y="324" fill="#15150f" font-size="23" font-weight="700">静态生成</text>
+      <text x="1326" y="359" fill="#3e4036" font-size="13">共享导航与 SEO</text>
+      <text x="1326" y="385" fill="#3e4036" font-size="13">内容哈希缓存</text>
+    </g>
+
+    <text x="84" y="491" fill="#2438e8" font-size="15" font-weight="700" letter-spacing="1">02 / 工程成果</text>
+    <text x="84" y="527" fill="#15150f" font-size="22" font-weight="700">一套源文件，持续生成统一、可验证的多页面站点</text>
+
+    <g>
+      <rect x="84" y="564" width="440" height="222" rx="3" fill="#15150f"/>
+      <text x="112" y="604" fill="#d8f45a" font-size="14" font-weight="700">SOURCE OF TRUTH</text>
+      <text x="112" y="645" fill="#fff" font-size="23" font-weight="700">配置驱动全站</text>
+      <text x="112" y="682" fill="#b9b9ac" font-size="13">导航、标题、摘要、联系方式统一维护</text>
+      <text x="112" y="708" fill="#b9b9ac" font-size="13">共享 layout 保证跨页一致体验</text>
+      <text x="112" y="734" fill="#b9b9ac" font-size="13">页面正文与全站结构解耦</text>
+      <text x="112" y="760" fill="#9da1b3" font-size="12">减少重复修改和页面漂移</text>
+    </g>
+    <g>
+      <rect x="548" y="564" width="440" height="222" rx="3" fill="#edf0ff" stroke="#2438e8"/>
+      <text x="576" y="604" fill="#2438e8" font-size="14" font-weight="700">BUILD + CHECK</text>
+      <text x="576" y="645" fill="#15150f" font-size="23" font-weight="700">构建即校验</text>
+      <text x="576" y="682" fill="#65675b" font-size="13">占位符缺项会直接报错</text>
+      <text x="576" y="708" fill="#65675b" font-size="13">--check 检查提交 HTML 是否漂移</text>
+      <text x="576" y="734" fill="#65675b" font-size="13">CSS / JS 内容哈希自动版本化</text>
+      <text x="576" y="760" fill="#71657d" font-size="12">发布前暴露拼写和构建错误</text>
+    </g>
+    <g>
+      <rect x="1012" y="564" width="490" height="222" rx="3" fill="#d8f45a"/>
+      <text x="1040" y="604" fill="#15150f" font-size="14" font-weight="700">DELIVERY</text>
+      <text x="1040" y="645" fill="#15150f" font-size="23" font-weight="700">亮眼展示，也经得起验收</text>
+      <text x="1040" y="682" fill="#3e4036" font-size="13">15 个页面 · 两端导航 · 项目独立详情</text>
+      <text x="1040" y="708" fill="#3e4036" font-size="13">业务案例 + 项目证据 + 成果指标</text>
+      <text x="1040" y="734" fill="#3e4036" font-size="13">桌面与移动验证 · 无横向溢出</text>
+      <text x="1040" y="760" fill="#3e4036" font-size="13">无 JavaScript 仍保留内容与联系方式</text>
+    </g>
+
+    <text x="84" y="845" fill="#65675b" font-size="15">零框架、零运行时构建依赖；内容来自真实简历、业务记录与项目仓库</text>
+    <path d="M84 903h1418" stroke="#d8d6ca"/>
+    <path d="M84 903h1060" stroke="#2438e8" stroke-width="4"/>
+    <circle cx="84" cy="903" r="7" fill="#2438e8"/>
+    <circle cx="648" cy="903" r="7" fill="#2438e8"/>
+    <circle cx="1144" cy="903" r="8" fill="#d8f45a" stroke="#15150f" stroke-width="2"/>
+  </g>
+</svg>

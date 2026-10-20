@@ -1,0 +1,356 @@
+
+<section class="page-hero page-wrap">
+
+  <div class="page-hero-copy">
+    <p class="section-kicker">AI 项目与个人实践</p>
+    <h1>用成果证明，<br>我能把 AI 做成产品。</h1>
+    <p>按国内电商企业内部 AI 产品经理的能力视角组织：从 AI 代码审查桌面端、复杂协作 App，到趋势发现原型和 Agent Skills 基础设施，每个项目都先展示成果，再说明 AI 产品判断、工作流、验证和真实边界。</p>
+  </div>
+
+  <aside class="hero-aside" aria-label="项目索引">
+    <span class="aside-label">索引</span>
+    <ol>
+      <li><a href="project-ocr.html"><span>AI 代码审查桌面端</span><span aria-hidden="true">01</span></a></li>
+      <li><a href="project-pawcare.html"><span>宠物家庭协作 App</span><span aria-hidden="true">02</span></a></li>
+      <li><a href="project-trend.html"><span>女装趋势发现原型</span><span aria-hidden="true">03</span></a></li>
+      <li><a href="project-skills.html"><span>Skills 与知识系统</span><span aria-hidden="true">04</span></a></li>
+      <li><a href="project-website.html"><span>个人作品集站点</span><span aria-hidden="true">05</span></a></li>
+    </ol>
+    <span class="aside-note">5 个项目 · 全部站内详情</span>
+  </aside>
+
+</section>
+
+<section class="result-spotlight page-wrap" aria-labelledby="all-project-results">
+  <div class="result-intro">
+    <p class="section-kicker">成果地图</p>
+    <h2 id="all-project-results">五个项目，五种 AI 产品能力证据</h2>
+    <p>从 AI 工具产品化、复杂场景定义、电商数据产品，到企业 AI 赋能与内容工程，每个项目都留下可检查的成果。</p>
+  </div>
+  <div class="result-grid result-grid-four">
+    <article class="result-card">
+      <b>04</b>
+      <strong>类 AI 审查范围</strong>
+      <p>一套桌面工作流覆盖研发常见审查场景。</p>
+    </article>
+    <article class="result-card">
+      <b>805</b>
+      <strong>项测试通过</strong>
+      <p>复杂移动产品交互获得自动化验证。</p>
+    </article>
+    <article class="result-card">
+      <b>87</b>
+      <strong>个 Agent Skill</strong>
+      <p>把 AI 工作方法沉淀为可复用能力。</p>
+    </article>
+    <article class="result-card">
+      <b>600+</b>
+      <strong>篇知识内容</strong>
+      <p>为 AI 建立可追溯的领域知识基础。</p>
+    </article>
+  </div>
+</section>
+
+<section class="project-list page-wrap" aria-label="项目列表">
+
+  <article class="project-showcase" id="ocr">
+    <div class="project-showcase-media">
+      <div class="review-window" aria-hidden="true">
+        <div class="review-window-head">
+          <span><i></i><i></i><i></i></span>
+          <b>OpenCodeReview</b>
+          <small>REVIEW / 04 FILES</small>
+        </div>
+        <div class="review-window-body">
+          <aside>
+            <span class="is-active">工作区改动 <b>12</b></span>
+            <span>分支对比 <b>04</b></span>
+            <span>单次提交 <b>01</b></span>
+            <span>全仓扫描 <b>128</b></span>
+          </aside>
+          <div class="review-code">
+            <p><span>src/main.ts</span><b>3 findings</b></p>
+            <i class="line-long"></i>
+            <i></i>
+            <i class="line-alert"></i>
+            <i class="line-mid"></i>
+            <i class="line-long"></i>
+            <i class="line-short"></i>
+            <div class="review-finding">
+              <b>P1 · 参数校验</b>
+              <span>在 IPC 边界补充输入检查</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-showcase-copy">
+      <div class="case-top">
+        <span>01 / AI 工具产品化</span>
+        <span class="project-state">AI 代码审查工具</span>
+      </div>
+      <h2>OpenCodeReview Desktop</h2>
+      <p>将 Alibaba OpenCodeReview 的命令行审查能力封装为 Windows 桌面工作台。项目重点不是直接调用一次 AI，而是把预览、执行、取消、阅读、对比和导出组织成完整、可追溯的产品流程。</p>
+      <div class="project-proof">
+        <span><b>4</b>审查范围</span>
+        <span><b>30</b>模型服务</span>
+        <span><b>3</b>导出格式</span>
+      </div>
+      <ul class="feature-list">
+        <li>支持工作区改动、分支对比、单次提交和全仓扫描四种范围。</li>
+        <li>封装 <code>ocr</code> CLI 子进程，呈现流式日志、任务取消和中断恢复。</li>
+        <li>按文件整理结果，支持严重度、类别、关键词筛选与代码行定位。</li>
+        <li>支持历史会话对比、继续审查和 Markdown、JSON、HTML 导出。</li>
+        <li>使用受控 preload、<code>contextIsolation</code> 和链接白名单收紧桌面端边界。</li>
+      </ul>
+      <div class="tags">
+        <span>Electron</span>
+        <span>React 19</span>
+        <span>TypeScript</span>
+        <span>CLI Orchestration</span>
+        <span>Windows Packaging</span>
+      </div>
+      <a class="btn btn-dark" href="project-ocr.html">查看项目详情<span aria-hidden="true">→</span></a>
+      <p class="project-boundary"><b>边界：</b>审查能力依赖上游 <code>ocr</code> CLI；桌面端负责流程编排、状态、结果呈现与安全封装。</p>
+    </div>
+  </article>
+
+  <article class="project-showcase project-showcase-reverse" id="pawcare">
+    <div class="project-showcase-media project-media-paw">
+      <div class="paw-phone" aria-hidden="true">
+        <div class="paw-phone-top">
+          <span>09:41</span>
+          <small>PawCare</small>
+        </div>
+        <p>早上好，林女士</p>
+        <h3>毛球和豆包的<br>今日照护</h3>
+        <div class="paw-pet-card">
+          <span>橘猫 · 毛球</span>
+          <b>体重 4.8 kg</b>
+          <small>下次驱虫 · 今天 09:30</small>
+        </div>
+        <div class="paw-task">
+          <i></i>
+          <span>完成喂药记录</span>
+          <b>待办</b>
+        </div>
+        <div class="paw-task">
+          <i></i>
+          <span>查看疫苗计划</span>
+          <b>6 天后</b>
+        </div>
+      </div>
+    </div>
+    <div class="project-showcase-copy">
+      <div class="case-top">
+        <span>02 / 复杂场景产品定义</span>
+        <span class="project-state project-state-private">交互前端 MVP</span>
+      </div>
+      <h2>PawCare 宠物家庭协作 App</h2>
+      <p>面向多宠、多人家庭的宠物档案、健康记录、提醒与家庭协作产品。项目覆盖从用户场景、PRD 和验收条件，到 Flutter 交互前端、Mock 状态与视觉回归测试的完整产品设计过程。</p>
+      <div class="project-proof">
+        <span><b>805</b>测试通过</span>
+        <span><b>13</b>视觉基线</span>
+        <span><b>41</b>产品文档</span>
+      </div>
+      <ul class="feature-list">
+        <li>梳理账户、宠物档案、健康记录、家庭共享、医疗资料、服务订单、社区与领养模块。</li>
+        <li>覆盖成功、失败、离线、重试、草稿和权限受限等 Mock 状态。</li>
+        <li>建立设计 Token、Material 3 主题、对比度、减少动态效果和语义图标规范。</li>
+        <li>仓库记录 245 个 Dart 文件、138 个测试相关文件和 41 份文档。</li>
+        <li>README 记录前端测试 805/805 通过，并建立 13 张 Golden 几何基线。</li>
+      </ul>
+      <div class="tags">
+        <span>Flutter</span>
+        <span>Dart</span>
+        <span>Material 3</span>
+        <span>Mock-Driven</span>
+        <span>Accessibility</span>
+      </div>
+      <a class="btn btn-ghost" href="project-pawcare.html">查看项目详情<span aria-hidden="true">→</span></a>
+      <p class="project-boundary"><b>边界：</b>当前交付为完整交互前端与产品方案；后端、数据库、真实鉴权、支付和 AI 服务尚未接入，不是已上线商业 App。</p>
+    </div>
+  </article>
+
+  <article class="project-showcase" id="trend">
+    <div class="project-showcase-media project-media-trend">
+      <div class="trend-board" aria-hidden="true">
+        <div class="trend-board-head">
+          <span>TREND / 女装趋势</span>
+          <small>日增长 ▾</small>
+        </div>
+        <div class="trend-keywords">
+          <span>新中式</span><span>薄针织</span><span>松弛感</span>
+        </div>
+        <div class="trend-chart">
+          <i style="--h: 34%"></i>
+          <i style="--h: 48%"></i>
+          <i style="--h: 41%"></i>
+          <i style="--h: 65%"></i>
+          <i style="--h: 58%"></i>
+          <i style="--h: 82%"></i>
+          <i style="--h: 94%"></i>
+        </div>
+        <div class="trend-legend">
+          <span>搜索热度增长</span>
+          <b>+34.8%</b>
+        </div>
+      </div>
+    </div>
+    <div class="project-showcase-copy">
+      <div class="case-top">
+        <span>03 / 电商内部 AI 数据产品</span>
+        <span class="project-state project-state-private">Mock 数据原型</span>
+      </div>
+      <h2>Trend Discovery 女装趋势发现系统</h2>
+      <p>面向唯品会女装运营的 React + Vite 前端原型，将搜索热度增长、品类、款式和关键词趋势与自家商品关联，最终形成可配置、可打印的品牌方报告。</p>
+      <div class="project-proof">
+        <span><b>10</b>款趋势榜单</span>
+        <span><b>4</b>层下钻</span>
+        <span><b>PDF</b>报告闭环</span>
+      </div>
+      <ul class="feature-list">
+        <li>实现趋势总览、当前领涨、Top 10 款式、Top 3 品类和日/周增长切换。</li>
+        <li>设计趋势详情、搜索词、关联款式和自家商品匹配的逐层下钻流程。</li>
+        <li>支持人工调整趋势等级、选择报告内容、排序、隐藏和恢复区块。</li>
+        <li>完善响应式布局、侧栏状态保留、键盘焦点隔离与可访问表格。</li>
+        <li>完成报告预览与浏览器打印 PDF 工作流。</li>
+      </ul>
+      <div class="tags">
+        <span>React 19</span>
+        <span>Vite</span>
+        <span>Data Visualization</span>
+        <span>Accessibility</span>
+        <span>Report Builder</span>
+      </div>
+      <a class="btn btn-ghost" href="project-trend.html">查看项目详情<span aria-hidden="true">→</span></a>
+      <p class="project-boundary"><b>边界：</b>当前使用 Mock 数据，不包含真实 API、鉴权和自动推送；商品匹配关系为预置逻辑，不代表生产算法。</p>
+    </div>
+  </article>
+
+  <article class="project-showcase project-showcase-reverse" id="skills">
+    <div class="project-showcase-media project-media-skills">
+      <div class="skill-map" aria-hidden="true">
+        <span class="skill-node skill-node-main">AI<br>工作系统</span>
+        <span class="skill-node">需求</span>
+        <span class="skill-node">开发</span>
+        <span class="skill-node">测试</span>
+        <span class="skill-node">知识</span>
+        <span class="skill-node">内容</span>
+        <i class="skill-line line-a"></i>
+        <i class="skill-line line-b"></i>
+        <i class="skill-line line-c"></i>
+        <i class="skill-line line-d"></i>
+        <i class="skill-line line-e"></i>
+      </div>
+    </div>
+    <div class="project-showcase-copy">
+      <div class="case-top">
+        <span>04 / AI Infrastructure</span>
+        <span class="project-state project-state-private">长期维护</span>
+      </div>
+      <h2>Agent Skills 与多领域知识基础设施</h2>
+      <p>用 Skills、AGENTS 规则、知识模板和来源追踪，把个人有效的 AI 工作方法沉淀为跨会话、跨项目、跨工具可复用的能力资产。</p>
+      <div class="project-proof">
+        <span><b>87</b>Agent Skills</span>
+        <span><b>600+</b>知识内容</span>
+        <span><b>3</b>类知识库</span>
+      </div>
+      <ul class="feature-list">
+        <li>整理并持续维护 87 个 Agent Skill 定义，覆盖需求、开发、测试、研究和知识管理。</li>
+        <li>使用场景标签、启用状态、来源信息、评测和自动备份治理 Skill 资产。</li>
+        <li>建设工程、计算机学习和宠物健康三类知识库，共 600 余篇 Markdown。</li>
+        <li>通过 AGENTS 规则明确读取顺序、任务路由、安全门禁、写入规范和验收要求。</li>
+        <li>记录来源、生命周期、置信度、更新时间和页面关系，让知识可追溯、可复核。</li>
+      </ul>
+      <div class="tags">
+        <span>Agent Skills</span>
+        <span>Context Engineering</span>
+        <span>Knowledge Graph</span>
+        <span>Provenance</span>
+        <span>Automation</span>
+      </div>
+      <a class="btn btn-ghost" href="project-skills.html">查看项目详情<span aria-hidden="true">→</span></a>
+      <p class="project-boundary"><b>边界：</b>这是个人能力和知识资产库，部分 Skill 来源于外部社区；工作重点是选型、整合、场景化应用、评测与持续维护。</p>
+    </div>
+  </article>
+
+  <article class="project-showcase" id="website">
+    <div class="project-showcase-media project-media-site">
+      <div class="site-build-visual" aria-hidden="true">
+        <span>templates/</span>
+        <span>site.config.json</span>
+        <span>build.mjs</span>
+        <b>→</b>
+        <span>index.html</span>
+        <span>projects.html</span>
+        <span>portfolio.html</span>
+      </div>
+    </div>
+    <div class="project-showcase-copy">
+      <div class="case-top">
+        <span>05 / AI 辅助产品交付</span>
+        <span class="project-state">内容工程实践</span>
+      </div>
+      <h2>个人作品集站点</h2>
+      <p>当前这个网站同样是一个独立工程：用共享模板、统一配置和 Node.js 构建脚本生成多页面静态站，兼顾内容维护、静态降级与 GitHub Pages 发布。</p>
+      <div class="project-proof">
+        <span><b>15</b>完整页面</span>
+        <span><b>9</b>视觉证据</span>
+        <span><b>0</b>运行时依赖</span>
+      </div>
+      <ul class="feature-list">
+        <li>无框架、无运行时构建依赖，使用共享 layout 与页面正文模板。</li>
+        <li>站点标题、摘要、导航和联系方式统一由配置生成。</li>
+        <li>支持 SEO 描述、分享预览、内容哈希版本和 GitHub Pages 发布。</li>
+        <li>处理响应式布局、无 JavaScript 访问和邮箱复制失败恢复。</li>
+      </ul>
+      <div class="tags">
+        <span>Node.js</span>
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>Static Site</span>
+        <span>GitHub Pages</span>
+      </div>
+      <a class="btn btn-dark" href="project-website.html">查看项目详情<span aria-hidden="true">→</span></a>
+    </div>
+  </article>
+
+</section>
+
+<section class="ai-impact page-wrap">
+  <div class="ai-impact-intro">
+    <p class="section-kicker">能力组合</p>
+    <h2>这些项目共同证明：我能把 AI 从概念推进到可用产品。</h2>
+    <p>不是单一工具熟练度，而是从业务问题、AI 场景、产品流程、质量治理到推广使用的一条完整能力链。</p>
+  </div>
+  <div class="ai-impact-grid">
+    <div>
+      <b>业务翻译</b>
+      <p>从研发、宠物家庭、女装运营和个人知识工作中识别问题，判断哪些场景值得用 AI、AI 应介入哪一步。</p>
+    </div>
+    <div>
+      <b>AI 产品设计</b>
+      <p>定义输入、工作流、输出、异常、人工确认和验收标准，让模型能力变成用户可以完成任务的完整流程。</p>
+    </div>
+    <div>
+      <b>AI 技术编排</b>
+      <p>理解模型、Agent、Skill、知识库、上下文、评测和多模态能力的边界，并组合成适合业务的技术方案。</p>
+    </div>
+    <div>
+      <b>组织落地</b>
+      <p>通过培训、SOP、知识资产、质量门禁和持续反馈，让 AI 从个人技巧变成团队可复用的能力。</p>
+    </div>
+  </div>
+</section>
+
+<section class="project-cta page-wrap">
+  <div>
+    <p class="section-kicker">开放协作</p>
+    <h2>如果你在寻找能把业务、AI 和工程连起来的人，我们可以聊聊。</h2>
+  </div>
+  <div class="project-cta-actions">
+    <a class="btn btn-accent" href="contact.html">联系我<span aria-hidden="true">→</span></a>
+    <a class="text-link" href="portfolio.html">回到业务案例<span aria-hidden="true">→</span></a>
+  </div>
+</section>

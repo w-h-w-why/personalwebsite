@@ -25,7 +25,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <title>W.H.W. · 电商内容自动化</title>
   <script>document.documentElement.classList.add('js');</script>
-  <link rel="stylesheet" href="pages.css?v=99750e7634">
+  <link rel="stylesheet" href="pages.css?v=c9b6fe3a56">
   <script src="site.js?v=843b715a50" defer></script>
 </head>
 <body>
@@ -34,11 +34,12 @@
       <div class="header-inner">
         <a class="brand" href="index.html" aria-label="W.H.W. 作品集首页">
           <span class="brand-mark" aria-hidden="true">W</span>
-          <span class="brand-text">W.H.W.<small>AI 产品经理作品集</small></span>
+          <span class="brand-text">W.H.W.<small>AI 应用产品作品集</small></span>
         </a>
         <nav class="main-nav" id="site-nav" aria-label="作品集目录">
           <a href="index.html">首页</a>
           <a class="current" aria-current="page" href="portfolio.html">案例</a>
+          <a href="projects.html">项目</a>
           <a href="resume.html">经历</a>
           <a href="about.html">关于</a>
           <a href="contact.html">联系</a>
@@ -64,9 +65,9 @@
             <span aria-hidden="true">/</span>
             <span>内容自动化</span>
           </nav>
-          <p class="section-kicker">01 / AI 电商内容自动化</p>
+          <p class="section-kicker">02 / AI 电商内容自动化</p>
           <h1>从商品信息到标题与<br>种草文案的自动化生产</h1>
-          <p>将商品信息、平台高搜索词与小红书趋势串联起来，用 Workflow 批量生成并优化电商内容。</p>
+          <p>将商品信息、唯品会后台数据、品类搜索词与小红书趋势串联起来，用 Workflow 批量生成适配不同平台的标题，并由人工完成最终更新。</p>
         </div>
 
         <aside class="hero-aside" aria-label="项目速览">
@@ -82,11 +83,11 @@
             </div>
             <div>
               <dt>产出</dt>
-              <dd>商品标题与种草文案批量生成</dd>
+              <dd>可复制标题表与种草文案批量生成</dd>
             </div>
             <div>
               <dt>状态</dt>
-              <dd>持续使用中</dd>
+              <dd>跨部门日常使用中</dd>
             </div>
           </dl>
         </aside>
@@ -98,13 +99,13 @@
         <article class="panel">
           <span class="panel-label">问题</span>
           <h2>业务问题</h2>
-          <p>电商内容生产需要兼顾平台搜索趋势与商品卖点，人工逐条撰写标题和种草文案耗时，也难以保持表达一致性。</p>
+          <p>设计师提供的通用标题不一定适配不同电商平台。人工逐条融合商品卖点、平台品类搜索词和小红书趋势词耗时，也容易遗漏平台规避词或保持表达口径一致。</p>
         </article>
 
         <article class="panel">
           <span class="panel-label">方案</span>
           <h2>产品方案</h2>
-          <p>以商品信息为输入，接入趋势与高搜索词数据，通过 Coze Workflow 调用大模型生成标题和文案，再用 Prompt 约束内容质量与穿搭细节。</p>
+          <p>以商品信息为输入，接入唯品会后台数据与趋势词，通过 Coze Workflow 调用大模型生成标题和文案；用 Prompt 约束卖点、穿搭细节、平台规避词和输出格式，并以测试样本检查效果。</p>
         </article>
 
         <figure class="panel wide evidence-figure">
@@ -119,19 +120,32 @@
 
         <div class="metrics wide" aria-label="能力概览">
           <div class="metric">
-            <strong>标题优化</strong>
-            <span>基于品类高搜索词</span>
+            <strong>多平台适配</strong>
+            <span>融合品类搜索词与平台规避词</span>
           </div>
           <div class="metric">
-            <strong>文案生成</strong>
-            <span>参考爆款对标风格</span>
+            <strong>人工把关</strong>
+            <span>人工更新平台链接与最终标题</span>
           </div>
           <div class="metric">
-            <strong>批量处理</strong>
-            <span>支持多图与多套搭配</span>
+            <strong>批量输出</strong>
+            <span>生成可复制的标题表</span>
           </div>
         </div>
 
+      </section>
+
+      <section class="content-grid page-wrap">
+        <article class="panel">
+          <span class="panel-label">落地</span>
+          <h2>从个人方法到团队流程</h2>
+          <p>项目与 IT 对接业务数据和接入方式，通过 OKR 会议同步进展。流程进入各部门日常使用后，支持批量生成可复制标题，平台链接仍由人工更新，避免把内容质量与发布动作混成一个自动化黑盒。</p>
+        </article>
+        <article class="panel">
+          <span class="panel-label">边界</span>
+          <h2>AI 生成，人工做最后判断</h2>
+          <p>趋势词、商品卖点和平台规则共同影响标题质量。系统负责提高初稿产能和一致性，业务人员仍对规避词、品牌口径和最终发布内容负责。</p>
+        </article>
       </section>
 
       <section class="next-case page-wrap">
@@ -147,7 +161,7 @@
         <div class="footer-brand">
           <a class="brand" href="index.html" aria-label="W.H.W. 作品集首页">
             <span class="brand-mark" aria-hidden="true">W</span>
-            <span class="brand-text">W.H.W.<small>AI 产品经理作品集</small></span>
+            <span class="brand-text">W.H.W.<small>AI 应用产品作品集</small></span>
           </a>
           <p>把前沿模型，变成真正可用的日常。</p>
         </div>
@@ -155,6 +169,7 @@
           <span class="footer-label">页面</span>
           <a href="index.html">首页</a>
           <a href="portfolio.html">案例</a>
+          <a href="projects.html">项目</a>
           <a href="resume.html">经历</a>
           <a href="about.html">关于</a>
           <a href="contact.html">联系</a>
